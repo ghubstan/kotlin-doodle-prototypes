@@ -8,7 +8,7 @@ import io.nacular.doodle.drawing.Color
 object ColorUtils {
 
     // Different shades of White
-    
+
     fun antiFlashWhite(): Color {
         return Color(0xf2f3f4u)
     }

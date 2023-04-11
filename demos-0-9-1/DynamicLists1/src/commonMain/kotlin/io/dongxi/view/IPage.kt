@@ -30,5 +30,5 @@ interface IPage {
     val popups: PopupManager
     val modals: ModalManager
     fun description(): String
-    fun shutdown()
+    fun destroy()
 }

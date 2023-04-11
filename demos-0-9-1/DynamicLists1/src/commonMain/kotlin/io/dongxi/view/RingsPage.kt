@@ -21,6 +21,7 @@ import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 
 class RingsPage(
     override val config: DongxiConfig,
@@ -63,7 +64,9 @@ class RingsPage(
         return pageTitle.text
     }
 
-    override fun shutdown() {
-        TODO("Not implemented")
+    override fun destroy() {
+        // Cancels all coroutines launched in this scope.
+        mainScope.cancel()
+        // cleanup here
     }
 }
