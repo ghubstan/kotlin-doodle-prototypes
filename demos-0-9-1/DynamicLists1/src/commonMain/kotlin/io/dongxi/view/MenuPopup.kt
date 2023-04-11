@@ -114,11 +114,6 @@ class MenuPopup(
     }
 
     override fun render(canvas: Canvas) {
-        // From https://www.colorhexa.com/color-names
-        val antiFlashWhite = Color(0xf2f3f4u)
-        val floralWhite = Color(0xfffaf0u)
-        val ghostWhite = Color(0xf8f8ffu)
-        val whiteSmoke = Color(0xf5f5f5u)
         canvas.rect(bounds.atOrigin, Color.Transparent)
     }
 
