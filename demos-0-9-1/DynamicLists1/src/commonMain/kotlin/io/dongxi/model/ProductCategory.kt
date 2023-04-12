@@ -8,5 +8,6 @@ enum class ProductCategory {
     EARRING,
     NECKLACE,
     RING,
-    SCAPULAR
+    SCAPULAR,
+    NONE
 }

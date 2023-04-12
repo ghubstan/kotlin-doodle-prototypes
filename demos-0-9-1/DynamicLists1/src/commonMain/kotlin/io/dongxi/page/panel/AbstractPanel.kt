@@ -60,7 +60,7 @@ abstract class AbstractPanel(
 
                 when (it) {
                     GO_HOME -> {
-                        // Nothing happens
+                        currentProductCategory = NONE
                     }
 
                     GO_BRACELETS -> {
@@ -84,11 +84,11 @@ abstract class AbstractPanel(
                     }
 
                     GO_ABOUT -> {
-                        // Nothing happens
+                        currentProductCategory = NONE
                     }
 
                     LOGOUT -> {
-                        // Nothing happens
+                        currentProductCategory = NONE
                     }
                 }
 
