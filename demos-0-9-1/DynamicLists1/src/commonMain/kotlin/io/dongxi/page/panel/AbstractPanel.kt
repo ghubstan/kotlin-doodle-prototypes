@@ -5,8 +5,11 @@ import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.core.View
+import io.nacular.doodle.drawing.Canvas
+import io.nacular.doodle.drawing.Color.Companion.Lightgray
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
+import io.nacular.doodle.drawing.rect
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.image.ImageLoader
@@ -34,6 +37,10 @@ abstract class AbstractPanel(
 ) : IPanel, View() {
 
     val mainScope = MainScope() // The scope of Panel class (and subclasses), uses Dispatchers.Main.
+
+    override fun render(canvas: Canvas) {
+        canvas.rect(bounds.atOrigin, Lightgray)
+    }
 
     // Destroys an instance of RingsWidget.
     override fun destroy() {

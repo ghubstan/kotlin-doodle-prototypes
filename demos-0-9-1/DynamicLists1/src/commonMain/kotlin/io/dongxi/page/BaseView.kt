@@ -83,7 +83,8 @@ class BaseView(
         modals
     )
 
-    private var currentPage = pageFactory.buildPage(HOME) as View
+    // private var currentPage = pageFactory.buildPage(HOME) as View
+    private var currentPage = pageFactory.buildPage(RINGS) as View
 
     init {
 
