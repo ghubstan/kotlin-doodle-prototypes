@@ -15,8 +15,8 @@ import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
+import io.nacular.doodle.layout.HorizontalFlowLayout
 import io.nacular.doodle.layout.constraints.constrain
-import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.system.Cursor
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
@@ -57,14 +57,17 @@ class LeftPanel(
 ) {
 
     private val button1 = fakeEventButton("Ring 1", "Select Ring 1")
+    private val button2 = fakeEventButton("Ring 2", "Select Ring 2")
+    private val button3 = fakeEventButton("Ring 3", "Select Ring 3")
 
     init {
         clipCanvasToBounds = false
 
         size = Size(200, 200)
 
-        children += listOf(button1)
-        layout = constrain(button1, fill)
+        children += listOf(button1, button2, button3)
+        layout = HorizontalFlowLayout()
+        // layout = constrain(button1, button2, button3) { button1Bounds, button2Bounds, button3Bounds -> }
     }
 
     private fun fakeEventButton(buttonText: String, buttonTooltip: String): PushButton {
