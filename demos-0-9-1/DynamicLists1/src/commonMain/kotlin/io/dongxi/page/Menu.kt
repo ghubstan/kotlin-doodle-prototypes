@@ -1,4 +1,4 @@
-package io.dongxi.view
+package io.dongxi.page
 
 import io.dongxi.application.DongxiConfig
 import io.nacular.doodle.animation.Animator

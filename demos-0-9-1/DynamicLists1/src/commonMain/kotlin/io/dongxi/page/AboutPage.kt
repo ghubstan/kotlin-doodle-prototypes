@@ -1,11 +1,10 @@
-package io.dongxi.view
+package io.dongxi.page
 
 import io.dongxi.application.DongxiConfig
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.text.Label
-import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.*
 import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.focus.FocusManager
@@ -20,26 +19,36 @@ import io.nacular.doodle.utils.Dimension
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
 
 class AboutPage(
-    override val config: DongxiConfig,
-    override val uiDispatcher: CoroutineDispatcher,
-    override val animator: Animator,
-    override val pathMetrics: PathMetrics,
-    override val fonts: FontLoader,
-    override val theme: DynamicTheme,
-    override val themes: ThemeManager,
-    override val images: ImageLoader,
-    override val textMetrics: TextMetrics,
-    override val linkStyler: NativeHyperLinkStyler,
-    override val focusManager: FocusManager,
-    override val popups: PopupManager,
-    override val modals: ModalManager
-) : IPage, View() {
-
-    private val mainScope = MainScope() // the scope of HomePage class, uses Dispatchers.Main.
+    config: DongxiConfig,
+    uiDispatcher: CoroutineDispatcher,
+    animator: Animator,
+    pathMetrics: PathMetrics,
+    fonts: FontLoader,
+    theme: DynamicTheme,
+    themes: ThemeManager,
+    images: ImageLoader,
+    textMetrics: TextMetrics,
+    linkStyler: NativeHyperLinkStyler,
+    focusManager: FocusManager,
+    popups: PopupManager,
+    modals: ModalManager
+) : IPage, AbstractPage(
+    config,
+    uiDispatcher,
+    animator,
+    pathMetrics,
+    fonts,
+    theme,
+    themes,
+    images,
+    textMetrics,
+    linkStyler,
+    focusManager,
+    popups,
+    modals
+) {
 
     private val pageTitle = Label("Sobre", Middle, Center).apply {
         height = 26.0
@@ -62,11 +71,5 @@ class AboutPage(
 
     override fun description(): String {
         return pageTitle.text
-    }
-
-    override fun destroy() {
-        // Cancels all coroutines launched in this scope.
-        mainScope.cancel()
-        // cleanup here
     }
 }

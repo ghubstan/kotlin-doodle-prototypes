@@ -1,4 +1,4 @@
-package io.dongxi.view
+package io.dongxi.page
 
 enum class PageType {
     HOME,

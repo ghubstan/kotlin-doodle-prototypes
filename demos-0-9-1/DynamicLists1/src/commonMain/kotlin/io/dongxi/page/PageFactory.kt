@@ -1,7 +1,7 @@
-package io.dongxi.view
+package io.dongxi.page
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.view.PageType.*
+import io.dongxi.page.PageType.*
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager

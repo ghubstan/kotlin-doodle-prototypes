@@ -1,6 +1,6 @@
 package io.dongxi.application
 
-import io.dongxi.view.BaseView
+import io.dongxi.page.BaseView
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.application.Application
 import io.nacular.doodle.controls.PopupManager
