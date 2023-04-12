@@ -81,7 +81,7 @@ class RightPanel(
                 println("RightPanel currentBaseProduct: $currentBaseProduct")
 
                 tempLabel.text =
-                    "${currentBaseProduct.productCategory.name ?: ""} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
+                    "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
                 
                 relayout()
             }
