@@ -1,7 +1,10 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.ProductCategory
+import io.dongxi.model.ProductCategory.*
 import io.dongxi.model.SelectedBaseProduct
+import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
@@ -22,6 +25,9 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 abstract class AbstractPanel(
     val config: DongxiConfig,
@@ -43,7 +49,55 @@ abstract class AbstractPanel(
 
     val mainScope = MainScope() // The scope of Panel class (and subclasses), uses Dispatchers.Main.
 
+    lateinit var currentProductCategory: ProductCategory
     lateinit var currentBaseProduct: SelectedBaseProduct
+
+    init {
+        mainScope.launch {
+            menuEventBus.events.filterNotNull().collectLatest {
+
+                println("Received ${it.name} event")
+
+                when (it) {
+                    GO_HOME -> {
+                        // Nothing happens
+                    }
+
+                    GO_BRACELETS -> {
+                        currentProductCategory = BRACELET
+                    }
+
+                    GO_EARRINGS -> {
+                        currentProductCategory = EARRING
+                    }
+
+                    GO_NECKLACES -> {
+                        currentProductCategory = NECKLACE
+                    }
+
+                    GO_RINGS -> {
+                        currentProductCategory = RING
+                    }
+
+                    GO_SCAPULARS -> {
+                        currentProductCategory = SCAPULAR
+                    }
+
+                    GO_ABOUT -> {
+                        // Nothing happens
+                    }
+
+                    LOGOUT -> {
+                        // Nothing happens
+                    }
+                }
+
+                // Now update the view
+                println("Current ProductCategory: $currentProductCategory")
+                // updateView(currentPage)
+            }
+        }
+    }
 
     override fun render(canvas: Canvas) {
         canvas.rect(bounds.atOrigin, Lightgray)

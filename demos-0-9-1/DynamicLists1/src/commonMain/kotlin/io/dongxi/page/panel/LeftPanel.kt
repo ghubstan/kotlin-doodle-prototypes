@@ -21,6 +21,9 @@ import io.nacular.doodle.system.Cursor
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.utils.Dimension
+import io.nacular.doodle.utils.HorizontalAlignment
+import io.nacular.doodle.utils.VerticalAlignment
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
@@ -58,6 +61,16 @@ class LeftPanel(
     baseProductSelectEventBus
 ) {
 
+    private val tempLabel = io.nacular.doodle.controls.text.Label(
+        "NADA",
+        VerticalAlignment.Middle,
+        HorizontalAlignment.Center
+    ).apply {
+        height = 24.0
+        fitText = setOf(Dimension.Width)
+        foregroundColor = Color.Transparent
+    }
+
     private val button1 = fakeEventButton("Ring 1", "Select Ring 1")
     private val button2 = fakeEventButton("Ring 2", "Select Ring 2")
     private val button3 = fakeEventButton("Ring 3", "Select Ring 3")
@@ -67,7 +80,7 @@ class LeftPanel(
 
         size = Size(200, 200)
 
-        children += listOf(button1, button2, button3)
+        children += listOf(tempLabel, button1, button2, button3)
         layout = HorizontalFlowLayout()
         // layout = constrain(button1, button2, button3) { button1Bounds, button2Bounds, button3Bounds -> }
     }
@@ -102,6 +115,11 @@ class LeftPanel(
                     baseProductSelectEventBus.produceEvent(SELECT_BASE_RING)
 
                     println("LeftPanel currentBaseProduct: $currentBaseProduct")
+
+                    tempLabel.text =
+                        "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
+
+                    relayout()
                 }
             }
         }

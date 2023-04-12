@@ -82,6 +82,7 @@ class RightPanel(
 
                 tempLabel.text =
                     "${currentBaseProduct.productCategory.name ?: ""} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
+                
                 relayout()
             }
         }
