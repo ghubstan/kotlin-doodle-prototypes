@@ -1,4 +1,4 @@
-package io.dongxi.view.page
+package io.dongxi.page.panel
 
 
 import io.nacular.doodle.controls.ItemVisualizer

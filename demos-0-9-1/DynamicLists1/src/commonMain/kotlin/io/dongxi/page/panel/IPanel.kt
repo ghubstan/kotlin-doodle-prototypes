@@ -1,4 +1,4 @@
-package io.dongxi.view.page
+package io.dongxi.page.panel
 
 interface IPanel {
     fun destroy()
