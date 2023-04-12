@@ -65,7 +65,7 @@ class BaseView(
         focusManager,
         popups,
         modals,
-        menuEventBus
+        menuEventBus,
     ).apply {
     }
 
@@ -82,24 +82,14 @@ class BaseView(
         linkStyler,
         focusManager,
         popups,
-        modals
+        modals,
+        baseProductSelectEventBus
     )
 
     // private var currentPage = pageFactory.buildPage(HOME) as View
     private var currentPage = pageFactory.buildPage(RINGS) as View
 
     init {
-
-        /*
-        SELECT_BASE_RING.setBaseProductDetail("Ring 1", "Ring 1 File", null)
-        println(SELECT_BASE_RING.baseProductDetail())
-        SELECT_BASE_RING.setBaseProductDetail("Ring 2", "Ring 2 File", null)
-        println(SELECT_BASE_RING.baseProductDetail())
-        SELECT_BASE_RING.setBaseProductDetail("Ring 3", "Ring 3 File", null)
-        println(SELECT_BASE_RING.baseProductDetail())
-        SELECT_BASE_RING.setBaseProductDetail("Ring 4", "Ring 4 File", null)
-        println(SELECT_BASE_RING.baseProductDetail())
-         */
 
         mainScope.launch {
             menuEventBus.events.filter { event ->

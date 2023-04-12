@@ -16,6 +16,12 @@ enum class BaseProductSelectEvent(val selectedBaseProduct: SelectedBaseProduct) 
             selectedBaseProduct.image = image
         }
 
+        override fun hasSelection(): Boolean {
+            return selectedBaseProduct.name != null &&
+                    selectedBaseProduct.file != null &&
+                    selectedBaseProduct.image != null
+        }
+
         override fun baseProductDetail(): SelectedBaseProduct {
             return selectedBaseProduct
         }
@@ -31,6 +37,12 @@ enum class BaseProductSelectEvent(val selectedBaseProduct: SelectedBaseProduct) 
             selectedBaseProduct.name = name
             selectedBaseProduct.file = file
             selectedBaseProduct.image = image
+        }
+
+        override fun hasSelection(): Boolean {
+            return selectedBaseProduct.name != null &&
+                    selectedBaseProduct.file != null &&
+                    selectedBaseProduct.image != null
         }
 
         override fun baseProductDetail(): SelectedBaseProduct {
@@ -50,6 +62,12 @@ enum class BaseProductSelectEvent(val selectedBaseProduct: SelectedBaseProduct) 
             selectedBaseProduct.image = image
         }
 
+        override fun hasSelection(): Boolean {
+            return selectedBaseProduct.name != null &&
+                    selectedBaseProduct.file != null &&
+                    selectedBaseProduct.image != null
+        }
+
         override fun baseProductDetail(): SelectedBaseProduct {
             return selectedBaseProduct
         }
@@ -65,6 +83,12 @@ enum class BaseProductSelectEvent(val selectedBaseProduct: SelectedBaseProduct) 
             selectedBaseProduct.name = name
             selectedBaseProduct.file = file
             selectedBaseProduct.image = image
+        }
+
+        override fun hasSelection(): Boolean {
+            return selectedBaseProduct.name != null &&
+                    selectedBaseProduct.file != null &&
+                    selectedBaseProduct.image != null
         }
 
         override fun baseProductDetail(): SelectedBaseProduct {
@@ -84,6 +108,12 @@ enum class BaseProductSelectEvent(val selectedBaseProduct: SelectedBaseProduct) 
             selectedBaseProduct.image = image
         }
 
+        override fun hasSelection(): Boolean {
+            return selectedBaseProduct.name != null &&
+                    selectedBaseProduct.file != null &&
+                    selectedBaseProduct.image != null
+        }
+        
         override fun baseProductDetail(): SelectedBaseProduct {
             return selectedBaseProduct
         }
@@ -100,6 +130,8 @@ enum class BaseProductSelectEvent(val selectedBaseProduct: SelectedBaseProduct) 
         file: String,
         image: Deferred<Image>?
     )
+
+    abstract fun hasSelection(): Boolean
 
     abstract fun baseProductDetail(): SelectedBaseProduct
 

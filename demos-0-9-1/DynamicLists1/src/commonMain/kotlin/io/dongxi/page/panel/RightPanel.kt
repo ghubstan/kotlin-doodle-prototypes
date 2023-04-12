@@ -1,6 +1,7 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -28,7 +29,8 @@ class RightPanel(
     linkStyler: NativeHyperLinkStyler,
     focusManager: FocusManager,
     popups: PopupManager,
-    modals: ModalManager
+    modals: ModalManager,
+    baseProductSelectEventBus: BaseProductSelectEventBus
 ) : AbstractPanel(
     config,
     uiDispatcher,
@@ -42,7 +44,8 @@ class RightPanel(
     linkStyler,
     focusManager,
     popups,
-    modals
+    modals,
+    baseProductSelectEventBus
 ) {
 
     init {

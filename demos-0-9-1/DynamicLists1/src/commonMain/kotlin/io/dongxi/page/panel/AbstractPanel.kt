@@ -1,6 +1,7 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -33,7 +34,8 @@ abstract class AbstractPanel(
     val linkStyler: NativeHyperLinkStyler,
     val focusManager: FocusManager,
     val popups: PopupManager,
-    val modals: ModalManager
+    val modals: ModalManager,
+    val baseProductSelectEventBus: BaseProductSelectEventBus
 ) : IPanel, View() {
 
     val mainScope = MainScope() // The scope of Panel class (and subclasses), uses Dispatchers.Main.

@@ -1,6 +1,7 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -18,6 +19,9 @@ import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 
 class BaseGridPanel(
     config: DongxiConfig,
@@ -32,7 +36,8 @@ class BaseGridPanel(
     linkStyler: NativeHyperLinkStyler,
     focusManager: FocusManager,
     popups: PopupManager,
-    modals: ModalManager
+    modals: ModalManager,
+    baseProductSelectEventBus: BaseProductSelectEventBus
 ) : AbstractPanel(
     config,
     uiDispatcher,
@@ -46,7 +51,8 @@ class BaseGridPanel(
     linkStyler,
     focusManager,
     popups,
-    modals
+    modals,
+    baseProductSelectEventBus
 ) {
     private val leftPanel = LeftPanel(
         config,
@@ -61,7 +67,8 @@ class BaseGridPanel(
         linkStyler,
         focusManager,
         popups,
-        modals
+        modals,
+        baseProductSelectEventBus
     )
 
     private val centerPanel = CenterPanel(
@@ -77,7 +84,8 @@ class BaseGridPanel(
         linkStyler,
         focusManager,
         popups,
-        modals
+        modals,
+        baseProductSelectEventBus
     )
 
     private val rightPanel = RightPanel(
@@ -93,7 +101,8 @@ class BaseGridPanel(
         linkStyler,
         focusManager,
         popups,
-        modals
+        modals,
+        baseProductSelectEventBus
     )
 
     private val footerPanel = FooterPanel(
@@ -109,7 +118,8 @@ class BaseGridPanel(
         linkStyler,
         focusManager,
         popups,
-        modals
+        modals,
+        baseProductSelectEventBus
     )
 
     fun gridPanel(): GridPanel {
@@ -140,4 +150,18 @@ class BaseGridPanel(
         }
         return panel
     }
+
+    init {
+
+        mainScope.launch {
+            baseProductSelectEventBus.events.filter { event ->
+                event != null // What filter predicate do I use?
+            }.collectLatest {
+                println("BaseGridPanel received ${it.name} event")
+                val selectedBaseProductDetail = it.baseProductDetail()
+                println("BaseGridPanel ${it.name} detail: $selectedBaseProductDetail")
+            }
+        }
+    }
+
 }

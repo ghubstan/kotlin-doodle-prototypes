@@ -2,6 +2,7 @@ package io.dongxi.page
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.page.PageType.*
+import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -35,7 +36,8 @@ class PageFactory(
     private val linkStyler: NativeHyperLinkStyler,
     private val focusManager: FocusManager,
     private val popups: PopupManager,
-    private val modals: ModalManager
+    private val modals: ModalManager,
+    private val baseProductSelectEventBus: BaseProductSelectEventBus
 ) : IPageFactory {
 
     override val pageCache = mutableMapOf<PageType, IPage>()
@@ -60,7 +62,8 @@ class PageFactory(
                         linkStyler,
                         focusManager,
                         popups,
-                        modals
+                        modals,
+                        baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }
                     }
@@ -87,7 +90,8 @@ class PageFactory(
                         linkStyler,
                         focusManager,
                         popups,
-                        modals
+                        modals,
+                        baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }
                     }
@@ -114,7 +118,8 @@ class PageFactory(
                         linkStyler,
                         focusManager,
                         popups,
-                        modals
+                        modals,
+                        baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }
                     }
@@ -141,7 +146,8 @@ class PageFactory(
                         linkStyler,
                         focusManager,
                         popups,
-                        modals
+                        modals,
+                        baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }
                     }
@@ -169,7 +175,8 @@ class PageFactory(
                         linkStyler,
                         focusManager,
                         popups,
-                        modals
+                        modals,
+                        baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }
                     }
@@ -197,7 +204,8 @@ class PageFactory(
                         linkStyler,
                         focusManager,
                         popups,
-                        modals
+                        modals,
+                        baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }
                     }
@@ -225,7 +233,8 @@ class PageFactory(
                         linkStyler,
                         focusManager,
                         popups,
-                        modals
+                        modals,
+                        baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }
                     }
