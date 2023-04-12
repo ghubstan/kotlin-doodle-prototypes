@@ -76,11 +76,17 @@ class Page(
 
 
     init {
-        children += listOf(labelPageTitle)
-        layout = constrain(labelPageTitle) { titleBounds ->
+        children += listOf(labelPageTitle, gridPanel)
+        layout = constrain(labelPageTitle, gridPanel) { titleBounds, gridPanelBounds ->
             titleBounds.top eq 10
             titleBounds.centerX eq parent.centerX
             titleBounds.height eq 30
+
+            gridPanelBounds.top eq titleBounds.bottom + 10
+            gridPanelBounds.centerX eq parent.centerX
+            gridPanelBounds.width eq parent.width - 10
+            // gridPanelBounds.height eq parent.height - 20
+            gridPanelBounds.bottom eq parent.bottom - 10
         }
     }
 
