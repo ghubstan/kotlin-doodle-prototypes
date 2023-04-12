@@ -46,7 +46,7 @@ class PageFactory(
                 if (pageCache.containsKey(pageType)) {
                     return pageCache[pageType]!!
                 } else {
-                    val page = HomePage(
+                    val page = Page(
                         "Casa",
                         config,
                         uiDispatcher,
@@ -73,7 +73,7 @@ class PageFactory(
                 if (pageCache.containsKey(pageType)) {
                     return pageCache[pageType]!!
                 } else {
-                    val page = RingsPage(
+                    val page = Page(
                         "Aneis",
                         config,
                         uiDispatcher,
@@ -100,7 +100,7 @@ class PageFactory(
                 if (pageCache.containsKey(pageType)) {
                     return pageCache[pageType]!!
                 } else {
-                    val page = NecklacesPage(
+                    val page = Page(
                         "Colares",
                         config,
                         uiDispatcher,
@@ -127,7 +127,7 @@ class PageFactory(
                 if (pageCache.containsKey(pageType)) {
                     return pageCache[pageType]!!
                 } else {
-                    val page = ScapularsPage(
+                    val page = Page(
                         "Escapulários",
                         config,
                         uiDispatcher,
@@ -155,7 +155,7 @@ class PageFactory(
                 if (pageCache.containsKey(pageType)) {
                     return pageCache[pageType]!!
                 } else {
-                    val page = BraceletsPage(
+                    val page = Page(
                         "Pulseiras",
                         config,
                         uiDispatcher,
@@ -183,7 +183,7 @@ class PageFactory(
                 if (pageCache.containsKey(pageType)) {
                     return pageCache[pageType]!!
                 } else {
-                    val page = EarRingsPage(
+                    val page = Page(
                         "Brincos",
                         config,
                         uiDispatcher,
@@ -211,7 +211,7 @@ class PageFactory(
                 if (pageCache.containsKey(pageType)) {
                     return pageCache[pageType]!!
                 } else {
-                    val page = AboutPage(
+                    val page = Page(
                         "Sobre",
                         config,
                         uiDispatcher,
