@@ -1,0 +1,11 @@
+
+Do not create more AbstractPanel subclasses like "HomeLeftPanel", "RingsLeftPanel", etc.
+
+Create widgets(?) for various project dynamic-lists, e.g.,
+
+    "RingList", "RingStoneList"
+
+    "NecklaceList", "NecklacePendantList"
+
+    etc...
+    
