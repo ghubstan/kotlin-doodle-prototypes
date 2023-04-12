@@ -6,7 +6,6 @@ import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.drawing.*
-import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.image.ImageLoader
@@ -20,7 +19,7 @@ import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
 
-class EarRingsPage(
+class Page(
     override val pageTitle: String,
     config: DongxiConfig,
     uiDispatcher: CoroutineDispatcher,
@@ -55,8 +54,9 @@ class EarRingsPage(
     private val labelPageTitle = Label(pageTitle, Middle, Center).apply {
         height = 26.0
         fitText = setOf(Dimension.Width)
-        styledText = StyledText(text, config.titleFont, Black.paint)
+        styledText = StyledText(text, config.titleFont, Color.Black.paint)
     }
+
 
     init {
         children += listOf(labelPageTitle)
@@ -67,11 +67,11 @@ class EarRingsPage(
         }
     }
 
-    override fun render(canvas: Canvas) {
-        canvas.rect(bounds.atOrigin, Color.White)
-    }
-
     override fun description(): String {
         return pageTitle
+    }
+
+    override fun render(canvas: Canvas) {
+        canvas.rect(bounds.atOrigin, Color.White)
     }
 }

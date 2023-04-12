@@ -41,7 +41,7 @@ abstract class AbstractPanel(
         mainScope.cancel()
         // cleanup here
     }
-    
+
     // Helper to use constrain with 6 items
     operator fun <T> List<T>.component6() = this[5]
 

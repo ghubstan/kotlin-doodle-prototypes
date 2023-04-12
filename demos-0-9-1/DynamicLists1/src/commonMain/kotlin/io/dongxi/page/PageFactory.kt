@@ -47,6 +47,7 @@ class PageFactory(
                     return pageCache[pageType]!!
                 } else {
                     val page = HomePage(
+                        "Casa",
                         config,
                         uiDispatcher,
                         animator,
@@ -73,6 +74,7 @@ class PageFactory(
                     return pageCache[pageType]!!
                 } else {
                     val page = RingsPage(
+                        "Aneis",
                         config,
                         uiDispatcher,
                         animator,
@@ -99,6 +101,7 @@ class PageFactory(
                     return pageCache[pageType]!!
                 } else {
                     val page = NecklacesPage(
+                        "Colares",
                         config,
                         uiDispatcher,
                         animator,
@@ -125,6 +128,7 @@ class PageFactory(
                     return pageCache[pageType]!!
                 } else {
                     val page = ScapularsPage(
+                        "Escapulários",
                         config,
                         uiDispatcher,
                         animator,
@@ -152,6 +156,7 @@ class PageFactory(
                     return pageCache[pageType]!!
                 } else {
                     val page = BraceletsPage(
+                        "Pulseiras",
                         config,
                         uiDispatcher,
                         animator,
@@ -179,6 +184,7 @@ class PageFactory(
                     return pageCache[pageType]!!
                 } else {
                     val page = EarRingsPage(
+                        "Brincos",
                         config,
                         uiDispatcher,
                         animator,
@@ -206,6 +212,7 @@ class PageFactory(
                     return pageCache[pageType]!!
                 } else {
                     val page = AboutPage(
+                        "Sobre",
                         config,
                         uiDispatcher,
                         animator,
@@ -226,8 +233,6 @@ class PageFactory(
                     return page
                 }
             }
-
-
         }
     }
 }

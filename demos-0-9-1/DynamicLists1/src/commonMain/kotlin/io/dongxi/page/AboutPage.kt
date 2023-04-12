@@ -21,6 +21,7 @@ import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
 
 class AboutPage(
+    override val pageTitle: String,
     config: DongxiConfig,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
@@ -35,6 +36,7 @@ class AboutPage(
     popups: PopupManager,
     modals: ModalManager
 ) : IPage, AbstractPage(
+    pageTitle,
     config,
     uiDispatcher,
     animator,
@@ -50,15 +52,15 @@ class AboutPage(
     modals
 ) {
 
-    private val pageTitle = Label("Sobre", Middle, Center).apply {
+    private val labelPageTitle = Label(pageTitle, Middle, Center).apply {
         height = 26.0
         fitText = setOf(Dimension.Width)
         styledText = StyledText(text, config.titleFont, Black.paint)
     }
 
     init {
-        children += listOf(pageTitle)
-        layout = constrain(pageTitle) { titleBounds ->
+        children += listOf(labelPageTitle)
+        layout = constrain(labelPageTitle) { titleBounds ->
             titleBounds.top eq 10
             titleBounds.centerX eq parent.centerX
             titleBounds.height eq 30
@@ -70,6 +72,6 @@ class AboutPage(
     }
 
     override fun description(): String {
-        return pageTitle.text
+        return pageTitle
     }
 }
