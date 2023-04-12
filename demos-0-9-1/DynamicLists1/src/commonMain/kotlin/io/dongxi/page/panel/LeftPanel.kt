@@ -16,7 +16,6 @@ import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.HorizontalFlowLayout
-import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.system.Cursor
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
@@ -96,7 +95,10 @@ class LeftPanel(
                 // Force an event to see if BaseGridPanel can respond.
                 mainScope.launch {
                     SELECT_BASE_RING.setBaseProductDetail(buttonText, "$buttonText File", null)
+                    currentBaseProduct = SELECT_BASE_RING.baseProductDetail()
                     baseProductSelectEventBus.produceEvent(SELECT_BASE_RING)
+
+                    println("LeftPanel currentBaseProduct: $currentBaseProduct")
                 }
             }
         }

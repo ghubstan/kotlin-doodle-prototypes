@@ -16,7 +16,7 @@ import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 class CenterPanel(
@@ -55,14 +55,10 @@ class CenterPanel(
         size = Size(200, 200)
 
         mainScope.launch {
-            baseProductSelectEventBus.events.filter { event ->
-                event != null // What filter predicate do I use?
-            }.collectLatest {
-                println("CenterPanel received ${it.name} event")
-                val selectedBaseProductDetail = it.baseProductDetail()
-                println("CenterPanel ${it.name} detail: $selectedBaseProductDetail")
+            baseProductSelectEventBus.events.filterNotNull().collectLatest {
+                currentBaseProduct = it.baseProductDetail()
+                println("CenterPanel currentBaseProduct: $currentBaseProduct")
             }
         }
-
     }
 }

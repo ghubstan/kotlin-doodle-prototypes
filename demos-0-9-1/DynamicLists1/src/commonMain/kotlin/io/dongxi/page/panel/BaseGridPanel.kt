@@ -20,7 +20,7 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 class BaseGridPanel(
@@ -154,14 +154,12 @@ class BaseGridPanel(
     init {
 
         mainScope.launch {
-            baseProductSelectEventBus.events.filter { event ->
-                event != null // What filter predicate do I use?
-            }.collectLatest {
-                println("BaseGridPanel received ${it.name} event")
-                val selectedBaseProductDetail = it.baseProductDetail()
-                println("BaseGridPanel ${it.name} detail: $selectedBaseProductDetail")
+            baseProductSelectEventBus.events.filterNotNull().collectLatest {
+                currentBaseProduct = it.baseProductDetail()
+                println("BaseGridPanel currentBaseProduct: $currentBaseProduct")
             }
         }
+
     }
 
 }

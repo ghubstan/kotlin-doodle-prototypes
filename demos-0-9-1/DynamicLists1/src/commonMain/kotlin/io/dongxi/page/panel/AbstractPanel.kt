@@ -1,6 +1,7 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.SelectedBaseProduct
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -39,6 +40,8 @@ abstract class AbstractPanel(
 ) : IPanel, View() {
 
     val mainScope = MainScope() // The scope of Panel class (and subclasses), uses Dispatchers.Main.
+
+    lateinit var currentBaseProduct: SelectedBaseProduct
 
     override fun render(canvas: Canvas) {
         canvas.rect(bounds.atOrigin, Lightgray)
