@@ -19,7 +19,7 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 
-class GridPanelDemo(
+class BaseGridPanel(
     config: DongxiConfig,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,

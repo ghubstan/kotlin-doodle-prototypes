@@ -1,7 +1,7 @@
 package io.dongxi.page
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.page.panel.GridPanelDemo
+import io.dongxi.page.panel.BaseGridPanel
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -58,7 +58,7 @@ class Page(
         styledText = StyledText(text, config.titleFont, Color.Black.paint)
     }
 
-    private val gridPanel = GridPanelDemo(
+    private val gridPanel = BaseGridPanel(
         config,
         uiDispatcher,
         animator,
