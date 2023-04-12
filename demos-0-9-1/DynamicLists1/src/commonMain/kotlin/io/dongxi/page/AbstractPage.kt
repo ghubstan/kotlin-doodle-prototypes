@@ -33,6 +33,7 @@ abstract class AbstractPage(
     val focusManager: FocusManager,
     val popups: PopupManager,
     val modals: ModalManager,
+    val menuEventBus: MenuEventBus,
     val baseProductSelectEventBus: BaseProductSelectEventBus
 ) : IPage, View() {
 

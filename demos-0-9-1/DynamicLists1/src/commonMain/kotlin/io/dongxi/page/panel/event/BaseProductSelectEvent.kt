@@ -113,7 +113,7 @@ enum class BaseProductSelectEvent(val selectedBaseProduct: SelectedBaseProduct) 
                     selectedBaseProduct.file != null &&
                     selectedBaseProduct.image != null
         }
-        
+
         override fun baseProductDetail(): SelectedBaseProduct {
             return selectedBaseProduct
         }

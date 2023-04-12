@@ -36,6 +36,7 @@ class Page(
     focusManager: FocusManager,
     popups: PopupManager,
     modals: ModalManager,
+    menuEventBus: MenuEventBus,
     baseProductSelectEventBus: BaseProductSelectEventBus
 ) : IPage, AbstractPage(
     pageTitle,
@@ -52,6 +53,7 @@ class Page(
     focusManager,
     popups,
     modals,
+    menuEventBus,
     baseProductSelectEventBus
 ) {
 
@@ -75,6 +77,7 @@ class Page(
         focusManager,
         popups,
         modals,
+        menuEventBus,
         baseProductSelectEventBus
     ).gridPanel()
 

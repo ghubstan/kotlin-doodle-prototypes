@@ -1,6 +1,7 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.page.MenuEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEvent.SELECT_BASE_RING
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
@@ -37,6 +38,7 @@ class LeftPanel(
     focusManager: FocusManager,
     popups: PopupManager,
     modals: ModalManager,
+    menuEventBus: MenuEventBus,
     baseProductSelectEventBus: BaseProductSelectEventBus
 ) : AbstractPanel(
     config,
@@ -52,6 +54,7 @@ class LeftPanel(
     focusManager,
     popups,
     modals,
+    menuEventBus,
     baseProductSelectEventBus
 ) {
 

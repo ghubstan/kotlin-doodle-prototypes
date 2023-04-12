@@ -37,6 +37,7 @@ class PageFactory(
     private val focusManager: FocusManager,
     private val popups: PopupManager,
     private val modals: ModalManager,
+    private val menuEventBus: MenuEventBus,
     private val baseProductSelectEventBus: BaseProductSelectEventBus
 ) : IPageFactory {
 
@@ -63,6 +64,7 @@ class PageFactory(
                         focusManager,
                         popups,
                         modals,
+                        menuEventBus,
                         baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }
@@ -91,6 +93,7 @@ class PageFactory(
                         focusManager,
                         popups,
                         modals,
+                        menuEventBus,
                         baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }
@@ -119,6 +122,7 @@ class PageFactory(
                         focusManager,
                         popups,
                         modals,
+                        menuEventBus,
                         baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }
@@ -147,6 +151,7 @@ class PageFactory(
                         focusManager,
                         popups,
                         modals,
+                        menuEventBus,
                         baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }
@@ -176,6 +181,7 @@ class PageFactory(
                         focusManager,
                         popups,
                         modals,
+                        menuEventBus,
                         baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }
@@ -205,6 +211,7 @@ class PageFactory(
                         focusManager,
                         popups,
                         modals,
+                        menuEventBus,
                         baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }
@@ -234,6 +241,7 @@ class PageFactory(
                         focusManager,
                         popups,
                         modals,
+                        menuEventBus,
                         baseProductSelectEventBus
                     ).apply {
                         Resizer(this).apply { }

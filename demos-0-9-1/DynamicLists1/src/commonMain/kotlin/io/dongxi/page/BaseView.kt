@@ -26,7 +26,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 
@@ -83,6 +83,7 @@ class BaseView(
         focusManager,
         popups,
         modals,
+        menuEventBus,
         baseProductSelectEventBus
     )
 
@@ -92,9 +93,7 @@ class BaseView(
     init {
 
         mainScope.launch {
-            menuEventBus.events.filter { event ->
-                event != null // What filter predicate do I use?
-            }.collectLatest {
+            menuEventBus.events.filterNotNull().collectLatest {
 
                 println("Received ${it.name} event")
 

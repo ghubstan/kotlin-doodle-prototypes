@@ -1,6 +1,7 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.page.MenuEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -38,6 +39,7 @@ class RightPanel(
     focusManager: FocusManager,
     popups: PopupManager,
     modals: ModalManager,
+    menuEventBus: MenuEventBus,
     baseProductSelectEventBus: BaseProductSelectEventBus
 ) : AbstractPanel(
     config,
@@ -53,6 +55,7 @@ class RightPanel(
     focusManager,
     popups,
     modals,
+    menuEventBus,
     baseProductSelectEventBus
 ) {
 
@@ -77,7 +80,8 @@ class RightPanel(
                 currentBaseProduct = it.baseProductDetail()
                 println("RightPanel currentBaseProduct: $currentBaseProduct")
 
-                tempLabel.text = "${currentBaseProduct.productCategory.name ?: ""} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
+                tempLabel.text =
+                    "${currentBaseProduct.productCategory.name ?: ""} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
                 relayout()
             }
         }

@@ -2,6 +2,7 @@ package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.SelectedBaseProduct
+import io.dongxi.page.MenuEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -36,6 +37,7 @@ abstract class AbstractPanel(
     val focusManager: FocusManager,
     val popups: PopupManager,
     val modals: ModalManager,
+    val menuEventBus: MenuEventBus,
     val baseProductSelectEventBus: BaseProductSelectEventBus
 ) : IPanel, View() {
 

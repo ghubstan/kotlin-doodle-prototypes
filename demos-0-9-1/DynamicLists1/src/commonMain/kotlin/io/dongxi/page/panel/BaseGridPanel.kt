@@ -1,6 +1,7 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.page.MenuEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -37,6 +38,7 @@ class BaseGridPanel(
     focusManager: FocusManager,
     popups: PopupManager,
     modals: ModalManager,
+    menuEventBus: MenuEventBus,
     baseProductSelectEventBus: BaseProductSelectEventBus
 ) : AbstractPanel(
     config,
@@ -52,6 +54,7 @@ class BaseGridPanel(
     focusManager,
     popups,
     modals,
+    menuEventBus,
     baseProductSelectEventBus
 ) {
     private val leftPanel = LeftPanel(
@@ -68,6 +71,7 @@ class BaseGridPanel(
         focusManager,
         popups,
         modals,
+        menuEventBus,
         baseProductSelectEventBus
     )
 
@@ -85,6 +89,7 @@ class BaseGridPanel(
         focusManager,
         popups,
         modals,
+        menuEventBus,
         baseProductSelectEventBus
     )
 
@@ -102,6 +107,7 @@ class BaseGridPanel(
         focusManager,
         popups,
         modals,
+        menuEventBus,
         baseProductSelectEventBus
     )
 
@@ -119,6 +125,7 @@ class BaseGridPanel(
         focusManager,
         popups,
         modals,
+        menuEventBus,
         baseProductSelectEventBus
     )
 
