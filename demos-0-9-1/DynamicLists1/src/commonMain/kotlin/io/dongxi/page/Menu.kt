@@ -35,7 +35,7 @@ class Menu(
     private val focusManager: FocusManager,
     private val popups: PopupManager,
     private val modals: ModalManager,
-    private val eventBus: MenuEventBus
+    private val menuEventBus: MenuEventBus
 ) : View() {
 
     private val mainScope = MainScope() // the scope of Menu class, uses Dispatchers.Main.
@@ -57,7 +57,7 @@ class Menu(
         focusManager,
         popups,
         modals,
-        eventBus
+        menuEventBus
     ).apply {
         pointerChanged += clicked { popups.hide(this) }
     }

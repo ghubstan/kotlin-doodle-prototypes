@@ -36,7 +36,7 @@ class MenuPopup(
     private val focusManager: FocusManager,
     private val popups: PopupManager,
     private val modals: ModalManager,
-    private val eventBus: MenuEventBus
+    private val menuEventBus: MenuEventBus
 ) : View() {
 
     private val mainScope = MainScope() // the scope of Menu class, uses Dispatchers.Main.
@@ -46,7 +46,7 @@ class MenuPopup(
     private val necklacesLink: HyperLink = createMenuLink("necklaces?", "Colares", GO_NECKLACES)
     private val scapularsLink: HyperLink = createMenuLink("scapulars?", "Escapulários", GO_SCAPULARS)
     private val braceletsLink: HyperLink = createMenuLink("bracelets?", "Pulseiras", GO_BRACELETS)
-    private val earRingsLink: HyperLink = createMenuLink("earrings?", "Brincos", GO_EAR_RINGS)
+    private val earRingsLink: HyperLink = createMenuLink("earrings?", "Brincos", GO_EARRINGS)
     private val aboutLink: HyperLink = createMenuLink("about?", "Sobre", GO_ABOUT)
 
     private fun createMenuLink(url: String, text: String, menuEvent: MenuEvent): HyperLink {
@@ -57,7 +57,7 @@ class MenuPopup(
             font = config.menuLinkFont
             fired += {
                 mainScope.launch {
-                    eventBus.produceEvent(menuEvent)
+                    menuEventBus.produceEvent(menuEvent)
                 }
             }
         }

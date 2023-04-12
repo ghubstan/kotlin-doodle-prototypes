@@ -3,6 +3,7 @@ package io.dongxi.page
 import io.dongxi.application.DongxiConfig
 import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.PageType.*
+import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -47,7 +48,8 @@ class BaseView(
 
     private val mainScope = MainScope() // the scope of MainView class, uses Dispatchers.Main.
 
-    private val eventBus = MenuEventBus()
+    private val menuEventBus = MenuEventBus()
+    private val baseProductSelectEventBus = BaseProductSelectEventBus()
 
     private val menu = Menu(
         config,
@@ -63,7 +65,7 @@ class BaseView(
         focusManager,
         popups,
         modals,
-        eventBus
+        menuEventBus
     ).apply {
     }
 
@@ -88,9 +90,20 @@ class BaseView(
 
     init {
 
+        /*
+        SELECT_BASE_RING.setBaseProductDetail("Ring 1", "Ring 1 File", null)
+        println(SELECT_BASE_RING.baseProductDetail())
+        SELECT_BASE_RING.setBaseProductDetail("Ring 2", "Ring 2 File", null)
+        println(SELECT_BASE_RING.baseProductDetail())
+        SELECT_BASE_RING.setBaseProductDetail("Ring 3", "Ring 3 File", null)
+        println(SELECT_BASE_RING.baseProductDetail())
+        SELECT_BASE_RING.setBaseProductDetail("Ring 4", "Ring 4 File", null)
+        println(SELECT_BASE_RING.baseProductDetail())
+         */
+
         mainScope.launch {
-            eventBus.events.filter { event ->
-                event != null
+            menuEventBus.events.filter { event ->
+                event != null // What filter predicate do I use?
             }.collectLatest {
 
                 println("Received ${it.name} event")
@@ -116,7 +129,7 @@ class BaseView(
                         currentPage = pageFactory.buildPage((BRACELETS)) as View
                     }
 
-                    GO_EAR_RINGS -> {
+                    GO_EARRINGS -> {
                         currentPage = pageFactory.buildPage((EAR_RINGS)) as View
                     }
 
