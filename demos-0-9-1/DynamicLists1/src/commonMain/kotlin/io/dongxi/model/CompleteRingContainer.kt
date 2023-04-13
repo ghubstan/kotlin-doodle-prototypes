@@ -25,10 +25,12 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 
 
-interface IRingWithStoneContainer {}
+interface ICompleteRingContainer {
+    fun update(ring: Ring, stone: RingStone)
+}
 
 
-class RingWithStoneContainer(
+class CompleteRingContainer(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
     private val animator: Animator,
@@ -45,7 +47,7 @@ class RingWithStoneContainer(
     private val menuEventBus: MenuEventBus,
     private val baseProductSelectEventBus: BaseProductSelectEventBus,
     private val accessorySelectEventBus: AccessorySelectEventBus
-) : IRingWithStoneContainer, Container() {
+) : ICompleteRingContainer, Container() {
 
     private val mainScope = MainScope() // The scope of RingWithStoneContainer class, uses Dispatchers.Main.
 
@@ -83,7 +85,7 @@ class RingWithStoneContainer(
         }
     }
 
-    fun update(ring: Ring, stone: RingStone) {
+    override fun update(ring: Ring, stone: RingStone) {
         // Reconfigure the view to represent the new ring+stone installed in it.
         this.ring = ring
         this.stone = stone

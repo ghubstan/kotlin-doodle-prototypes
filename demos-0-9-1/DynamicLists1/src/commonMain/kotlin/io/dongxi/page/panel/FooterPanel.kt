@@ -63,11 +63,18 @@ class FooterPanel(
 
 
     override fun layoutForCurrentProductCategory() {
+        // noop
     }
 
     override fun layoutForCurrentBaseProductSelection() {
+        // noop
     }
 
     override fun layoutForCurrentAccessorySelection() {
+        // noop
+    }
+
+    override fun layoutForCompletedJewel() {
+        // noop
     }
 }

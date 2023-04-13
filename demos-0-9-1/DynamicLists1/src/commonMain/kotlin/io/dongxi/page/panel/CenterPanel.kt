@@ -1,11 +1,15 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.ICompleteRingContainer
 import io.dongxi.model.ProductCategory
+import io.dongxi.model.Ring
+import io.dongxi.model.RingStone
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.storage.RingStoreMetadata.getLargeRingMetadata
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -25,6 +29,7 @@ import io.nacular.doodle.utils.Dimension
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.async
 
 class CenterPanel(
     pageType: PageType,
@@ -75,7 +80,7 @@ class CenterPanel(
     }
 
     private val completeProductContainer = if (pageType.productCategory == ProductCategory.RING) {
-        getRingWithStoneContainer()
+        getCompleteRingContainer()
     } else {
         getDummyBaseProductsContainer()
     }
@@ -114,6 +119,23 @@ class CenterPanel(
 
     override fun layoutForCurrentAccessorySelection() {
         println("CenterPanel currentAccessory: $currentAccessory")
+        relayout()
+    }
+
+    override fun layoutForCompletedJewel() {
+        val largeRingMetadata = getLargeRingMetadata(currentBaseProduct.name.toString()) // toString() -> NPE?
+        val newRingName: String = largeRingMetadata.first
+        val newRingFile: String = largeRingMetadata.second
+        val newRingImage = mainScope.async { newRingFile?.let { images.load(it) }!! }
+        val newRing = Ring(newRingName, newRingFile, newRingImage)
+
+        val newStoneName: String = currentAccessory.name.toString() // NPE?
+        val newStoneFile: String = currentAccessory.file.toString() // NPE?
+        val newStoneImage = mainScope.async { newStoneFile?.let { images.load(it) }!! }
+        val newStone = RingStone(newStoneName, newStoneFile, newStoneImage)
+
+        (completeProductContainer as ICompleteRingContainer).update(newRing, newStone)
+        completeProductContainer.relayout()
         relayout()
     }
 

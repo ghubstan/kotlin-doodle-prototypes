@@ -181,4 +181,8 @@ class BaseGridPanel(
     override fun layoutForCurrentAccessorySelection() {
         println("BaseGridPanel currentAccessory: $currentAccessory")
     }
+
+    override fun layoutForCompletedJewel() {
+        // noop
+    }
 }

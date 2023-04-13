@@ -113,7 +113,9 @@ abstract class AbstractPanel(
         mainScope.launch {
             accessorySelectEventBus.events.filterNotNull().collectLatest {
                 currentAccessory = it.accessoryDetail()
+
                 layoutForCurrentAccessorySelection()
+                layoutForCompletedJewel()
             }
         }
     }
@@ -121,6 +123,7 @@ abstract class AbstractPanel(
     abstract fun layoutForCurrentProductCategory()
     abstract fun layoutForCurrentBaseProductSelection()
     abstract fun layoutForCurrentAccessorySelection()
+    abstract fun layoutForCompletedJewel()
 
 
     fun getDummyBaseProductsContainer(): Container {
@@ -184,8 +187,8 @@ abstract class AbstractPanel(
         )
     }
 
-    fun getRingWithStoneContainer(): Container {
-        return RingWithStoneContainer(
+    fun getCompleteRingContainer(): Container {
+        return CompleteRingContainer(
             config,
             uiDispatcher,
             animator,

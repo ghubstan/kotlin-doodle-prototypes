@@ -119,4 +119,9 @@ class RightPanel(
         println("RightPanel currentAccessory: $currentAccessory")
         relayout()
     }
+
+    override fun layoutForCompletedJewel() {
+        // noop
+    }
+
 }

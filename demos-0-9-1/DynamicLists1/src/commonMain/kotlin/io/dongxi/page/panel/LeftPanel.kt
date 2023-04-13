@@ -108,10 +108,13 @@ class LeftPanel(
 
         relayout()
     }
-    
+
     override fun layoutForCurrentAccessorySelection() {
         println("LeftPanel currentAccessory: $currentAccessory")
         relayout()
     }
 
+    override fun layoutForCompletedJewel() {
+        // noop
+    }
 }
