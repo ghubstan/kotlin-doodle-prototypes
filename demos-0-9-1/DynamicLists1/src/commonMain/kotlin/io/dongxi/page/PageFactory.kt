@@ -19,8 +19,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 
 interface IPageFactory {
-    fun buildPage(pageType: PageType): IPage
     val pageCache: MutableMap<PageType, IPage>
+    fun buildPage(pageType: PageType): IPage
 }
 
 class PageFactory(

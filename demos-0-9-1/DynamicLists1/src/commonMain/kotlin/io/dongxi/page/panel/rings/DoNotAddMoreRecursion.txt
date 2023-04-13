@@ -3,9 +3,9 @@ Do not create more AbstractPanel subclasses like "HomeLeftPanel", "RingsLeftPane
 
 Create widgets(?) for various project dynamic-lists, e.g.,
 
-    "RingList", "RingStoneList"
+    "io.dongxi.model.RingList", "io.dongxi.model.RingStoneList"
 
-    "NecklaceList", "NecklacePendantList"
+    "io.dongxi.model.NecklaceList", "io.dongxi.model.NecklacePendantList"
 
     etc...
     
