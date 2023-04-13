@@ -1,10 +1,15 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.BaseRingListBuilder
+import io.dongxi.model.ProductCategory.RING
+import io.dongxi.model.Ring
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
+import io.nacular.doodle.controls.SimpleMutableListModel
+import io.nacular.doodle.controls.list.DynamicList
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.drawing.Color
 import io.nacular.doodle.drawing.FontLoader
@@ -13,7 +18,7 @@ import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
-import io.nacular.doodle.layout.HorizontalFlowLayout
+import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
@@ -21,9 +26,6 @@ import io.nacular.doodle.utils.Dimension
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.launch
 
 class LeftPanel(
     config: DongxiConfig,
@@ -69,15 +71,90 @@ class LeftPanel(
         foregroundColor = Color.Transparent
     }
 
+    private val ringListBuilder = BaseRingListBuilder(
+        config,
+        uiDispatcher,
+        animator,
+        pathMetrics,
+        fonts,
+        theme,
+        themes,
+        images,
+        textMetrics,
+        linkStyler,
+        focusManager,
+        popups,
+        modals,
+        menuEventBus,
+        baseProductSelectEventBus
+    )
+    private val ringList: DynamicList<Ring, SimpleMutableListModel<Ring>> = ringListBuilder.build(RING)
+
+    /*
+    private val container = object : Container() {
+        init {
+            clipCanvasToBounds = false
+
+            if (currentProductCategory == RING) {
+                ringListBuilder.load()
+                children += listOf(tempLabel, ringList)
+                layout = constrain(tempLabel, ringList) { (tempLabelBounds,
+                                                              ringListBounds) ->
+                    tempLabelBounds.top eq 10
+                    tempLabelBounds.left eq 10
+                    tempLabelBounds.width eq parent.width - 10
+                    tempLabelBounds.height eq 40
+
+                    ringListBounds.top eq tempLabelBounds.bottom + 10
+                    ringListBounds.left eq 10
+                    ringListBounds.width eq parent.width - 10
+                    ringListBounds.bottom eq ringListBuilder.model.size * 100
+                }
+
+            } else {
+                children += listOf(tempLabel)
+                layout = HorizontalFlowLayout()
+            }
+        }
+    }
+     */
+
+    /*
+    init {
+        size = Size(200, 200)
+        children += listOf(container)
+        layout = HorizontalFlowLayout()
+    }
+     */
+
+
     init {
         size = Size(200, 200)
 
-        children += listOf(tempLabel)
-        layout = HorizontalFlowLayout()
+        ringListBuilder.load()
+        children += listOf(tempLabel, ringList)
+        layout = constrain(tempLabel, ringList) { (tempLabelBounds,
+                                                      ringListBounds) ->
+            tempLabelBounds.top eq 10
+            tempLabelBounds.left eq 10
+            tempLabelBounds.width eq parent.width - 10
+            tempLabelBounds.height eq 40
+
+            ringListBounds.top eq tempLabelBounds.bottom + 10
+            ringListBounds.left eq 10
+            ringListBounds.width eq parent.width - 10
+            ringListBounds.bottom eq ringListBuilder.model.size * 100
+        }
     }
+
 
     override fun layoutForCurrentProductCategory() {
         println("LeftPanel currentProductCategory: $currentProductCategory")
+
+        if (currentProductCategory == RING) {
+            ringListBuilder.clearModel()
+            ringListBuilder.load()
+        }
         relayout()
     }
 

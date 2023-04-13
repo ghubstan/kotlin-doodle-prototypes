@@ -14,10 +14,12 @@ import io.nacular.doodle.application.Modules.Companion.PointerModule
 import io.nacular.doodle.application.Modules.Companion.PopupModule
 import io.nacular.doodle.application.application
 import io.nacular.doodle.coroutines.Dispatchers
-import io.nacular.doodle.drawing.Color
+import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.drawing.Color.Companion.Cyan
+import io.nacular.doodle.drawing.Color.Companion.Darkgray
 import io.nacular.doodle.drawing.Color.Companion.Lightgray
 import io.nacular.doodle.drawing.Color.Companion.Red
+import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.drawing.paint
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.impl.PathMetricsImpl
@@ -47,14 +49,14 @@ fun main() {
         basicLabelBehavior(),
         nativeTextFieldBehavior(),
         basicCheckBoxBehavior(
-            foregroundColor = Color.Black,
+            foregroundColor = Black,
             backgroundColor = Lightgray,
-            darkBackgroundColor = Color.Darkgray
+            darkBackgroundColor = Darkgray
         ),
         basicRadioButtonBehavior(
-            foregroundColor = Color.Black,
+            foregroundColor = Black,
             backgroundColor = Lightgray,
-            darkBackgroundColor = Color.Darkgray
+            darkBackgroundColor = Darkgray
         ),
         basicSliderBehavior(
             barFill = Cyan.paint,
@@ -65,7 +67,7 @@ fun main() {
         basicSwitchBehavior(),
         nativeHyperLinkBehavior(),
         nativeScrollPanelBehavior(smoothScrolling = true),
-        basicListBehavior(itemHeight = 60.00, evenItemColor = Color(0xe0bdbcu), oddItemColor = Color(0xe0bdbcu)),
+        basicListBehavior(itemHeight = 60.00, evenItemColor = Transparent, oddItemColor = Transparent),
         Module(name = "AppModule") {
             bindSingleton<Animator> { AnimatorImpl(timer = instance(), animationScheduler = instance()) }
             bindSingleton<PathMetrics> { PathMetricsImpl(svgFactory = instance()) }
