@@ -3,6 +3,7 @@ package io.dongxi.page.panel
 import io.dongxi.application.DongxiConfig
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
+import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -40,7 +41,8 @@ class CenterPanel(
     popups: PopupManager,
     modals: ModalManager,
     menuEventBus: MenuEventBus,
-    baseProductSelectEventBus: BaseProductSelectEventBus
+    baseProductSelectEventBus: BaseProductSelectEventBus,
+    accessorySelectEventBus: AccessorySelectEventBus
 ) : AbstractPanel(
     pageType,
     config,
@@ -57,7 +59,8 @@ class CenterPanel(
     popups,
     modals,
     menuEventBus,
-    baseProductSelectEventBus
+    baseProductSelectEventBus,
+    accessorySelectEventBus
 ) {
 
     private val tempLabel = Label(
@@ -93,4 +96,10 @@ class CenterPanel(
 
         relayout()
     }
+
+    override fun layoutForCurrentAccessorySelection() {
+        println("CenterPanel currentAccessory: $currentAccessory")
+        relayout()
+    }
+
 }

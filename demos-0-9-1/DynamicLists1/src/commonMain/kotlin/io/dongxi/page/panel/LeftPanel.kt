@@ -4,6 +4,7 @@ import io.dongxi.application.DongxiConfig
 import io.dongxi.model.ProductCategory.RING
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
+import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -40,7 +41,8 @@ class LeftPanel(
     popups: PopupManager,
     modals: ModalManager,
     menuEventBus: MenuEventBus,
-    baseProductSelectEventBus: BaseProductSelectEventBus
+    baseProductSelectEventBus: BaseProductSelectEventBus,
+    accessorySelectEventBus: AccessorySelectEventBus
 ) : AbstractPanel(
     pageType,
     config,
@@ -57,7 +59,8 @@ class LeftPanel(
     popups,
     modals,
     menuEventBus,
-    baseProductSelectEventBus
+    baseProductSelectEventBus,
+    accessorySelectEventBus
 ) {
     private val tempLabel = io.nacular.doodle.controls.text.Label(
         "NADA",
@@ -78,9 +81,6 @@ class LeftPanel(
     init {
         clipCanvasToBounds = false
         size = Size(200, 200)
-
-        //(baseProductListContainer as IBaseProductsContainer).clearModel()
-        //(baseProductListContainer as IBaseProductsContainer).loadModel()
 
         children += listOf(tempLabel, baseProductListContainer)
         layout = constrain(tempLabel, baseProductListContainer) { tempLabelBounds, baseRingsContainerBounds ->
@@ -106,6 +106,11 @@ class LeftPanel(
         tempLabel.text =
             "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
 
+        relayout()
+    }
+    
+    override fun layoutForCurrentAccessorySelection() {
+        println("LeftPanel currentAccessory: $currentAccessory")
         relayout()
     }
 

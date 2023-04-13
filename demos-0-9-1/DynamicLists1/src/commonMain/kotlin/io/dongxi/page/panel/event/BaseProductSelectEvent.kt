@@ -32,6 +32,7 @@ enum class BaseProductSelectEvent(val selectedBaseProduct: SelectedBaseProduct) 
             selectedBaseProduct.image = null
         }
     },
+
     SELECT_BASE_EARRING(SelectedBaseProduct(EARRING, null, null, null)) {
         override fun setBaseProductDetail(name: String, file: String, image: Deferred<Image>?) {
             selectedBaseProduct.name = name
@@ -55,6 +56,7 @@ enum class BaseProductSelectEvent(val selectedBaseProduct: SelectedBaseProduct) 
             selectedBaseProduct.image = null
         }
     },
+
     SELECT_BASE_NECKLACE(SelectedBaseProduct(NECKLACE, null, null, null)) {
         override fun setBaseProductDetail(name: String, file: String, image: Deferred<Image>?) {
             selectedBaseProduct.name = name
@@ -78,6 +80,7 @@ enum class BaseProductSelectEvent(val selectedBaseProduct: SelectedBaseProduct) 
             selectedBaseProduct.image = null
         }
     },
+
     SELECT_BASE_RING(SelectedBaseProduct(RING, null, null, null)) {
         override fun setBaseProductDetail(name: String, file: String, image: Deferred<Image>?) {
             selectedBaseProduct.name = name
@@ -101,6 +104,7 @@ enum class BaseProductSelectEvent(val selectedBaseProduct: SelectedBaseProduct) 
             selectedBaseProduct.image = null
         }
     },
+    
     SELECT_BASE_SCAPULAR(SelectedBaseProduct(SCAPULAR, null, null, null)) {
         override fun setBaseProductDetail(name: String, file: String, image: Deferred<Image>?) {
             selectedBaseProduct.name = name

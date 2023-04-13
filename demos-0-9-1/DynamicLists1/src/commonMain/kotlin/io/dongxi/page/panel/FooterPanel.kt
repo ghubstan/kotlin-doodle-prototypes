@@ -3,6 +3,7 @@ package io.dongxi.page.panel
 import io.dongxi.application.DongxiConfig
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
+import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -34,7 +35,8 @@ class FooterPanel(
     popups: PopupManager,
     modals: ModalManager,
     menuEventBus: MenuEventBus,
-    baseProductSelectEventBus: BaseProductSelectEventBus  // Probably should not pass this param.
+    baseProductSelectEventBus: BaseProductSelectEventBus,  // Probably should not pass this param.
+    accessorySelectEventBus: AccessorySelectEventBus
 ) : AbstractPanel(
     pageType,
     config,
@@ -51,7 +53,8 @@ class FooterPanel(
     popups,
     modals,
     menuEventBus,
-    baseProductSelectEventBus
+    baseProductSelectEventBus,
+    accessorySelectEventBus
 ) {
 
     init {
@@ -63,5 +66,8 @@ class FooterPanel(
     }
 
     override fun layoutForCurrentBaseProductSelection() {
+    }
+
+    override fun layoutForCurrentAccessorySelection() {
     }
 }

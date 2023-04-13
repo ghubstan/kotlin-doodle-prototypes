@@ -3,6 +3,7 @@ package io.dongxi.page
 import io.dongxi.application.DongxiConfig
 import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.PageType.*
+import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -50,6 +51,7 @@ class BaseView(
 
     private val menuEventBus = MenuEventBus()
     private val baseProductSelectEventBus = BaseProductSelectEventBus()
+    private val accessorySelectEventBus = AccessorySelectEventBus()
 
     private val menu = Menu(
         config,
@@ -84,7 +86,8 @@ class BaseView(
         popups,
         modals,
         menuEventBus,
-        baseProductSelectEventBus
+        baseProductSelectEventBus,
+        accessorySelectEventBus
     )
 
     // private var currentPage = pageFactory.buildPage(HOME) as View
@@ -117,7 +120,7 @@ class BaseView(
                     GO_RINGS -> {
                         currentPage = pageFactory.buildPage((RINGS)) as View
                     }
-                    
+
                     GO_SCAPULARS -> {
                         currentPage = pageFactory.buildPage((SCAPULARS)) as View
                     }

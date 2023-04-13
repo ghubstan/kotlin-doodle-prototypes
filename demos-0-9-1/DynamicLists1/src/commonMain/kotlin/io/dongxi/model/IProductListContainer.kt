@@ -1,6 +1,6 @@
 package io.dongxi.model
 
-interface IBaseProductsContainer {
+interface IProductListContainer {
     fun loadModel()
     fun clearModel()
     fun destroy()

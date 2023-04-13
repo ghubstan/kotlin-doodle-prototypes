@@ -6,11 +6,22 @@ import kotlinx.serialization.Serializable
 
 
 /**
- * Data representing a selected base product (item) selected from a list.
+ * Data representing a selected, updatable base product (item) selected from a list.
  */
 @Serializable
 data class SelectedBaseProduct(
     val productCategory: ProductCategory,
+    var name: String?,
+    var file: String?,
+    var image: Deferred<Image>?
+)
+
+/**
+ * Data representing a selected, updatable product accessory (item) selected from a list.
+ */
+@Serializable
+data class SelectedAccessory(
+    val accessoryCategory: AccessoryCategory,
     var name: String?,
     var file: String?,
     var image: Deferred<Image>?

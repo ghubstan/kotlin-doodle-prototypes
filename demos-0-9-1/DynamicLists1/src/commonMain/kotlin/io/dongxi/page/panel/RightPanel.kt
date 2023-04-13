@@ -1,13 +1,15 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.ProductCategory.RING
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
+import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
-import io.nacular.doodle.drawing.Color
+import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
@@ -39,7 +41,8 @@ class RightPanel(
     popups: PopupManager,
     modals: ModalManager,
     menuEventBus: MenuEventBus,
-    baseProductSelectEventBus: BaseProductSelectEventBus
+    baseProductSelectEventBus: BaseProductSelectEventBus,
+    accessorySelectEventBus: AccessorySelectEventBus
 ) : AbstractPanel(
     pageType,
     config,
@@ -56,7 +59,8 @@ class RightPanel(
     popups,
     modals,
     menuEventBus,
-    baseProductSelectEventBus
+    baseProductSelectEventBus,
+    accessorySelectEventBus
 ) {
 
     private val tempLabel = io.nacular.doodle.controls.text.Label(
@@ -66,7 +70,13 @@ class RightPanel(
     ).apply {
         height = 24.0
         fitText = setOf(Dimension.Width)
-        foregroundColor = Color.Transparent
+        foregroundColor = Transparent
+    }
+
+    private val accessoryListContainer = if (pageType.productCategory == RING) {
+        getRingStonesContainer(/*  TODO Pass default ring to know which stone list to load */)
+    } else {
+        getDummyBaseProductsContainer()
     }
 
     init {
@@ -90,6 +100,12 @@ class RightPanel(
         tempLabel.text =
             "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
 
+        relayout()
+    }
+
+
+    override fun layoutForCurrentAccessorySelection() {
+        println("RightPanel currentAccessory: $currentAccessory")
         relayout()
     }
 }

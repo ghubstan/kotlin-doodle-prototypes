@@ -1,14 +1,12 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.model.BaseRingsContainer
-import io.dongxi.model.DummyBaseProductsContainer
-import io.dongxi.model.ProductCategory
+import io.dongxi.model.*
 import io.dongxi.model.ProductCategory.*
-import io.dongxi.model.SelectedBaseProduct
 import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
+import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -49,7 +47,8 @@ abstract class AbstractPanel(
     val popups: PopupManager,
     val modals: ModalManager,
     val menuEventBus: MenuEventBus,
-    val baseProductSelectEventBus: BaseProductSelectEventBus
+    val baseProductSelectEventBus: BaseProductSelectEventBus,
+    val accessorySelectEventBus: AccessorySelectEventBus
 ) : IPanel, View() {
 
     val mainScope = MainScope() // The scope of Panel class (and subclasses), uses Dispatchers.Main.
@@ -57,6 +56,7 @@ abstract class AbstractPanel(
     // Default values:  NONE
     var currentProductCategory: ProductCategory = NONE
     var currentBaseProduct: SelectedBaseProduct = SelectedBaseProduct(NONE, null, null, null)
+    var currentAccessory: SelectedAccessory = SelectedAccessory(AccessoryCategory.NONE, null, null, null)
 
     init {
         mainScope.launch {
@@ -109,10 +109,18 @@ abstract class AbstractPanel(
                 layoutForCurrentBaseProductSelection()
             }
         }
+
+        mainScope.launch {
+            accessorySelectEventBus.events.filterNotNull().collectLatest {
+                currentAccessory = it.accessoryDetail()
+                layoutForCurrentAccessorySelection()
+            }
+        }
     }
 
     abstract fun layoutForCurrentProductCategory()
     abstract fun layoutForCurrentBaseProductSelection()
+    abstract fun layoutForCurrentAccessorySelection()
 
 
     fun getDummyBaseProductsContainer(): Container {
@@ -137,6 +145,26 @@ abstract class AbstractPanel(
 
     fun getBaseRingsContainer(): Container {
         return BaseRingsContainer(
+            config,
+            uiDispatcher,
+            animator,
+            pathMetrics,
+            fonts,
+            theme,
+            themes,
+            images,
+            textMetrics,
+            linkStyler,
+            focusManager,
+            popups,
+            modals,
+            menuEventBus,
+            baseProductSelectEventBus
+        )
+    }
+
+    fun getRingStonesContainer(): Container {
+        return RingStonesContainer(
             config,
             uiDispatcher,
             animator,

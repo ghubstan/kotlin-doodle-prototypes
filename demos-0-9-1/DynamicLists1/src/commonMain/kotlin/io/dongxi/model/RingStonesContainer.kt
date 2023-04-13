@@ -3,9 +3,9 @@ package io.dongxi.model
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.ProductCategory.RING
 import io.dongxi.page.MenuEventBus
-import io.dongxi.page.panel.event.BaseProductSelectEvent.SELECT_BASE_RING
+import io.dongxi.page.panel.event.AccessorySelectEvent
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
-import io.dongxi.storage.RingStoreMetadata
+import io.dongxi.storage.RingStoneStoreMetadata
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.*
 import io.nacular.doodle.controls.list.DynamicList
@@ -29,14 +29,14 @@ import io.nacular.doodle.utils.Dimension.Width
 import kotlinx.coroutines.*
 
 
-interface IBaseRingsContainer {
-    val listCache: MutableMap<ProductCategory, DynamicList<Ring, SimpleMutableListModel<Ring>>>
-    val list: DynamicList<Ring, SimpleMutableListModel<Ring>>
-    val model: SimpleMutableListModel<Ring>
-    fun build(): DynamicList<Ring, SimpleMutableListModel<Ring>>
+interface IRingStonesContainer {
+    val listCache: MutableMap<ProductCategory, DynamicList<RingStone, SimpleMutableListModel<RingStone>>>
+    val list: DynamicList<RingStone, SimpleMutableListModel<RingStone>>
+    val model: SimpleMutableListModel<RingStone>
+    fun build(productCategory: ProductCategory): DynamicList<RingStone, SimpleMutableListModel<RingStone>>
 }
 
-class BaseRingsContainer(
+class RingStonesContainer(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
     private val animator: Animator,
@@ -52,15 +52,15 @@ class BaseRingsContainer(
     private val modals: ModalManager,
     private val menuEventBus: MenuEventBus,
     private val baseProductSelectEventBus: BaseProductSelectEventBus
-) : IProductListContainer, IBaseRingsContainer, Container() {
+) : IAccessoryListContainer, IRingStonesContainer, Container() {
 
-    private val mainScope = MainScope() // The scope of BaseRingsContainer class, uses Dispatchers.Main.
+    private val mainScope = MainScope() // The scope of RingStonesContainer class, uses Dispatchers.Main.
 
-    // This map is useless because every container is specific to product category.  Just cache the list -- no map.
-    override val listCache = mutableMapOf<ProductCategory, DynamicList<Ring, SimpleMutableListModel<Ring>>>()
+    // This cache is not useless, because each ring has its own set up compatible stones.  TODO implement the map cache.
+    override val listCache = mutableMapOf<ProductCategory, DynamicList<RingStone, SimpleMutableListModel<RingStone>>>()
 
-    override val model = SimpleMutableListModel<Ring>()
-    override val list = build()
+    override val model = SimpleMutableListModel<RingStone>()
+    override val list = build(RING)
 
     init {
         clipCanvasToBounds = false
@@ -71,27 +71,27 @@ class BaseRingsContainer(
     }
 
     // TODO Remove from interface and make private?
-    override fun build(): DynamicList<Ring, SimpleMutableListModel<Ring>> {
-        if (listCache.containsKey(RING)) {
-            return listCache[RING]!!
+    override fun build(productCategory: ProductCategory): DynamicList<RingStone, SimpleMutableListModel<RingStone>> {
+        if (listCache.containsKey(productCategory)) {
+            return listCache[productCategory]!!
         } else {
             val list = DynamicList(
                 model,
                 selectionModel = SingleItemSelectionModel(),
-                itemVisualizer = BaseRingVisualizer(config),
+                itemVisualizer = RingStoneVisualizer(config),
                 fitContent = setOf(Width, Height)
             ).apply {
                 acceptsThemes = true // true when using inline behaviors, false when not using inline behaviors.
                 cellAlignment = fill
 
                 selectionChanged += { list, _, added ->
-                    list[added.first()].getOrNull()?.let { selectedRing ->
-                        println("BaseRingsContainer selected ring: ${selectedRing.name} file: ${selectedRing.file}")
+                    list[added.first()].getOrNull()?.let { selectedRingStone ->
+                        println("RingStonesContainer selected stone: ${selectedRingStone.name} file: ${selectedRingStone.file}")
                         mainScope.launch {
-                            SELECT_BASE_RING.setBaseProductDetail(
-                                selectedRing.name, selectedRing.file, selectedRing.image
+                            AccessorySelectEvent.SELECT_STONE.setAccessoryDetail(
+                                selectedRingStone.name, selectedRingStone.file, selectedRingStone.image
                             )
-                            baseProductSelectEventBus.produceEvent(SELECT_BASE_RING)
+                            // baseProductSelectEventBus.produceEvent(AccessorySelectEvent.SELECT_STONE)
                         }
                     }
                 }
@@ -102,8 +102,8 @@ class BaseRingsContainer(
 
     override fun loadModel() {
         mainScope.launch {
-            RingStoreMetadata.allSmallRings.sortedBy { it.first }.map { (name, path) ->
-                model.add(Ring(name, path, mainScope.async { images.load(path)!! }))
+            RingStoneStoreMetadata.getStones("A").sortedBy { it.first }.map { (name, path) ->
+                model.add(RingStone(name, path, mainScope.async { images.load(path)!! }))
             }
         }
     }
@@ -120,16 +120,16 @@ class BaseRingsContainer(
 }
 
 
-class BaseRingListView(
-    var ring: Ring,
+class RingStoneListView(
+    var stone: RingStone,
     var index: Int,
     var selected: Boolean,
     val config: DongxiConfig
 ) : View() {
 
-    private val label = Label(ring.name)
+    private val label = Label(stone.name)
 
-    private val photo = LazyPhotoView(ring.image)
+    private val photo = LazyPhotoView(stone.image)
 
     init {
         children += label
@@ -148,30 +148,30 @@ class BaseRingListView(
         }
     }
 
-    fun update(ring: Ring, index: Int, selected: Boolean) {
+    fun update(stone: RingStone, index: Int, selected: Boolean) {
         // Reconfigure the view to represent the new ring installed in it.
-        this.ring = ring
+        this.stone = stone
         this.index = index
         this.selected = selected
 
-        label.text = ring.name
-        photo.pendingImage = ring.image
+        label.text = stone.name
+        photo.pendingImage = stone.image
     }
 }
 
 // The Visualizer is designed to recycle view: reconfigure the view,
 // to represent the new ring installed into it (the "infinite" list of items).
-class BaseRingVisualizer(val config: DongxiConfig) : ItemVisualizer<Ring, IndexedItem> {
-    override fun invoke(item: Ring, previous: View?, context: IndexedItem): View = when (previous) {
-        is BaseRingListView -> previous.apply {
+class RingStoneVisualizer(val config: DongxiConfig) : ItemVisualizer<RingStone, IndexedItem> {
+    override fun invoke(item: RingStone, previous: View?, context: IndexedItem): View = when (previous) {
+        is RingStoneListView -> previous.apply {
             update(
-                ring = item,
+                stone = item,
                 index = context.index,
                 selected = context.selected
             )
         }
 
-        else -> BaseRingListView(ring = item, index = context.index, selected = context.selected, config = config)
+        else -> RingStoneListView(stone = item, index = context.index, selected = context.selected, config = config)
     }
 }
 

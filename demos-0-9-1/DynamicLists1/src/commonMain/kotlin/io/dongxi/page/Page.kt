@@ -2,6 +2,7 @@ package io.dongxi.page
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.page.panel.BaseGridPanel
+import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -37,7 +38,8 @@ class Page(
     popups: PopupManager,
     modals: ModalManager,
     menuEventBus: MenuEventBus,
-    baseProductSelectEventBus: BaseProductSelectEventBus
+    baseProductSelectEventBus: BaseProductSelectEventBus,
+    accessorySelectEventBus: AccessorySelectEventBus
 ) : IPage, AbstractPage(
     pageType,
     config,
@@ -54,7 +56,8 @@ class Page(
     popups,
     modals,
     menuEventBus,
-    baseProductSelectEventBus
+    baseProductSelectEventBus,
+    accessorySelectEventBus
 ) {
 
     private val labelPageTitle = Label(pageType.pageTitle, Middle, Center).apply {
@@ -79,7 +82,8 @@ class Page(
         popups,
         modals,
         menuEventBus,
-        baseProductSelectEventBus
+        baseProductSelectEventBus,
+        accessorySelectEventBus
     ).gridPanel()
 
 

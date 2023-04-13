@@ -1,6 +1,7 @@
 package io.dongxi.page
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -34,7 +35,8 @@ abstract class AbstractPage(
     val popups: PopupManager,
     val modals: ModalManager,
     val menuEventBus: MenuEventBus,
-    val baseProductSelectEventBus: BaseProductSelectEventBus
+    val baseProductSelectEventBus: BaseProductSelectEventBus,
+    val accessorySelectEventBus: AccessorySelectEventBus
 ) : IPage, View() {
 
     val mainScope = MainScope() // The scope of AbstractPage class (and subclasses), uses Dispatchers.Main.

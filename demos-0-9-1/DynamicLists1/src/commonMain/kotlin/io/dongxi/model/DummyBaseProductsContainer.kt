@@ -42,7 +42,7 @@ class DummyBaseProductsContainer(
     private val modals: ModalManager,
     private val menuEventBus: MenuEventBus,
     private val baseProductSelectEventBus: BaseProductSelectEventBus
-) : IBaseProductsContainer, Container() {
+) : IProductListContainer, Container() {
 
     private val mainScope = MainScope() // The scope of DummyBaseProductsContainer class, uses Dispatchers.Main.
 
