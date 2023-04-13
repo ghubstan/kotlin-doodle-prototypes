@@ -2,13 +2,16 @@ package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.ProductCategory.RING
+import io.dongxi.model.SelectedBaseProduct
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.storage.RingStoreMetadata
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
+import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
@@ -24,6 +27,7 @@ import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.async
 
 class LeftPanel(
     pageType: PageType,
@@ -62,7 +66,7 @@ class LeftPanel(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
-    private val tempLabel = io.nacular.doodle.controls.text.Label(
+    private val tempLabel = Label(
         "NADA",
         Middle,
         Center
@@ -82,6 +86,26 @@ class LeftPanel(
         clipCanvasToBounds = false
         size = Size(200, 200)
 
+        // Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack
+        if (pageType.productCategory == RING) {
+            if (currentBaseProduct.name == null) {
+                println("LeftPanel WTF! $currentBaseProduct")
+
+                // TODO Fix design bug:  What is selected product (size)?  Which is it, LARGE or small?
+                // val defaultRingMetadata = RingStoreMetadata.getLargeRingMetadata("A")
+                val defaultRingMetadata = RingStoreMetadata.getSmallRingMetadata("A")
+
+                currentBaseProduct = SelectedBaseProduct(
+                    currentProductCategory,
+                    defaultRingMetadata.first,
+                    defaultRingMetadata.second,
+                    mainScope.async { images.load(defaultRingMetadata.second)!! })
+            }
+
+            tempLabel.text =
+                "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
+        }
+
         children += listOf(tempLabel, baseProductListContainer)
         layout = constrain(tempLabel, baseProductListContainer) { tempLabelBounds, baseRingsContainerBounds ->
             tempLabelBounds.left eq 5
@@ -96,7 +120,7 @@ class LeftPanel(
     }
 
     override fun layoutForCurrentProductCategory() {
-        println("LeftPanel currentProductCategory: $currentProductCategory")
+        // println("LeftPanel currentProductCategory: $currentProductCategory")
         relayout()
     }
 

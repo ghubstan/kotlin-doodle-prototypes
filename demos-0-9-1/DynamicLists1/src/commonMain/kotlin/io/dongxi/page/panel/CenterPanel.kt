@@ -104,7 +104,7 @@ class CenterPanel(
     }
 
     override fun layoutForCurrentProductCategory() {
-        println("CenterPanel currentProductCategory: $currentProductCategory")
+        // println("CenterPanel currentProductCategory: $currentProductCategory")
         relayout()
     }
 
@@ -112,13 +112,17 @@ class CenterPanel(
         println("CenterPanel currentBaseProduct: $currentBaseProduct")
 
         tempLabel.text =
-            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
+            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} with STONE ${currentAccessory.name ?: ""}"
 
         relayout()
     }
 
     override fun layoutForCurrentAccessorySelection() {
         println("CenterPanel currentAccessory: $currentAccessory")
+
+        tempLabel.text =
+            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} with STONE ${currentAccessory.name ?: ""}"
+
         relayout()
     }
 

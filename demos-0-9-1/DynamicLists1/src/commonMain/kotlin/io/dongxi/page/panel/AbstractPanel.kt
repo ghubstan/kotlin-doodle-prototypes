@@ -12,6 +12,7 @@ import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.RingStoneStoreMetadata.getStones
 import io.dongxi.storage.RingStoreMetadata
+import io.dongxi.util.ClassUtils
 import io.dongxi.util.ColorUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -137,17 +138,18 @@ abstract class AbstractPanel(
                 // Hack default ring?
                 if (pageType == RINGS) {
                     if (currentBaseProduct.name == null) {
-                        println("WTF! $currentBaseProduct")
+                        println("AbstractPanel->${ClassUtils.simpleClassName(this)}: WTF! $currentBaseProduct")
 
-                        val defaultRingMetadata = RingStoreMetadata.getLargeRingMetadata("A")
+                        // TODO Fix design bug:  What is selected product (size)?  Which is it, LARGE or small?
+                        // val defaultRingMetadata = RingStoreMetadata.getLargeRingMetadata("A")
+                        val defaultRingMetadata = RingStoreMetadata.getSmallRingMetadata("A")
+
                         currentBaseProduct = SelectedBaseProduct(
                             currentProductCategory,
                             defaultRingMetadata.first,
                             defaultRingMetadata.second,
                             mainScope.async { images.load(defaultRingMetadata.second)!! })
 
-                    } else {
-                        println("NO WTF: $currentBaseProduct")
                     }
                 }
 

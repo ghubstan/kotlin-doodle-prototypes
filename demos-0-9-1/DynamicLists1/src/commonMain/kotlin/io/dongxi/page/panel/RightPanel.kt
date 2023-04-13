@@ -96,7 +96,7 @@ class RightPanel(
     }
 
     override fun layoutForCurrentProductCategory() {
-        println("RightPanel currentProductCategory: $currentProductCategory")
+        // println("RightPanel currentProductCategory: $currentProductCategory")
         relayout()
     }
 
@@ -104,8 +104,7 @@ class RightPanel(
         println("RightPanel currentBaseProduct: $currentBaseProduct")
 
         tempLabel.text =
-            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
-
+            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} with STONE ${currentAccessory.name ?: ""}"
 
         (accessoryListContainer as RingStonesContainer).clearModel()
         accessoryListContainer.loadModel(currentBaseProduct.name ?: "A")
@@ -117,6 +116,10 @@ class RightPanel(
 
     override fun layoutForCurrentAccessorySelection() {
         println("RightPanel currentAccessory: $currentAccessory")
+
+        tempLabel.text =
+            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} with STONE ${currentAccessory.name ?: ""}"
+
         relayout()
     }
 
