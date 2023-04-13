@@ -52,18 +52,18 @@ object RingStoneStoreMetadata {
         "Yellow" to pathTo("yellow.png")
     )
 
-    fun getStones(smallRingName: String): List<Pair<String, String>> {
-        if (smallRingName.equals("A", ignoreCase = true)) {
+    fun getStones(ringName: String): List<Pair<String, String>> {
+        if (ringName.equals("A", ignoreCase = true)) {
             return ringAStones
-        } else if (smallRingName.equals("B", ignoreCase = true)) {
+        } else if (ringName.equals("B", ignoreCase = true)) {
             return ringBStones
-        } else if (smallRingName.equals("C", ignoreCase = true)) {
+        } else if (ringName.equals("C", ignoreCase = true)) {
             return ringCStones
-        } else if (smallRingName.equals("D", ignoreCase = true)) {
+        } else if (ringName.equals("D", ignoreCase = true)) {
             return ringDStones
-        } else if (smallRingName.equals("E", ignoreCase = true)) {
+        } else if (ringName.equals("E", ignoreCase = true)) {
             return ringEStones
-        } else if (smallRingName.equals("F", ignoreCase = true)) {
+        } else if (ringName.equals("F", ignoreCase = true)) {
             return ringFStones
         } else {
             // TODO throw exception?
