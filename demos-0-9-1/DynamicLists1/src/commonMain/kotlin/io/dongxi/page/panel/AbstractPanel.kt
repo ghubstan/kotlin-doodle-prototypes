@@ -2,12 +2,15 @@ package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.*
+import io.dongxi.model.AccessoryCategory.STONE
 import io.dongxi.model.ProductCategory.*
 import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
+import io.dongxi.page.PageType.RINGS
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.storage.RingStoneStoreMetadata.getStones
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -24,12 +27,9 @@ import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.launch
 
 abstract class AbstractPanel(
     override val pageType: PageType,
@@ -106,14 +106,32 @@ abstract class AbstractPanel(
         mainScope.launch {
             baseProductSelectEventBus.events.filterNotNull().collectLatest {
                 currentBaseProduct = it.baseProductDetail()
+
+                // Hack default stone for selected ring.
+                if (pageType == RINGS) {
+                    val ringName = currentBaseProduct.name.toString() // Just askin' for an NPE?
+
+                    // TODO Refactor
+                    var defaultStoneMetadata: Pair<String, String> = getStones(ringName)[0]
+                    val defaultStone = RingStone(defaultStoneMetadata.first,
+                        defaultStoneMetadata.second,
+                        mainScope.async { images.load(defaultStoneMetadata.second)!! })
+                    currentAccessory = SelectedAccessory(
+                        STONE,
+                        defaultStone.name,
+                        defaultStone.file,
+                        defaultStone.image
+                    )
+                }
+
                 layoutForCurrentBaseProductSelection()
+                layoutForCompletedJewel()
             }
         }
 
         mainScope.launch {
             accessorySelectEventBus.events.filterNotNull().collectLatest {
                 currentAccessory = it.accessoryDetail()
-
                 layoutForCurrentAccessorySelection()
                 layoutForCompletedJewel()
             }

@@ -171,15 +171,15 @@ class BaseGridPanel(
     }
 
     override fun layoutForCurrentProductCategory() {
-        println("BaseGridPanel currentProductCategory: $currentProductCategory")
+        // println("BaseGridPanel currentProductCategory: $currentProductCategory")
     }
 
     override fun layoutForCurrentBaseProductSelection() {
-        println("BaseGridPanel currentBaseProduct: $currentBaseProduct")
+        // println("BaseGridPanel currentBaseProduct: $currentBaseProduct")
     }
 
     override fun layoutForCurrentAccessorySelection() {
-        println("BaseGridPanel currentAccessory: $currentAccessory")
+        // println("BaseGridPanel currentAccessory: $currentAccessory")
     }
 
     override fun layoutForCompletedJewel() {
