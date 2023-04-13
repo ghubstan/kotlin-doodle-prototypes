@@ -18,11 +18,12 @@ import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension
-import io.nacular.doodle.utils.HorizontalAlignment
 import io.nacular.doodle.utils.HorizontalAlignment.Center
-import io.nacular.doodle.utils.VerticalAlignment
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 class LeftPanel(
     config: DongxiConfig,
@@ -69,13 +70,22 @@ class LeftPanel(
     }
 
     init {
-        clipCanvasToBounds = false
-
         size = Size(200, 200)
 
         children += listOf(tempLabel)
         layout = HorizontalFlowLayout()
-        // layout = constrain(button1, button2, button3) { button1Bounds, button2Bounds, button3Bounds -> }
+
+        mainScope.launch {
+            baseProductSelectEventBus.events.filterNotNull().collectLatest {
+                currentBaseProduct = it.baseProductDetail()
+                println("CenterPanel currentBaseProduct: $currentBaseProduct")
+
+                tempLabel.text =
+                    "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
+
+                relayout()
+            }
+        }
     }
 
 }
