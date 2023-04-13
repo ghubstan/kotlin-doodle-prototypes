@@ -2,7 +2,7 @@ package io.dongxi.page
 
 
 interface IPage {
-    val pageTitle: String
+    val pageType: PageType
     fun description(): String
     fun destroy()
 }

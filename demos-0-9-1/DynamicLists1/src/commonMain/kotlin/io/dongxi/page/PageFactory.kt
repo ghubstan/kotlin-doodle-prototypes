@@ -44,13 +44,16 @@ class PageFactory(
     override val pageCache = mutableMapOf<PageType, IPage>()
 
     override fun buildPage(pageType: PageType): IPage {
+
+        // TODO Refactor out this when(pageType);  just pass in the pageType param to Page() ctor.
+
         when (pageType) {
             HOME -> {
                 if (pageCache.containsKey(pageType)) {
                     return pageCache[pageType]!!
                 } else {
                     val page = Page(
-                        "Casa",
+                        HOME,
                         config,
                         uiDispatcher,
                         animator,
@@ -79,7 +82,7 @@ class PageFactory(
                     return pageCache[pageType]!!
                 } else {
                     val page = Page(
-                        "Aneis",
+                        RINGS,
                         config,
                         uiDispatcher,
                         animator,
@@ -108,7 +111,7 @@ class PageFactory(
                     return pageCache[pageType]!!
                 } else {
                     val page = Page(
-                        "Colares",
+                        NECKLACES,
                         config,
                         uiDispatcher,
                         animator,
@@ -137,7 +140,7 @@ class PageFactory(
                     return pageCache[pageType]!!
                 } else {
                     val page = Page(
-                        "Escapulários",
+                        SCAPULARS,
                         config,
                         uiDispatcher,
                         animator,
@@ -167,7 +170,7 @@ class PageFactory(
                     return pageCache[pageType]!!
                 } else {
                     val page = Page(
-                        "Pulseiras",
+                        BRACELETS,
                         config,
                         uiDispatcher,
                         animator,
@@ -197,7 +200,7 @@ class PageFactory(
                     return pageCache[pageType]!!
                 } else {
                     val page = Page(
-                        "Brincos",
+                        EAR_RINGS,
                         config,
                         uiDispatcher,
                         animator,
@@ -227,7 +230,7 @@ class PageFactory(
                     return pageCache[pageType]!!
                 } else {
                     val page = Page(
-                        "Sobre",
+                        ABOUT,
                         config,
                         uiDispatcher,
                         animator,

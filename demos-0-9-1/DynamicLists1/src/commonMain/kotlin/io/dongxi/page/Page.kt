@@ -22,7 +22,7 @@ import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
 
 class Page(
-    override val pageTitle: String,
+    override val pageType: PageType,
     config: DongxiConfig,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
@@ -39,7 +39,7 @@ class Page(
     menuEventBus: MenuEventBus,
     baseProductSelectEventBus: BaseProductSelectEventBus
 ) : IPage, AbstractPage(
-    pageTitle,
+    pageType,
     config,
     uiDispatcher,
     animator,
@@ -57,13 +57,14 @@ class Page(
     baseProductSelectEventBus
 ) {
 
-    private val labelPageTitle = Label(pageTitle, Middle, Center).apply {
+    private val labelPageTitle = Label(pageType.pageTitle, Middle, Center).apply {
         height = 26.0
         fitText = setOf(Dimension.Width)
         styledText = StyledText(text, config.titleFont, Color.Black.paint)
     }
 
     private val gridPanel = BaseGridPanel(
+        pageType,
         config,
         uiDispatcher,
         animator,
@@ -97,7 +98,7 @@ class Page(
     }
 
     override fun description(): String {
-        return pageTitle
+        return pageType.pageTitle // TODO delete?
     }
 
     override fun render(canvas: Canvas) {

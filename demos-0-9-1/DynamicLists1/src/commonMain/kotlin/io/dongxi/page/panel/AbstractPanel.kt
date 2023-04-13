@@ -1,15 +1,19 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.BaseRingsContainer
+import io.dongxi.model.DummyBaseProductsContainer
 import io.dongxi.model.ProductCategory
 import io.dongxi.model.ProductCategory.*
 import io.dongxi.model.SelectedBaseProduct
 import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.MenuEventBus
+import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
+import io.nacular.doodle.core.Container
 import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.Canvas
 import io.nacular.doodle.drawing.Color.Companion.Lightgray
@@ -30,6 +34,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 abstract class AbstractPanel(
+    override val pageType: PageType,
     val config: DongxiConfig,
     val uiDispatcher: CoroutineDispatcher,
     val animator: Animator,
@@ -108,6 +113,47 @@ abstract class AbstractPanel(
 
     abstract fun layoutForCurrentProductCategory()
     abstract fun layoutForCurrentBaseProductSelection()
+
+
+    fun getDummyBaseProductsContainer(): Container {
+        return DummyBaseProductsContainer(
+            config,
+            uiDispatcher,
+            animator,
+            pathMetrics,
+            fonts,
+            theme,
+            themes,
+            images,
+            textMetrics,
+            linkStyler,
+            focusManager,
+            popups,
+            modals,
+            menuEventBus,
+            baseProductSelectEventBus
+        )
+    }
+
+    fun getBaseRingsContainer(): Container {
+        return BaseRingsContainer(
+            config,
+            uiDispatcher,
+            animator,
+            pathMetrics,
+            fonts,
+            theme,
+            themes,
+            images,
+            textMetrics,
+            linkStyler,
+            focusManager,
+            popups,
+            modals,
+            menuEventBus,
+            baseProductSelectEventBus
+        )
+    }
 
 
     override fun render(canvas: Canvas) {

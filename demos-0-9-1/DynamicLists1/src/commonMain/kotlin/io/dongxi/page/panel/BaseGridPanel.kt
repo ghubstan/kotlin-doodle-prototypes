@@ -2,6 +2,7 @@ package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.page.MenuEventBus
+import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -20,11 +21,9 @@ import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.launch
 
 class BaseGridPanel(
+    pageType: PageType,
     config: DongxiConfig,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
@@ -41,6 +40,7 @@ class BaseGridPanel(
     menuEventBus: MenuEventBus,
     baseProductSelectEventBus: BaseProductSelectEventBus
 ) : AbstractPanel(
+    pageType,
     config,
     uiDispatcher,
     animator,
@@ -57,7 +57,9 @@ class BaseGridPanel(
     menuEventBus,
     baseProductSelectEventBus
 ) {
+
     private val leftPanel = LeftPanel(
+        pageType,
         config,
         uiDispatcher,
         animator,
@@ -76,6 +78,7 @@ class BaseGridPanel(
     )
 
     private val centerPanel = CenterPanel(
+        pageType,
         config,
         uiDispatcher,
         animator,
@@ -94,6 +97,7 @@ class BaseGridPanel(
     )
 
     private val rightPanel = RightPanel(
+        pageType,
         config,
         uiDispatcher,
         animator,
@@ -112,6 +116,7 @@ class BaseGridPanel(
     )
 
     private val footerPanel = FooterPanel(
+        pageType,
         config,
         uiDispatcher,
         animator,
@@ -158,14 +163,11 @@ class BaseGridPanel(
         return panel
     }
 
-    init {
-    }
-
     override fun layoutForCurrentProductCategory() {
-        println("BaseGridPanel currentBaseProduct: $currentBaseProduct")
+        println("BaseGridPanel currentProductCategory: $currentProductCategory")
     }
 
     override fun layoutForCurrentBaseProductSelection() {
-
+        println("BaseGridPanel currentBaseProduct: $currentBaseProduct")
     }
 }

@@ -2,6 +2,7 @@ package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.page.MenuEventBus
+import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -18,6 +19,7 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import kotlinx.coroutines.CoroutineDispatcher
 
 class FooterPanel(
+    pageType: PageType,
     config: DongxiConfig,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
@@ -34,6 +36,7 @@ class FooterPanel(
     menuEventBus: MenuEventBus,
     baseProductSelectEventBus: BaseProductSelectEventBus  // Probably should not pass this param.
 ) : AbstractPanel(
+    pageType,
     config,
     uiDispatcher,
     animator,

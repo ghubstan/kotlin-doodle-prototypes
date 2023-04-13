@@ -19,7 +19,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 
 abstract class AbstractPage(
-    override val pageTitle: String,
+    override val pageType: PageType,
     val config: DongxiConfig,
     val uiDispatcher: CoroutineDispatcher,
     val animator: Animator,

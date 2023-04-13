@@ -34,9 +34,6 @@ interface IBaseRingsContainer {
     val list: DynamicList<Ring, SimpleMutableListModel<Ring>>
     val model: SimpleMutableListModel<Ring>
     fun build(productCategory: ProductCategory): DynamicList<Ring, SimpleMutableListModel<Ring>>
-    fun loadModel()
-    fun clearModel()
-    fun destroy()
 }
 
 class BaseRingsContainer(
@@ -55,7 +52,7 @@ class BaseRingsContainer(
     private val modals: ModalManager,
     private val menuEventBus: MenuEventBus,
     private val baseProductSelectEventBus: BaseProductSelectEventBus
-) : IBaseRingsContainer, Container() {
+) : IBaseProductsContainer, IBaseRingsContainer, Container() {
 
     private val mainScope = MainScope() // The scope of BaseRingsContainer class, uses Dispatchers.Main.
     override val listCache = mutableMapOf<ProductCategory, DynamicList<Ring, SimpleMutableListModel<Ring>>>()

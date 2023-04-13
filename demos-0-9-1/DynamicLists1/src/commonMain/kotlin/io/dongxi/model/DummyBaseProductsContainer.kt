@@ -1,12 +1,12 @@
-package io.dongxi.page.panel
+package io.dongxi.model
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.page.MenuEventBus
-import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
+import io.nacular.doodle.core.Container
 import io.nacular.doodle.drawing.Color
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
@@ -22,45 +22,32 @@ import io.nacular.doodle.utils.Dimension
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 
-class RightPanel(
-    pageType: PageType,
-    config: DongxiConfig,
-    uiDispatcher: CoroutineDispatcher,
-    animator: Animator,
-    pathMetrics: PathMetrics,
-    fonts: FontLoader,
-    theme: DynamicTheme,
-    themes: ThemeManager,
-    images: ImageLoader,
-    textMetrics: TextMetrics,
-    linkStyler: NativeHyperLinkStyler,
-    focusManager: FocusManager,
-    popups: PopupManager,
-    modals: ModalManager,
-    menuEventBus: MenuEventBus,
-    baseProductSelectEventBus: BaseProductSelectEventBus
-) : AbstractPanel(
-    pageType,
-    config,
-    uiDispatcher,
-    animator,
-    pathMetrics,
-    fonts,
-    theme,
-    themes,
-    images,
-    textMetrics,
-    linkStyler,
-    focusManager,
-    popups,
-    modals,
-    menuEventBus,
-    baseProductSelectEventBus
-) {
+
+class DummyBaseProductsContainer(
+    private val config: DongxiConfig,
+    private val uiDispatcher: CoroutineDispatcher,
+    private val animator: Animator,
+    private val pathMetrics: PathMetrics,
+    private val fonts: FontLoader,
+    private val theme: DynamicTheme,
+    private val themes: ThemeManager,
+    private val images: ImageLoader,
+    private val textMetrics: TextMetrics,
+    private val linkStyler: NativeHyperLinkStyler,
+    private val focusManager: FocusManager,
+    private val popups: PopupManager,
+    private val modals: ModalManager,
+    private val menuEventBus: MenuEventBus,
+    private val baseProductSelectEventBus: BaseProductSelectEventBus
+) : IBaseProductsContainer, Container() {
+
+    private val mainScope = MainScope() // The scope of DummyBaseProductsContainer class, uses Dispatchers.Main.
 
     private val tempLabel = io.nacular.doodle.controls.text.Label(
-        "NADA",
+        "Dummy List (TODO)",
         Middle,
         Center
     ).apply {
@@ -69,8 +56,10 @@ class RightPanel(
         foregroundColor = Color.Transparent
     }
 
+
     init {
-        size = Size(200, 200)
+        clipCanvasToBounds = false
+        size = Size(150, 200)
         children += listOf(tempLabel)
         layout = constrain(tempLabel) { tempLabelBounds ->
             tempLabelBounds.left eq 5
@@ -79,17 +68,17 @@ class RightPanel(
         }
     }
 
-    override fun layoutForCurrentProductCategory() {
-        println("RightPanel currentProductCategory: $currentProductCategory")
-        relayout()
+    override fun loadModel() {
+        // noop
     }
 
-    override fun layoutForCurrentBaseProductSelection() {
-        println("RightPanel currentBaseProduct: $currentBaseProduct")
+    override fun clearModel() {
+        // noop
+    }
 
-        tempLabel.text =
-            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
-
-        relayout()
+    override fun destroy() {
+        // Cancels all coroutines launched in this scope.
+        mainScope.cancel()
+        // cleanup here
     }
 }
