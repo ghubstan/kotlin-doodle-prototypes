@@ -159,17 +159,13 @@ class BaseGridPanel(
     }
 
     init {
-
-        mainScope.launch {
-            baseProductSelectEventBus.events.filterNotNull().collectLatest {
-                currentBaseProduct = it.baseProductDetail()
-                println("BaseGridPanel currentBaseProduct: $currentBaseProduct")
-            }
-        }
-
     }
 
     override fun layoutForCurrentProductCategory() {
+        println("BaseGridPanel currentBaseProduct: $currentBaseProduct")
+    }
+
+    override fun layoutForCurrentBaseProductSelection() {
 
     }
 }

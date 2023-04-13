@@ -74,21 +74,19 @@ class CenterPanel(
 
         children += listOf(tempLabel)
         layout = HorizontalFlowLayout()
-
-        mainScope.launch {
-            baseProductSelectEventBus.events.filterNotNull().collectLatest {
-                currentBaseProduct = it.baseProductDetail()
-                println("CenterPanel currentBaseProduct: $currentBaseProduct")
-
-                tempLabel.text =
-                    "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
-
-                relayout()
-            }
-        }
     }
 
     override fun layoutForCurrentProductCategory() {
         println("CenterPanel currentProductCategory: $currentProductCategory")
+        relayout()
+    }
+
+    override fun layoutForCurrentBaseProductSelection() {
+        println("CenterPanel currentBaseProduct: $currentBaseProduct")
+
+        tempLabel.text =
+            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
+
+        relayout()
     }
 }

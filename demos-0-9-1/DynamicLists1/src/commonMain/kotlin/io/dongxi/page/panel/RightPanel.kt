@@ -74,21 +74,19 @@ class RightPanel(
 
         children += listOf(tempLabel)
         layout = HorizontalFlowLayout()
-
-        mainScope.launch {
-            baseProductSelectEventBus.events.filterNotNull().collectLatest {
-                currentBaseProduct = it.baseProductDetail()
-                println("RightPanel currentBaseProduct: $currentBaseProduct")
-
-                tempLabel.text =
-                    "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
-
-                relayout()
-            }
-        }
     }
 
     override fun layoutForCurrentProductCategory() {
         println("RightPanel currentProductCategory: $currentProductCategory")
+        relayout()
+    }
+
+    override fun layoutForCurrentBaseProductSelection() {
+        println("RightPanel currentBaseProduct: $currentBaseProduct")
+
+        tempLabel.text =
+            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
+
+        relayout()
     }
 }

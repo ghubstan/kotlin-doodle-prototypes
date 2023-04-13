@@ -57,6 +57,8 @@ class FooterPanel(
 
 
     override fun layoutForCurrentProductCategory() {
-        println("FooterPanel currentProductCategory: $currentProductCategory")
+    }
+
+    override fun layoutForCurrentBaseProductSelection() {
     }
 }
