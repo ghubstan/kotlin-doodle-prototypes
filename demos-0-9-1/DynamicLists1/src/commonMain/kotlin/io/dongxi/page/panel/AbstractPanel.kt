@@ -179,7 +179,8 @@ abstract class AbstractPanel(
             popups,
             modals,
             menuEventBus,
-            baseProductSelectEventBus
+            baseProductSelectEventBus,
+            accessorySelectEventBus
         )
     }
 

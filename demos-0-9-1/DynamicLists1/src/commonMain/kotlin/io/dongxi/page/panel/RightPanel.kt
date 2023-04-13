@@ -81,11 +81,16 @@ class RightPanel(
 
     init {
         size = Size(200, 200)
-        children += listOf(tempLabel)
-        layout = constrain(tempLabel) { tempLabelBounds ->
+        children += listOf(tempLabel, accessoryListContainer)
+        layout = constrain(tempLabel, accessoryListContainer) { tempLabelBounds, accessoryListContainerBounds ->
             tempLabelBounds.left eq 5
             tempLabelBounds.top eq 10
             tempLabelBounds.bottom eq 26
+
+            accessoryListContainerBounds.top eq tempLabelBounds.bottom + 5
+            accessoryListContainerBounds.left eq tempLabelBounds.left
+            accessoryListContainerBounds.width eq parent.width
+            accessoryListContainerBounds.bottom eq parent.bottom - 5
         }
     }
 

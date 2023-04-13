@@ -3,7 +3,8 @@ package io.dongxi.model
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.ProductCategory.RING
 import io.dongxi.page.MenuEventBus
-import io.dongxi.page.panel.event.AccessorySelectEvent
+import io.dongxi.page.panel.event.AccessorySelectEvent.SELECT_STONE
+import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.RingStoneStoreMetadata
 import io.nacular.doodle.animation.Animator
@@ -51,12 +52,14 @@ class RingStonesContainer(
     private val popups: PopupManager,
     private val modals: ModalManager,
     private val menuEventBus: MenuEventBus,
-    private val baseProductSelectEventBus: BaseProductSelectEventBus
+    private val baseProductSelectEventBus: BaseProductSelectEventBus,
+    private val accessorySelectEventBus: AccessorySelectEventBus
 ) : IAccessoryListContainer, IRingStonesContainer, Container() {
 
     private val mainScope = MainScope() // The scope of RingStonesContainer class, uses Dispatchers.Main.
 
-    // This cache is not useless, because each ring has its own set up compatible stones.  TODO implement the map cache.
+    // This cache is not useless, because each ring has its own set up compatible stones.
+    // TODO implement the map cache for selected base product (ring).
     override val listCache = mutableMapOf<ProductCategory, DynamicList<RingStone, SimpleMutableListModel<RingStone>>>()
 
     override val model = SimpleMutableListModel<RingStone>()
@@ -72,32 +75,28 @@ class RingStonesContainer(
 
     // TODO Remove from interface and make private?
     override fun build(productCategory: ProductCategory): DynamicList<RingStone, SimpleMutableListModel<RingStone>> {
-        if (listCache.containsKey(productCategory)) {
-            return listCache[productCategory]!!
-        } else {
-            val list = DynamicList(
-                model,
-                selectionModel = SingleItemSelectionModel(),
-                itemVisualizer = RingStoneVisualizer(config),
-                fitContent = setOf(Width, Height)
-            ).apply {
-                acceptsThemes = true // true when using inline behaviors, false when not using inline behaviors.
-                cellAlignment = fill
+        val list = DynamicList(
+            model,
+            selectionModel = SingleItemSelectionModel(),
+            itemVisualizer = RingStoneVisualizer(config),
+            fitContent = setOf(Width, Height)
+        ).apply {
+            acceptsThemes = true // true when using inline behaviors, false when not using inline behaviors.
+            cellAlignment = fill
 
-                selectionChanged += { list, _, added ->
-                    list[added.first()].getOrNull()?.let { selectedRingStone ->
-                        println("RingStonesContainer selected stone: ${selectedRingStone.name} file: ${selectedRingStone.file}")
-                        mainScope.launch {
-                            AccessorySelectEvent.SELECT_STONE.setAccessoryDetail(
-                                selectedRingStone.name, selectedRingStone.file, selectedRingStone.image
-                            )
-                            // baseProductSelectEventBus.produceEvent(AccessorySelectEvent.SELECT_STONE)
-                        }
+            selectionChanged += { list, _, added ->
+                list[added.first()].getOrNull()?.let { selectedRingStone ->
+                    println("RingStonesContainer selected stone: ${selectedRingStone.name} file: ${selectedRingStone.file}")
+                    mainScope.launch {
+                        SELECT_STONE.setAccessoryDetail(
+                            selectedRingStone.name, selectedRingStone.file, selectedRingStone.image
+                        )
+                        accessorySelectEventBus.produceEvent(SELECT_STONE)
                     }
                 }
             }
-            return list
         }
+        return list
     }
 
     override fun loadModel() {
@@ -138,6 +137,16 @@ class RingStoneListView(
         layout = constrain(label, photo) { labelBounds, photoBounds ->
             labelBounds.left eq 5
             labelBounds.centerY eq parent.centerY
+            labelBounds.width eq 145
+            labelBounds.height.preserve
+
+            photoBounds.left eq labelBounds.right + 10
+            photoBounds.centerY eq parent.centerY
+            photoBounds.width.preserve
+            photoBounds.height.preserve
+            /*
+            labelBounds.left eq 5
+            labelBounds.centerY eq parent.centerY
             labelBounds.width.preserve
             labelBounds.height.preserve
 
@@ -145,6 +154,7 @@ class RingStoneListView(
             photoBounds.centerY eq parent.centerY
             photoBounds.width.preserve
             photoBounds.height.preserve
+             */
         }
     }
 
