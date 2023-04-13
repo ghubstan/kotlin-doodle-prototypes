@@ -11,6 +11,7 @@ import io.dongxi.page.PageType.RINGS
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.RingStoneStoreMetadata.getStones
+import io.dongxi.storage.RingStoreMetadata
 import io.dongxi.util.ColorUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -54,8 +55,8 @@ abstract class AbstractPanel(
     val mainScope = MainScope() // The scope of Panel class (and subclasses), uses Dispatchers.Main.
 
     // Default values:  NONE
-    var currentProductCategory: ProductCategory = NONE
-    var currentBaseProduct: SelectedBaseProduct = SelectedBaseProduct(NONE, null, null, null)
+    var currentProductCategory: ProductCategory = pageType.productCategory
+    var currentBaseProduct: SelectedBaseProduct = SelectedBaseProduct(currentProductCategory, null, null, null)
     var currentAccessory: SelectedAccessory = SelectedAccessory(AccessoryCategory.NONE, null, null, null)
 
     init {
@@ -132,6 +133,24 @@ abstract class AbstractPanel(
         mainScope.launch {
             accessorySelectEventBus.events.filterNotNull().collectLatest {
                 currentAccessory = it.accessoryDetail()
+
+                // Hack default ring?
+                if (pageType == RINGS) {
+                    if (currentBaseProduct.name == null) {
+                        println("WTF! $currentBaseProduct")
+
+                        val defaultRingMetadata = RingStoreMetadata.getLargeRingMetadata("A")
+                        currentBaseProduct = SelectedBaseProduct(
+                            currentProductCategory,
+                            defaultRingMetadata.first,
+                            defaultRingMetadata.second,
+                            mainScope.async { images.load(defaultRingMetadata.second)!! })
+
+                    } else {
+                        println("NO WTF: $currentBaseProduct")
+                    }
+                }
+
                 layoutForCurrentAccessorySelection()
                 layoutForCompletedJewel()
             }
