@@ -95,6 +95,9 @@ class RingStonesContainer(
                     }
                 }
             }
+
+            setSelection(setOf(0))
+            
         }
         return list
     }

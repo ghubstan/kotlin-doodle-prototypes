@@ -95,6 +95,8 @@ class BaseRingsContainer(
                         }
                     }
                 }
+
+                setSelection(setOf(0))
             }
             return list
         }
