@@ -1,6 +1,7 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.ProductCategory
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
@@ -73,13 +74,27 @@ class CenterPanel(
         foregroundColor = Color.Transparent
     }
 
+    private val completeProductContainer = if (pageType.productCategory == ProductCategory.RING) {
+        getRingWithStoneContainer()
+    } else {
+        getDummyBaseProductsContainer()
+    }
+
+
     init {
+        clipCanvasToBounds = false
         size = Size(200, 200)
-        children += listOf(tempLabel)
-        layout = constrain(tempLabel) { tempLabelBounds ->
+
+        children += listOf(tempLabel, completeProductContainer)
+        layout = constrain(tempLabel, completeProductContainer) { tempLabelBounds, completeProductContainerBounds ->
             tempLabelBounds.left eq 5
             tempLabelBounds.top eq 10
             tempLabelBounds.bottom eq 26
+
+            completeProductContainerBounds.top eq tempLabelBounds.bottom + 5
+            completeProductContainerBounds.left eq tempLabelBounds.left
+            completeProductContainerBounds.width eq parent.width
+            completeProductContainerBounds.bottom eq parent.bottom - 5
         }
     }
 

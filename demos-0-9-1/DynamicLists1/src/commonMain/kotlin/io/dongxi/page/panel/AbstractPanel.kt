@@ -184,6 +184,27 @@ abstract class AbstractPanel(
         )
     }
 
+    fun getRingWithStoneContainer(): Container {
+        return RingWithStoneContainer(
+            config,
+            uiDispatcher,
+            animator,
+            pathMetrics,
+            fonts,
+            theme,
+            themes,
+            images,
+            textMetrics,
+            linkStyler,
+            focusManager,
+            popups,
+            modals,
+            menuEventBus,
+            baseProductSelectEventBus,
+            accessorySelectEventBus
+        )
+    }
+
 
     override fun render(canvas: Canvas) {
         canvas.rect(bounds.atOrigin, Lightgray)

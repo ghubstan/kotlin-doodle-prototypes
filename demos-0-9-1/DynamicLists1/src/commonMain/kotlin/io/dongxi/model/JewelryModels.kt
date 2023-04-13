@@ -27,16 +27,20 @@ data class SelectedAccessory(
     var image: Deferred<Image>?
 )
 
-
 /**
  * Data representing a ring image.
  */
 @Serializable
 data class Ring(val name: String, val file: String, val image: Deferred<Image>)
 
-
 /**
  * Data representing a ring-stone image.
  */
 @Serializable
 data class RingStone(val name: String, val file: String, val image: Deferred<Image>)
+
+/**
+ * Data representing a large ring + accessory stone image.
+ */
+@Serializable
+data class RingWithStone(val ring: Ring, val stone: RingStone)
