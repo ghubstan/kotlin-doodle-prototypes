@@ -13,7 +13,7 @@ import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
-import io.nacular.doodle.layout.HorizontalFlowLayout
+import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
@@ -21,9 +21,6 @@ import io.nacular.doodle.utils.Dimension
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.launch
 
 class RightPanel(
     config: DongxiConfig,
@@ -71,9 +68,12 @@ class RightPanel(
 
     init {
         size = Size(200, 200)
-
         children += listOf(tempLabel)
-        layout = HorizontalFlowLayout()
+        layout = constrain(tempLabel) { tempLabelBounds ->
+            tempLabelBounds.left eq 5
+            tempLabelBounds.top eq 10
+            tempLabelBounds.bottom eq 26
+        }
     }
 
     override fun layoutForCurrentProductCategory() {

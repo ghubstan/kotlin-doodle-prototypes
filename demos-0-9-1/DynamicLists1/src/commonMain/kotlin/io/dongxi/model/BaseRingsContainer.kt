@@ -1,6 +1,7 @@
 package io.dongxi.model
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.ProductCategory.RING
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEvent.SELECT_BASE_RING
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
@@ -10,11 +11,13 @@ import io.nacular.doodle.controls.*
 import io.nacular.doodle.controls.list.DynamicList
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.text.Label
+import io.nacular.doodle.core.Container
 import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
+import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.layout.constraints.fill
@@ -26,16 +29,17 @@ import io.nacular.doodle.utils.Dimension.Width
 import kotlinx.coroutines.*
 
 
-interface IBaseRingListBuilder {
-    fun build(productCategory: ProductCategory): DynamicList<Ring, SimpleMutableListModel<Ring>>
-    fun load()
-    fun clearModel()
+interface IBaseRingsContainer {
     val listCache: MutableMap<ProductCategory, DynamicList<Ring, SimpleMutableListModel<Ring>>>
+    val list: DynamicList<Ring, SimpleMutableListModel<Ring>>
+    val model: SimpleMutableListModel<Ring>
+    fun build(productCategory: ProductCategory): DynamicList<Ring, SimpleMutableListModel<Ring>>
+    fun loadModel()
+    fun clearModel()
     fun destroy()
 }
 
-
-class BaseRingListBuilder(
+class BaseRingsContainer(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
     private val animator: Animator,
@@ -51,15 +55,22 @@ class BaseRingListBuilder(
     private val modals: ModalManager,
     private val menuEventBus: MenuEventBus,
     private val baseProductSelectEventBus: BaseProductSelectEventBus
-) : IBaseRingListBuilder {
+) : IBaseRingsContainer, Container() {
 
-
-    private val mainScope = MainScope() // The scope of BaseRingListModel class, uses Dispatchers.Main.
-
+    private val mainScope = MainScope() // The scope of BaseRingsContainer class, uses Dispatchers.Main.
     override val listCache = mutableMapOf<ProductCategory, DynamicList<Ring, SimpleMutableListModel<Ring>>>()
+    override val model = SimpleMutableListModel<Ring>()
+    override val list = build(RING)
 
-    val model = SimpleMutableListModel<Ring>()
+    init {
+        clipCanvasToBounds = false
+        size = Size(150, 200)
+        loadModel()
+        children += list
+        layout = constrain(list, fill)
+    }
 
+    // TODO Remove from interface and make private?
     override fun build(productCategory: ProductCategory): DynamicList<Ring, SimpleMutableListModel<Ring>> {
         if (listCache.containsKey(productCategory)) {
             return listCache[productCategory]!!
@@ -67,7 +78,7 @@ class BaseRingListBuilder(
             val list = DynamicList(
                 model,
                 selectionModel = SingleItemSelectionModel(),
-                itemVisualizer = RingVisualizer(config),
+                itemVisualizer = BaseRingVisualizer(config),
                 fitContent = setOf(Width, Height)
             ).apply {
                 acceptsThemes = true // true when using inline behaviors, false when not using inline behaviors.
@@ -75,7 +86,7 @@ class BaseRingListBuilder(
 
                 selectionChanged += { list, _, added ->
                     list[added.first()].getOrNull()?.let { selectedRing ->
-                        println("Selected ring name: ${selectedRing.name} file: ${selectedRing.file}")
+                        println("BaseRingsContainer selected ring: ${selectedRing.name} file: ${selectedRing.file}")
                         mainScope.launch {
                             SELECT_BASE_RING.setBaseProductDetail(
                                 selectedRing.name, selectedRing.file, selectedRing.image
@@ -89,16 +100,16 @@ class BaseRingListBuilder(
         }
     }
 
-    override fun clearModel() {
-        model.clear()
-    }
-
-    override fun load() {
+    override fun loadModel() {
         mainScope.launch {
             RingStoreMetadata.allSmallRings.sortedBy { it.first }.map { (name, path) ->
                 model.add(Ring(name, path, mainScope.async { images.load(path)!! }))
             }
         }
+    }
+
+    override fun clearModel() {
+        model.clear()
     }
 
     override fun destroy() {
@@ -109,7 +120,7 @@ class BaseRingListBuilder(
 }
 
 
-class RingListView(
+class BaseRingListView(
     var ring: Ring,
     var index: Int,
     var selected: Boolean,
@@ -150,10 +161,18 @@ class RingListView(
 
 // The Visualizer is designed to recycle view: reconfigure the view,
 // to represent the new ring installed into it (the "infinite" list of items).
-class RingVisualizer(val config: DongxiConfig) : ItemVisualizer<Ring, IndexedItem> {
+class BaseRingVisualizer(val config: DongxiConfig) : ItemVisualizer<Ring, IndexedItem> {
     override fun invoke(item: Ring, previous: View?, context: IndexedItem): View = when (previous) {
-        is RingListView -> previous.apply { update(ring = item, index = context.index, selected = context.selected) }
-        else -> RingListView(ring = item, index = context.index, selected = context.selected, config = config)
+        is BaseRingListView -> previous.apply {
+            update(
+                ring = item,
+                index = context.index,
+                selected = context.selected
+            )
+        }
+
+        else -> BaseRingListView(ring = item, index = context.index, selected = context.selected, config = config)
     }
 }
+
 

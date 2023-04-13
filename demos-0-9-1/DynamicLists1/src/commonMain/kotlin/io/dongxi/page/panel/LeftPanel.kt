@@ -1,15 +1,12 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.model.BaseRingListBuilder
+import io.dongxi.model.BaseRingsContainer
 import io.dongxi.model.ProductCategory.RING
-import io.dongxi.model.Ring
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
-import io.nacular.doodle.controls.SimpleMutableListModel
-import io.nacular.doodle.controls.list.DynamicList
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.drawing.Color
 import io.nacular.doodle.drawing.FontLoader
@@ -71,7 +68,7 @@ class LeftPanel(
         foregroundColor = Color.Transparent
     }
 
-    private val ringListBuilder = BaseRingListBuilder(
+    private val baseRingsContainer = BaseRingsContainer(
         config,
         uiDispatcher,
         animator,
@@ -88,62 +85,21 @@ class LeftPanel(
         menuEventBus,
         baseProductSelectEventBus
     )
-    private val ringList: DynamicList<Ring, SimpleMutableListModel<Ring>> = ringListBuilder.build(RING)
-
-    /*
-    private val container = object : Container() {
-        init {
-            clipCanvasToBounds = false
-
-            if (currentProductCategory == RING) {
-                ringListBuilder.load()
-                children += listOf(tempLabel, ringList)
-                layout = constrain(tempLabel, ringList) { (tempLabelBounds,
-                                                              ringListBounds) ->
-                    tempLabelBounds.top eq 10
-                    tempLabelBounds.left eq 10
-                    tempLabelBounds.width eq parent.width - 10
-                    tempLabelBounds.height eq 40
-
-                    ringListBounds.top eq tempLabelBounds.bottom + 10
-                    ringListBounds.left eq 10
-                    ringListBounds.width eq parent.width - 10
-                    ringListBounds.bottom eq ringListBuilder.model.size * 100
-                }
-
-            } else {
-                children += listOf(tempLabel)
-                layout = HorizontalFlowLayout()
-            }
-        }
-    }
-     */
-
-    /*
-    init {
-        size = Size(200, 200)
-        children += listOf(container)
-        layout = HorizontalFlowLayout()
-    }
-     */
 
 
     init {
+        clipCanvasToBounds = false
         size = Size(200, 200)
-
-        ringListBuilder.load()
-        children += listOf(tempLabel, ringList)
-        layout = constrain(tempLabel, ringList) { (tempLabelBounds,
-                                                      ringListBounds) ->
+        children += listOf(tempLabel, baseRingsContainer)
+        layout = constrain(tempLabel, baseRingsContainer) { tempLabelBounds, baseRingsContainerBounds ->
+            tempLabelBounds.left eq 5
             tempLabelBounds.top eq 10
-            tempLabelBounds.left eq 10
-            tempLabelBounds.width eq parent.width - 10
-            tempLabelBounds.height eq 40
+            tempLabelBounds.bottom eq 26
 
-            ringListBounds.top eq tempLabelBounds.bottom + 10
-            ringListBounds.left eq 10
-            ringListBounds.width eq parent.width - 10
-            ringListBounds.bottom eq ringListBuilder.model.size * 100
+            baseRingsContainerBounds.top eq tempLabelBounds.bottom + 5
+            baseRingsContainerBounds.left eq tempLabelBounds.left
+            baseRingsContainerBounds.width eq parent.width
+            baseRingsContainerBounds.bottom eq parent.bottom - 5
         }
     }
 
@@ -152,8 +108,9 @@ class LeftPanel(
         println("LeftPanel currentProductCategory: $currentProductCategory")
 
         if (currentProductCategory == RING) {
-            ringListBuilder.clearModel()
-            ringListBuilder.load()
+            baseRingsContainer.clearModel()
+            baseRingsContainer.loadModel()
+            baseRingsContainer.relayout()
         }
         relayout()
     }
