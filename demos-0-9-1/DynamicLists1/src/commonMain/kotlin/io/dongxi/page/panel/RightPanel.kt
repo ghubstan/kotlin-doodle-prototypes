@@ -2,6 +2,7 @@ package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.ProductCategory.RING
+import io.dongxi.model.RingStonesContainer
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
@@ -104,6 +105,11 @@ class RightPanel(
 
         tempLabel.text =
             "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
+
+
+        (accessoryListContainer as RingStonesContainer).clearModel()
+        accessoryListContainer.loadModel(currentBaseProduct.name ?: "A")
+        accessoryListContainer.relayout()
 
         relayout()
     }

@@ -68,7 +68,7 @@ class RingStonesContainer(
     init {
         clipCanvasToBounds = false
         size = Size(150, 200)
-        loadModel()
+        loadModel("A")
         children += list
         layout = constrain(list, fill)
     }
@@ -99,9 +99,9 @@ class RingStonesContainer(
         return list
     }
 
-    override fun loadModel() {
+    override fun loadModel(baseProductName: String) {
         mainScope.launch {
-            RingStoneStoreMetadata.getStones("A").sortedBy { it.first }.map { (name, path) ->
+            RingStoneStoreMetadata.getStones(baseProductName).sortedBy { it.first }.map { (name, path) ->
                 model.add(RingStone(name, path, mainScope.async { images.load(path)!! }))
             }
         }
@@ -137,24 +137,13 @@ class RingStoneListView(
         layout = constrain(label, photo) { labelBounds, photoBounds ->
             labelBounds.left eq 5
             labelBounds.centerY eq parent.centerY
-            labelBounds.width eq 145
+            labelBounds.width eq 155
             labelBounds.height.preserve
 
             photoBounds.left eq labelBounds.right + 10
             photoBounds.centerY eq parent.centerY
             photoBounds.width.preserve
             photoBounds.height.preserve
-            /*
-            labelBounds.left eq 5
-            labelBounds.centerY eq parent.centerY
-            labelBounds.width.preserve
-            labelBounds.height.preserve
-
-            photoBounds.left eq labelBounds.right + 20
-            photoBounds.centerY eq parent.centerY
-            photoBounds.width.preserve
-            photoBounds.height.preserve
-             */
         }
     }
 
