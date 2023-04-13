@@ -11,13 +11,13 @@ import io.dongxi.page.PageType.RINGS
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.RingStoneStoreMetadata.getStones
+import io.dongxi.util.ColorUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.core.Container
 import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.Canvas
-import io.nacular.doodle.drawing.Color.Companion.Lightgray
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.drawing.rect
@@ -228,7 +228,7 @@ abstract class AbstractPanel(
 
 
     override fun render(canvas: Canvas) {
-        canvas.rect(bounds.atOrigin, Lightgray)
+        canvas.rect(bounds.atOrigin, ColorUtils.ghostWhite())
     }
 
     // Destroys an instance of RingsWidget.
