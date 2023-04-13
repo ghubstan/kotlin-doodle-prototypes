@@ -54,4 +54,9 @@ class FooterPanel(
     init {
         size = Size(100, 600)
     }
+
+
+    override fun layoutForCurrentProductCategory() {
+        println("FooterPanel currentProductCategory: $currentProductCategory")
+    }
 }

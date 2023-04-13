@@ -169,4 +169,7 @@ class BaseGridPanel(
 
     }
 
+    override fun layoutForCurrentProductCategory() {
+
+    }
 }

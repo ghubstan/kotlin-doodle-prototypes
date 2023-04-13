@@ -49,14 +49,13 @@ abstract class AbstractPanel(
 
     val mainScope = MainScope() // The scope of Panel class (and subclasses), uses Dispatchers.Main.
 
-    lateinit var currentProductCategory: ProductCategory
+    var currentProductCategory: ProductCategory = NONE // Default value.
     lateinit var currentBaseProduct: SelectedBaseProduct
 
     init {
         mainScope.launch {
             menuEventBus.events.filterNotNull().collectLatest {
-
-                println("Received ${it.name} event")
+                // println("${simpleClassName(this)} Received ${it.name} event")
 
                 when (it) {
                     GO_HOME -> {
@@ -92,12 +91,14 @@ abstract class AbstractPanel(
                     }
                 }
 
-                // Now update the view
-                println("Current ProductCategory: $currentProductCategory")
-                // updateView(currentPage)
+                // println("${simpleClassName(this)} current ProductCategory: $currentProductCategory")
+                // Now update the panel with the current product category, if there is one.
+                layoutForCurrentProductCategory()
             }
         }
     }
+
+    abstract fun layoutForCurrentProductCategory()
 
     override fun render(canvas: Canvas) {
         canvas.rect(bounds.atOrigin, Lightgray)

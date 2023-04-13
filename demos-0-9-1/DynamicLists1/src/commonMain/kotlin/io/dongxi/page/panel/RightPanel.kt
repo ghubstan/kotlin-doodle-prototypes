@@ -82,9 +82,13 @@ class RightPanel(
 
                 tempLabel.text =
                     "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
-                
+
                 relayout()
             }
         }
+    }
+
+    override fun layoutForCurrentProductCategory() {
+        println("RightPanel currentProductCategory: $currentProductCategory")
     }
 }

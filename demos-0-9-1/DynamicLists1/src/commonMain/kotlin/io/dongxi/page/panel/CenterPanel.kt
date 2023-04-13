@@ -86,6 +86,9 @@ class CenterPanel(
                 relayout()
             }
         }
+    }
 
+    override fun layoutForCurrentProductCategory() {
+        println("CenterPanel currentProductCategory: $currentProductCategory")
     }
 }

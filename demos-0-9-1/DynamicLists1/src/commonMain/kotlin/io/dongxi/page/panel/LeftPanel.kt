@@ -88,4 +88,8 @@ class LeftPanel(
         }
     }
 
+    override fun layoutForCurrentProductCategory() {
+        println("LeftPanel currentProductCategory: $currentProductCategory")
+    }
+
 }
