@@ -64,10 +64,10 @@ class CompleteRingContainer(
         defaultStoneMetadata.second,
         mainScope.async { images.load(defaultStoneMetadata.second)!! })
 
-    private val ringPhotoCanvasDestination = Rectangle(5, 15, 160, 160)
+    private val ringPhotoCanvasDestination = Rectangle(5, 15, 190, 190)
     private val ringPhoto = LazyCompleteRingPhotoView(ring.image, ringPhotoCanvasDestination)
 
-    private val stonePhotoCanvasDestination = Rectangle(5, 15, 30, 30)
+    private val stonePhotoCanvasDestination = Rectangle(5, 15, 35, 35)
     private val stonePhoto = LazyCompleteRingPhotoView(stone.image, stonePhotoCanvasDestination)
 
 
