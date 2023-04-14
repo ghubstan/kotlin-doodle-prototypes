@@ -111,14 +111,7 @@ class BaseRingsContainer(
     override fun loadModel() {
         mainScope.launch {
             RingStoreMetadata.allSmallRings.sortedBy { it.first }.map { (name, path) ->
-                // model.add(Ring(name, path, mainScope.async { images.load(path)!! }))
-
-                // TODO How do I scale a DeferredImage, or any Image?
-                val img = mainScope.async {
-                    images.load(path)!!
-                }
-
-                model.add(Ring(name, path, img))
+                model.add(Ring(name, path, mainScope.async { images.load(path)!! }))
             }
         }
     }
