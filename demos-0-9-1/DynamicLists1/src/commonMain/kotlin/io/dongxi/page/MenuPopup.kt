@@ -63,7 +63,7 @@ class MenuPopup(
         }
     }
 
-    private val linkOffset = 10
+    private val linkOffset = 5
     private val verticalLinkSpacing = 24
 
     init {
@@ -82,31 +82,37 @@ class MenuPopup(
 
             homeLinkBounds.top eq 40 // Avoid overlapping page name label.
             homeLinkBounds.left eq linkOffset
+            homeLinkBounds.right eq parent.right - linkOffset
             homeLinkBounds.height eq verticalLinkSpacing
 
             ringsLinkBounds.top eq homeLinkBounds.bottom + linkOffset
             ringsLinkBounds.left eq linkOffset
+            ringsLinkBounds.right eq parent.right - linkOffset
             ringsLinkBounds.height eq verticalLinkSpacing
 
             necklacesLinkBounds.top eq ringsLinkBounds.bottom + linkOffset
             necklacesLinkBounds.left eq linkOffset
+            necklacesLinkBounds.right eq parent.right - linkOffset
             necklacesLinkBounds.height eq verticalLinkSpacing
 
             scapularsLinkBounds.top eq necklacesLinkBounds.bottom + linkOffset
             scapularsLinkBounds.left eq linkOffset
+            scapularsLinkBounds.right eq parent.right - linkOffset
             scapularsLinkBounds.height eq verticalLinkSpacing
 
             braceletsLinkBounds.top eq scapularsLinkBounds.bottom + linkOffset
             braceletsLinkBounds.left eq linkOffset
+            braceletsLinkBounds.right eq parent.right - linkOffset
             braceletsLinkBounds.height eq verticalLinkSpacing
-
 
             earRingsLinkBounds.top eq braceletsLinkBounds.bottom + linkOffset
             earRingsLinkBounds.left eq linkOffset
+            earRingsLinkBounds.right eq parent.right - linkOffset
             earRingsLinkBounds.height eq verticalLinkSpacing
 
             aboutLinkBounds.top eq earRingsLinkBounds.bottom + linkOffset
             aboutLinkBounds.left eq linkOffset
+            aboutLinkBounds.right eq parent.right - linkOffset
             aboutLinkBounds.height eq verticalLinkSpacing
 
         }

@@ -41,19 +41,19 @@ class DynamicListsApp(
 
         appScope.launch(uiDispatcher) {
             val titleFont = fonts {
-                size = 26; weight = 400; families = listOf("Helvetica Neue", "Helvetica", "Arial", "sans-serif")
+                size = 24; weight = 400; families = listOf("Helvetica Neue", "Helvetica", "Arial", "sans-serif")
             }!!
             val menuLinkFont = fonts {
-                size = 24; weight = 300; families = listOf("Arial")
+                size = 20; weight = 250; families = listOf("Helvetica Neue", "Helvetica", "Arial", "sans-serif")
             }!!
-            val listFont = fonts(titleFont) { size = 14 }!!
-            val tabPanelFont = fonts(titleFont) { size = 12; weight = 400 }!!
+            val listFont = fonts(titleFont) { size = 10 }!!
+            val panelDebugFont = fonts(titleFont) { size = 8; weight = 100 }!!
             val footerFont = fonts(titleFont) { size = 10 }!!
             val config = DongxiConfig(
                 listFont = listFont,
                 menuLinkFont = menuLinkFont,
                 titleFont = titleFont,
-                tabPanelFont = tabPanelFont,
+                panelDebugFont = panelDebugFont,
                 footerFont = footerFont,
                 filterFont = fonts(titleFont) { size = 14 }!!,
                 boldFooterFont = fonts(footerFont) { weight = 400 }!!,

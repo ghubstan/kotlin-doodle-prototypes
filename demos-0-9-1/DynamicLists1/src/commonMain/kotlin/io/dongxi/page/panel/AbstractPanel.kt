@@ -18,7 +18,6 @@ import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.core.Container
-import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.Canvas
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
@@ -51,7 +50,7 @@ abstract class AbstractPanel(
     val menuEventBus: MenuEventBus,
     val baseProductSelectEventBus: BaseProductSelectEventBus,
     val accessorySelectEventBus: AccessorySelectEventBus
-) : IPanel, View() {
+) : IPanel, Container() {
 
     val mainScope = MainScope() // The scope of Panel class (and subclasses), uses Dispatchers.Main.
 

@@ -14,6 +14,7 @@ import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
+import io.nacular.doodle.geometry.Rectangle
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
@@ -63,8 +64,12 @@ class CompleteRingContainer(
         defaultStoneMetadata.second,
         mainScope.async { images.load(defaultStoneMetadata.second)!! })
 
-    private val ringPhoto = LazyPhotoView(ring.image)
-    private val stonePhoto = LazyPhotoView(stone.image)
+    private val ringPhotoCanvasDestination = Rectangle(5, 15, 190, 190)
+    private val ringPhoto = LazyCompleteRingPhotoView(ring.image, ringPhotoCanvasDestination)
+
+    private val stonePhotoCanvasDestination = Rectangle(5, 15, 35, 35)
+    private val stonePhoto = LazyCompleteRingPhotoView(stone.image, stonePhotoCanvasDestination)
+
 
     init {
         clipCanvasToBounds = false
@@ -78,8 +83,8 @@ class CompleteRingContainer(
             ringPhotoBounds.width.preserve
             ringPhotoBounds.height.preserve
 
-            stonePhotoBounds.left eq ringPhotoBounds.centerX - 85
-            stonePhotoBounds.centerY eq ringPhotoBounds.centerY - 85
+            stonePhotoBounds.left eq 50
+            stonePhotoBounds.centerY eq 75
             stonePhotoBounds.width.preserve
             stonePhotoBounds.height.preserve
         }

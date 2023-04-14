@@ -47,7 +47,7 @@ class DummyBaseProductsContainer(
     private val mainScope = MainScope() // The scope of DummyBaseProductsContainer class, uses Dispatchers.Main.
 
     private val tempLabel = io.nacular.doodle.controls.text.Label(
-        "Dummy List (TODO)",
+        "TODO",
         Middle,
         Center
     ).apply {

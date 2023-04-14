@@ -104,7 +104,7 @@ enum class BaseProductSelectEvent(val selectedBaseProduct: SelectedBaseProduct) 
             selectedBaseProduct.image = null
         }
     },
-    
+
     SELECT_BASE_SCAPULAR(SelectedBaseProduct(SCAPULAR, null, null, null)) {
         override fun setBaseProductDetail(name: String, file: String, image: Deferred<Image>?) {
             selectedBaseProduct.name = name

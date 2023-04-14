@@ -8,22 +8,20 @@ import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
-import io.nacular.doodle.controls.panels.GridPanel
-import io.nacular.doodle.controls.panels.GridPanel.Companion.FitPanel
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
-import io.nacular.doodle.layout.constraints.fill
+import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 
-class BaseGridPanel(
+class BaseContainer(
     pageType: PageType,
     config: DongxiConfig,
     uiDispatcher: CoroutineDispatcher,
@@ -60,6 +58,26 @@ class BaseGridPanel(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
+
+    private val topPanel = TopPanel(
+        pageType,
+        config,
+        uiDispatcher,
+        animator,
+        pathMetrics,
+        fonts,
+        theme,
+        themes,
+        images,
+        textMetrics,
+        linkStyler,
+        focusManager,
+        popups,
+        modals,
+        menuEventBus,
+        baseProductSelectEventBus,
+        accessorySelectEventBus
+    )
 
     private val leftPanel = LeftPanel(
         pageType,
@@ -141,33 +159,47 @@ class BaseGridPanel(
         accessorySelectEventBus
     )
 
-    fun gridPanel(): GridPanel {
-        val panel = GridPanel().apply {
-            // Controls how items are aligned within the grid cells. Defaults to [fill].
-            cellAlignment = fill
-            // Determines the space between rows. Defaults = `0.0`
-            rowSpacing = { 10.0 }
-            // Determines the space between columns. Defaults = `0.0`
-            columnSpacing = { 10.0 }
-            // Controls how rows are sized within the panel. Defaults = [FitContent]
-            rowSizingPolicy = FitPanel
-            // Controls how columns are sized within the panel. Defaults = [FitContent]
-            columnSizingPolicy = FitPanel // FitContent, or custom policy
+    init {
+        size = Size(100, 100)
 
-            // Left, Center, Right panels each occupy on column, and span 10 rows.
-            add(leftPanel, row = 0, column = 0, rowSpan = 10)
-            add(centerPanel, row = 0, column = 1, rowSpan = 10)
-            add(rightPanel, row = 0, column = 2, rowSpan = 10)
+        children += topPanel
+        children += leftPanel
+        children += centerPanel
+        children += rightPanel
 
-            // Footer is one row, spanning all 3 columns.
-            add(footerPanel, row = 10, columnSpan = 3, rowSpan = 1)
+        val inset = 5
 
-            // Need an initialize size, but controlled by parent's layout.
-            size = Size(300, 200)
+        layout = constrain(
+            topPanel,
+            leftPanel,
+            centerPanel,
+            rightPanel
+        ) { topPanelBounds,
+            leftPanelBounds,
+            centerPanelBounds,
+            rightPanelBounds ->
 
-            Resizer(this).apply { movable = false }
+            topPanelBounds.top eq inset
+            topPanelBounds.left eq inset
+            topPanelBounds.right eq parent.right - inset
+            topPanelBounds.bottom eq parent.height * 0.08
+
+            leftPanelBounds.top eq topPanelBounds.bottom + inset
+            leftPanelBounds.left eq inset
+            leftPanelBounds.right eq parent.right * 0.20 - inset
+            leftPanelBounds.bottom eq parent.bottom - inset
+
+            centerPanelBounds.top eq topPanelBounds.bottom + inset
+            centerPanelBounds.left eq leftPanelBounds.right + inset
+            centerPanelBounds.right eq parent.right * 0.80 - inset
+            centerPanelBounds.bottom eq parent.bottom - inset
+
+            rightPanelBounds.top eq topPanelBounds.bottom + inset
+            rightPanelBounds.left eq centerPanelBounds.right + inset
+            rightPanelBounds.right eq parent.right - inset // The rest of the horizontal space
+            rightPanelBounds.bottom eq parent.bottom - inset
         }
-        return panel
+        Resizer(this)
     }
 
     override fun layoutForCurrentProductCategory() {

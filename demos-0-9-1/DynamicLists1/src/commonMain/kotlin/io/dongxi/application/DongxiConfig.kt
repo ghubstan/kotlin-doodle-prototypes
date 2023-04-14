@@ -12,7 +12,7 @@ data class DongxiConfig(
     val titleFont: Font,
     val lineColor: Color = Color(0xEDEDEDu),
     val filterFont: Font,
-    val tabPanelFont: Font,
+    val panelDebugFont: Font,
     val footerFont: Font,
     val headerColor: Color = Color(0xAF2F2Fu) opacity 0.15f,
     val deleteColor: Color = Color(0xCC9A9Au),

@@ -53,24 +53,6 @@ class BaseView(
     private val baseProductSelectEventBus = BaseProductSelectEventBus()
     private val accessorySelectEventBus = AccessorySelectEventBus()
 
-    private val menu = Menu(
-        config,
-        uiDispatcher,
-        animator,
-        pathMetrics,
-        fonts,
-        theme,
-        themes,
-        images,
-        textMetrics,
-        linkStyler,
-        focusManager,
-        popups,
-        modals,
-        menuEventBus,
-    ).apply {
-    }
-
     private val pageFactory = PageFactory(
         config,
         uiDispatcher,
@@ -90,8 +72,8 @@ class BaseView(
         accessorySelectEventBus
     )
 
-    // private var currentPage = pageFactory.buildPage(HOME) as View
-    private var currentPage = pageFactory.buildPage(RINGS) as View
+    private var currentPage = pageFactory.buildPage(HOME) as View
+    // private var currentPage = pageFactory.buildPage(RINGS) as View
 
     init {
 
@@ -138,31 +120,8 @@ class BaseView(
             }
         }
 
-        children += listOf(currentPage, menu)
-        layout = constrain(currentPage, menu) { currentPageBounds, menuBounds ->
-
-            currentPageBounds.edges eq parent.edges
-
-            menuBounds.top eq 5
-            menuBounds.right eq parent.right - parent.right * 0.08
-            menuBounds.left eq parent.right - parent.right * 0.20
-            // menuBounds.right eq parent.right - 60
-            // menuBounds.left eq parent.right - 160
-            menuBounds.height eq 100
-        }
-
-        /*
-        // Only constrain menu since you need to add/remove constraint for the other view dynamically.
-        children += listOf(menu)
-        layout = constrain(menu) { menuBounds ->
-            menuBounds.top eq 10
-            menuBounds.right eq parent.right - 10
-            menuBounds.left eq parent.right - 100
-            menuBounds.height eq 100
-        }
-        // When I try this, neither the home page nor menu are displayed, even after
-        // calling updateView(currentPage) on the line above  children += listOf(menu)
-        */
+        children += currentPage
+        layout = constrain(currentPage, fill)
     }
 
     override fun render(canvas: Canvas) {
