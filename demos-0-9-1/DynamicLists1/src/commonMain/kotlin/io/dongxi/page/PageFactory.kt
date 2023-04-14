@@ -1,7 +1,6 @@
 package io.dongxi.page
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.page.PageType.*
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
@@ -46,222 +45,32 @@ class PageFactory(
     override val pageCache = mutableMapOf<PageType, IPage>()
 
     override fun buildPage(pageType: PageType): IPage {
-
-        // TODO Refactor out this when(pageType);  just pass in the pageType param to Page() ctor.
-
-        when (pageType) {
-            HOME -> {
-                if (pageCache.containsKey(pageType)) {
-                    return pageCache[pageType]!!
-                } else {
-                    val page = Page(
-                        HOME,
-                        config,
-                        uiDispatcher,
-                        animator,
-                        pathMetrics,
-                        fonts,
-                        theme,
-                        themes,
-                        images,
-                        textMetrics,
-                        linkStyler,
-                        focusManager,
-                        popups,
-                        modals,
-                        menuEventBus,
-                        baseProductSelectEventBus,
-                        accessorySelectEventBus
-                    ).apply {
-                        Resizer(this).apply { }
-                    }
-                    pageCache[pageType] = page
-                    return page
-                }
+        if (pageCache.containsKey(pageType)) {
+            return pageCache[pageType]!!
+        } else {
+            val page = Page(
+                pageType,
+                config,
+                uiDispatcher,
+                animator,
+                pathMetrics,
+                fonts,
+                theme,
+                themes,
+                images,
+                textMetrics,
+                linkStyler,
+                focusManager,
+                popups,
+                modals,
+                menuEventBus,
+                baseProductSelectEventBus,
+                accessorySelectEventBus
+            ).apply {
+                Resizer(this).apply { }
             }
-
-            RINGS -> {
-                if (pageCache.containsKey(pageType)) {
-                    return pageCache[pageType]!!
-                } else {
-                    val page = Page(
-                        RINGS,
-                        config,
-                        uiDispatcher,
-                        animator,
-                        pathMetrics,
-                        fonts,
-                        theme,
-                        themes,
-                        images,
-                        textMetrics,
-                        linkStyler,
-                        focusManager,
-                        popups,
-                        modals,
-                        menuEventBus,
-                        baseProductSelectEventBus,
-                        accessorySelectEventBus
-                    ).apply {
-                        Resizer(this).apply { }
-                    }
-                    pageCache[pageType] = page
-                    return page
-                }
-            }
-
-            NECKLACES -> {
-                if (pageCache.containsKey(pageType)) {
-                    return pageCache[pageType]!!
-                } else {
-                    val page = Page(
-                        NECKLACES,
-                        config,
-                        uiDispatcher,
-                        animator,
-                        pathMetrics,
-                        fonts,
-                        theme,
-                        themes,
-                        images,
-                        textMetrics,
-                        linkStyler,
-                        focusManager,
-                        popups,
-                        modals,
-                        menuEventBus,
-                        baseProductSelectEventBus,
-                        accessorySelectEventBus
-                    ).apply {
-                        Resizer(this).apply { }
-                    }
-                    pageCache[pageType] = page
-                    return page
-                }
-            }
-
-            SCAPULARS -> {
-                if (pageCache.containsKey(pageType)) {
-                    return pageCache[pageType]!!
-                } else {
-                    val page = Page(
-                        SCAPULARS,
-                        config,
-                        uiDispatcher,
-                        animator,
-                        pathMetrics,
-                        fonts,
-                        theme,
-                        themes,
-                        images,
-                        textMetrics,
-                        linkStyler,
-                        focusManager,
-                        popups,
-                        modals,
-                        menuEventBus,
-                        baseProductSelectEventBus,
-                        accessorySelectEventBus
-                    ).apply {
-                        Resizer(this).apply { }
-                    }
-                    pageCache[pageType] = page
-                    return page
-                }
-            }
-
-
-            BRACELETS -> {
-                if (pageCache.containsKey(pageType)) {
-                    return pageCache[pageType]!!
-                } else {
-                    val page = Page(
-                        BRACELETS,
-                        config,
-                        uiDispatcher,
-                        animator,
-                        pathMetrics,
-                        fonts,
-                        theme,
-                        themes,
-                        images,
-                        textMetrics,
-                        linkStyler,
-                        focusManager,
-                        popups,
-                        modals,
-                        menuEventBus,
-                        baseProductSelectEventBus,
-                        accessorySelectEventBus
-                    ).apply {
-                        Resizer(this).apply { }
-                    }
-                    pageCache[pageType] = page
-                    return page
-                }
-            }
-
-
-            EAR_RINGS -> {
-                if (pageCache.containsKey(pageType)) {
-                    return pageCache[pageType]!!
-                } else {
-                    val page = Page(
-                        EAR_RINGS,
-                        config,
-                        uiDispatcher,
-                        animator,
-                        pathMetrics,
-                        fonts,
-                        theme,
-                        themes,
-                        images,
-                        textMetrics,
-                        linkStyler,
-                        focusManager,
-                        popups,
-                        modals,
-                        menuEventBus,
-                        baseProductSelectEventBus,
-                        accessorySelectEventBus
-                    ).apply {
-                        Resizer(this).apply { }
-                    }
-                    pageCache[pageType] = page
-                    return page
-                }
-            }
-
-
-            ABOUT -> {
-                if (pageCache.containsKey(pageType)) {
-                    return pageCache[pageType]!!
-                } else {
-                    val page = Page(
-                        ABOUT,
-                        config,
-                        uiDispatcher,
-                        animator,
-                        pathMetrics,
-                        fonts,
-                        theme,
-                        themes,
-                        images,
-                        textMetrics,
-                        linkStyler,
-                        focusManager,
-                        popups,
-                        modals,
-                        menuEventBus,
-                        baseProductSelectEventBus,
-                        accessorySelectEventBus
-                    ).apply {
-                        Resizer(this).apply { }
-                    }
-                    pageCache[pageType] = page
-                    return page
-                }
-            }
+            pageCache[pageType] = page
+            return page
         }
     }
 }
