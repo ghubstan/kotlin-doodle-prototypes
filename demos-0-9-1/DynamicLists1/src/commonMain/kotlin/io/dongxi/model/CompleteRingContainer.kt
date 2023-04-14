@@ -84,7 +84,7 @@ class CompleteRingContainer(
             ringPhotoBounds.height.preserve
 
             stonePhotoBounds.left eq 50
-            stonePhotoBounds.centerY eq 65
+            stonePhotoBounds.centerY eq 70
             stonePhotoBounds.width.preserve
             stonePhotoBounds.height.preserve
         }
