@@ -14,7 +14,6 @@ import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.core.Container
 import io.nacular.doodle.core.View
-import io.nacular.doodle.drawing.Color
 import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
@@ -32,9 +31,7 @@ import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension.Height
 import io.nacular.doodle.utils.Dimension.Width
-import io.nacular.doodle.utils.HorizontalAlignment
 import io.nacular.doodle.utils.HorizontalAlignment.Center
-import io.nacular.doodle.utils.VerticalAlignment
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.*
 
@@ -147,9 +144,15 @@ class RingStoneListView(
     private val photo = LazyRingStonePhotoView(stone.image, photoCanvasDestination)
 
     init {
-        children += label
+        // No label, does not fit phone.
+        // children += label
+
         children += photo
 
+        layout = constrain(photo, fill)
+
+        /*
+        // No label, does not fit phone.
         layout = constrain(label, photo) { labelBounds, photoBounds ->
             labelBounds.left eq 5
             labelBounds.centerY eq parent.centerY
@@ -161,6 +164,7 @@ class RingStoneListView(
             photoBounds.width.preserve
             photoBounds.height.preserve
         }
+         */
     }
 
     fun update(stone: RingStone, index: Int, selected: Boolean) {
