@@ -6,14 +6,13 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.util.ColorUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.text.Label
+import io.nacular.doodle.drawing.*
 import io.nacular.doodle.drawing.Color.Companion.Black
-import io.nacular.doodle.drawing.FontLoader
-import io.nacular.doodle.drawing.TextMetrics
-import io.nacular.doodle.drawing.paint
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
@@ -23,7 +22,8 @@ import io.nacular.doodle.text.StyledText
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.utils.Dimension
+import io.nacular.doodle.utils.Dimension.Height
+import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
@@ -67,8 +67,8 @@ class TopPanel(
 ) {
 
     private val labelPageTitle = Label(pageType.pageTitle, Middle, Center).apply {
-        height = 26.0
-        fitText = setOf(Dimension.Width)
+        height = 20.0
+        fitText = setOf(Width, Height)
         styledText = StyledText(text, config.titleFont, Black.paint)
     }
 
@@ -98,17 +98,20 @@ class TopPanel(
         layout = constrain(labelPageTitle, menu) { labelPageTitleBounds, menuBounds ->
             labelPageTitleBounds.top eq 5
             labelPageTitleBounds.centerX eq parent.centerX
-            labelPageTitleBounds.bottom eq 35
+            labelPageTitleBounds.centerY eq parent.centerY
+            labelPageTitleBounds.height.preserve
 
-            menuBounds.top eq 5
-            menuBounds.right eq parent.right - parent.right * 0.08
-            menuBounds.left eq parent.right - parent.right * 0.20
-            // menuBounds.right eq parent.right - 60
-            // menuBounds.left eq parent.right - 160
-            menuBounds.height eq 100
+            menuBounds.top eq 2
+            menuBounds.centerY eq parent.centerY
+            menuBounds.left eq parent.width * 0.80
+            menuBounds.right eq parent.right - 5
+            menuBounds.height eq parent.height - 5
         }
     }
 
+    override fun render(canvas: Canvas) {
+        canvas.rect(bounds.atOrigin, ColorUtils.antiFlashWhite())
+    }
 
     override fun layoutForCurrentProductCategory() {
         // noop

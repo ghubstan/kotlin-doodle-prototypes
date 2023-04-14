@@ -14,10 +14,11 @@ import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
-import io.nacular.doodle.layout.HorizontalFlowLayout
+import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 
 class BaseContainer(
@@ -161,8 +162,20 @@ class BaseContainer(
     init {
         size = Size(100, 100)
 
-        children += listOf(topPanel)
-        layout = HorizontalFlowLayout()
+        children += topPanel
+        children += leftPanel
+        layout = constrain(topPanel, leftPanel) { topPanelBounds, leftPanelBounds ->
+            topPanelBounds.top eq 5
+            topPanelBounds.left eq 5
+            topPanelBounds.right eq parent.right - 5
+            topPanelBounds.bottom eq parent.height * 0.08
+
+            leftPanelBounds.top eq topPanelBounds.bottom + 5
+            leftPanelBounds.left eq 5
+            leftPanelBounds.right eq parent.right - 5
+            leftPanelBounds.bottom eq parent.bottom - 5
+        }
+        Resizer(this)
     }
 
     override fun layoutForCurrentProductCategory() {

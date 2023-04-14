@@ -12,7 +12,6 @@ import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
-import io.nacular.doodle.layout.constraints.Strength
 import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
@@ -69,21 +68,8 @@ class Menu(
 
         pointerChanged += clicked {
             popups.show(menuPopup, relativeTo = this) { menuPopupBounds, mainViewBounds ->
-                // Size and position popup.
-                (menuPopupBounds.top eq mainViewBounds.y)..Strength.Strong
-                (menuPopupBounds.left eq mainViewBounds.right + 10)..Strength.Strong
-                (menuPopupBounds.bottom lessEq mainViewBounds.bottom - 5)..Strength.Strong
-
-                /*
-                menuPopupBounds.top greaterEq 5
-                menuPopupBounds.left greaterEq 5
-                menuPopupBounds.right lessEq parent.right - 5
-                menuPopupBounds.height eq 290 // Do not allow menu links to be hidden during vertical resize.
-                menuPopupBounds.width eq parent.width * 0.20
-                 */
-
                 menuPopupBounds.top eq 5
-                menuPopupBounds.left eq parent.right - parent.right * 0.45
+                menuPopupBounds.left eq parent.right - parent.right * 0.40
                 menuPopupBounds.right eq parent.right - parent.right * 0.08
                 menuPopupBounds.height eq 290 // Do not allow menu links to be hidden during vertical resize.
             }

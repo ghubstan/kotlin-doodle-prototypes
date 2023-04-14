@@ -8,13 +8,16 @@ import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.RingStoreMetadata
+import io.dongxi.util.ColorUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.text.Label
+import io.nacular.doodle.drawing.Canvas
 import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
+import io.nacular.doodle.drawing.rect
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
@@ -117,6 +120,10 @@ class LeftPanel(
             baseRingsContainerBounds.width eq parent.width
             baseRingsContainerBounds.bottom eq parent.bottom - 5
         }
+    }
+
+    override fun render(canvas: Canvas) {
+        canvas.rect(bounds.atOrigin, ColorUtils.floralWhite())
     }
 
     override fun layoutForCurrentProductCategory() {
