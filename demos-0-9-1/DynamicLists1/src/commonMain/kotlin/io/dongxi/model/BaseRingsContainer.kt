@@ -139,7 +139,7 @@ class BaseRingListView(
         styledText = StyledText(text, config.listFont, Black.paint)
     }
 
-    private val photoCanvasDestination = Rectangle(5, 5, 30, 30)
+    private val photoCanvasDestination = Rectangle(5, 15, 30, 30)
     private val photo = LazyBaseRingPhotoView(ring.image, photoCanvasDestination)
 
     init {
