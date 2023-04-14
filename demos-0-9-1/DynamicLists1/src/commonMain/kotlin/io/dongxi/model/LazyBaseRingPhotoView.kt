@@ -11,6 +11,10 @@ import kotlinx.coroutines.job
 
 /**
  * Release v0.9.1 LazyPhoto impl is missing var pendingImage by observable(pendingImage) ...
+ *
+ * TODO
+ * All these LazyPhotoView implementations can be refactored to one after being sure how to use them for different
+ * kinds of images.
  */
 class LazyBaseRingPhotoView(pendingImage: Deferred<Image>, private val canvasDestination: Rectangle) : View() {
 
