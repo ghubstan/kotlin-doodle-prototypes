@@ -165,10 +165,20 @@ class BaseContainer(
         children += topPanel
         children += leftPanel
         children += centerPanel
+        children += rightPanel
 
         val inset = 5
 
-        layout = constrain(topPanel, leftPanel, centerPanel) { topPanelBounds, leftPanelBounds, centerPanelBounds ->
+        layout = constrain(
+            topPanel,
+            leftPanel,
+            centerPanel,
+            rightPanel
+        ) { topPanelBounds,
+            leftPanelBounds,
+            centerPanelBounds,
+            rightPanelBounds ->
+
             topPanelBounds.top eq inset
             topPanelBounds.left eq inset
             topPanelBounds.right eq parent.right - inset
@@ -183,6 +193,11 @@ class BaseContainer(
             centerPanelBounds.left eq leftPanelBounds.right + inset
             centerPanelBounds.right eq parent.right * 0.80 - inset
             centerPanelBounds.bottom eq parent.bottom - inset
+
+            rightPanelBounds.top eq topPanelBounds.bottom + inset
+            rightPanelBounds.left eq centerPanelBounds.right + inset
+            rightPanelBounds.right eq parent.right * 0.20 - inset
+            rightPanelBounds.bottom eq parent.bottom - inset
         }
         Resizer(this)
     }

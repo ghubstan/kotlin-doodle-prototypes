@@ -18,6 +18,7 @@ import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
+import io.nacular.doodle.geometry.Rectangle
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
@@ -131,7 +132,8 @@ class RingStoneListView(
 
     private val label = Label(stone.name)
 
-    private val photo = LazyPhotoView(stone.image)
+    private val photoCanvasDestination = Rectangle(5, 15, 30, 30)
+    private val photo = LazyRingStonePhotoView(stone.image, photoCanvasDestination)
 
     init {
         children += label
