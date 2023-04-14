@@ -196,7 +196,7 @@ class BaseContainer(
 
             rightPanelBounds.top eq topPanelBounds.bottom + inset
             rightPanelBounds.left eq centerPanelBounds.right + inset
-            rightPanelBounds.right eq parent.right * 0.20 - inset
+            rightPanelBounds.right eq parent.right - inset // The rest of the horizontal space
             rightPanelBounds.bottom eq parent.bottom - inset
         }
         Resizer(this)
