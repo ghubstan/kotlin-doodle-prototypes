@@ -89,7 +89,7 @@ class LeftPanel(
         // Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack Hack
         if (pageType.productCategory == RING) {
             if (currentBaseProduct.name == null) {
-                println("LeftPanel WTF! $currentBaseProduct")
+                println("LeftPanel has NULL $currentBaseProduct  WTF!")
 
                 // TODO Fix design bug:  What is selected product (size)?  Which is it, LARGE or small?
                 // val defaultRingMetadata = RingStoreMetadata.getLargeRingMetadata("A")

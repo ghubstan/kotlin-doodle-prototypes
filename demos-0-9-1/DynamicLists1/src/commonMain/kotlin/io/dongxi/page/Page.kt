@@ -1,7 +1,7 @@
 package io.dongxi.page
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.page.panel.BaseGridPanel
+import io.dongxi.page.panel.BaseContainer
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
@@ -66,7 +66,7 @@ class Page(
         styledText = StyledText(text, config.titleFont, Color.Black.paint)
     }
 
-    private val gridPanel = BaseGridPanel(
+    private val baseContainer = BaseContainer(
         pageType,
         config,
         uiDispatcher,
@@ -84,20 +84,20 @@ class Page(
         menuEventBus,
         baseProductSelectEventBus,
         accessorySelectEventBus
-    ).gridPanel()
+    )
 
 
     init {
-        children += listOf(labelPageTitle, gridPanel)
-        layout = constrain(labelPageTitle, gridPanel) { titleBounds, gridPanelBounds ->
+        children += listOf(labelPageTitle, baseContainer)
+        layout = constrain(labelPageTitle, baseContainer) { titleBounds, baseContainerBounds ->
             titleBounds.top eq 10
             titleBounds.centerX eq parent.centerX
             titleBounds.height eq 30
 
-            gridPanelBounds.top eq titleBounds.bottom + 10
-            gridPanelBounds.centerX eq parent.centerX
-            gridPanelBounds.width eq parent.width - 10
-            gridPanelBounds.bottom eq parent.bottom - 10
+            baseContainerBounds.top eq titleBounds.bottom + 10
+            baseContainerBounds.centerX eq parent.centerX
+            baseContainerBounds.width eq parent.width - 10
+            baseContainerBounds.bottom eq parent.bottom - 10
         }
     }
 
