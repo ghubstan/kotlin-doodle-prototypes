@@ -140,7 +140,7 @@ class RingStoneListView(
         styledText = StyledText(text, config.listFont, Black.paint)
     }
 
-    private val photoCanvasDestination = Rectangle(5, 15, 30, 30)
+    private val photoCanvasDestination = Rectangle(10, 15, 30, 30)
     private val photo = LazyRingStonePhotoView(stone.image, photoCanvasDestination)
 
     init {
