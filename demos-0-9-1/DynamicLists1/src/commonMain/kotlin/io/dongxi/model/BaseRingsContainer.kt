@@ -13,12 +13,17 @@ import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.core.Container
 import io.nacular.doodle.core.View
+import io.nacular.doodle.drawing.Canvas
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
+import io.nacular.doodle.geometry.Rectangle
 import io.nacular.doodle.geometry.Size
+import io.nacular.doodle.image.Image
 import io.nacular.doodle.image.ImageLoader
+import io.nacular.doodle.image.height
+import io.nacular.doodle.image.width
 import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
@@ -105,7 +110,14 @@ class BaseRingsContainer(
     override fun loadModel() {
         mainScope.launch {
             RingStoreMetadata.allSmallRings.sortedBy { it.first }.map { (name, path) ->
-                model.add(Ring(name, path, mainScope.async { images.load(path)!! }))
+                // model.add(Ring(name, path, mainScope.async { images.load(path)!! }))
+
+                // TODO How do I scale a DeferredImage, or any Image?
+                val img = mainScope.async {
+                    images.load(path)!!
+                }
+
+                model.add(Ring(name, path, img))
             }
         }
     }
@@ -121,6 +133,27 @@ class BaseRingsContainer(
     }
 }
 
+/**
+ * Simple View that displays an image and ensures its aspect ratio.
+ */
+private class FixedAspectPhoto(private var image: Image) : View() {
+    private val aspectRation = image.width / image.height
+
+    init {
+        size = image.size
+        boundsChanged += { _, old, _ ->
+            when {
+                old.width != width -> size = Size(width, width / aspectRation)
+                old.height != height -> size = Size(height * aspectRation, height)
+            }
+        }
+    }
+
+    override fun render(canvas: Canvas) {
+        canvas.image(image, destination = bounds.atOrigin)
+    }
+}
+
 
 class BaseRingListView(
     var ring: Ring,
@@ -131,7 +164,8 @@ class BaseRingListView(
 
     private val label = Label(ring.name)
 
-    private val photo = LazyPhotoView(ring.image)
+    private val photoCanvasDestination = Rectangle(0, 0, 30, 30)
+    private val photo = LazyBaseRingPhotoView(ring.image, photoCanvasDestination)
 
     init {
         children += label

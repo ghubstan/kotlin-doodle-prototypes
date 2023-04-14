@@ -74,6 +74,7 @@ class LeftPanel(
         Middle,
         Center
     ).apply {
+        font = config.panelDebugFont
         height = 24.0
         fitText = setOf(Width)
         foregroundColor = Transparent
