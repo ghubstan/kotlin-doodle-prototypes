@@ -13,24 +13,25 @@ import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.core.Container
 import io.nacular.doodle.core.View
-import io.nacular.doodle.drawing.Canvas
+import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
+import io.nacular.doodle.drawing.paint
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Rectangle
 import io.nacular.doodle.geometry.Size
-import io.nacular.doodle.image.Image
 import io.nacular.doodle.image.ImageLoader
-import io.nacular.doodle.image.height
-import io.nacular.doodle.image.width
 import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.layout.constraints.fill
+import io.nacular.doodle.text.StyledText
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension.Height
 import io.nacular.doodle.utils.Dimension.Width
+import io.nacular.doodle.utils.HorizontalAlignment.Center
+import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.*
 
 
@@ -133,28 +134,6 @@ class BaseRingsContainer(
     }
 }
 
-/**
- * Simple View that displays an image and ensures its aspect ratio.
- */
-private class FixedAspectPhoto(private var image: Image) : View() {
-    private val aspectRation = image.width / image.height
-
-    init {
-        size = image.size
-        boundsChanged += { _, old, _ ->
-            when {
-                old.width != width -> size = Size(width, width / aspectRation)
-                old.height != height -> size = Size(height * aspectRation, height)
-            }
-        }
-    }
-
-    override fun render(canvas: Canvas) {
-        canvas.image(image, destination = bounds.atOrigin)
-    }
-}
-
-
 class BaseRingListView(
     var ring: Ring,
     var index: Int,
@@ -162,9 +141,12 @@ class BaseRingListView(
     val config: DongxiConfig
 ) : View() {
 
-    private val label = Label(ring.name)
+    private val label = Label(ring.name, Middle, Center).apply {
+        fitText = setOf(Width, Height)
+        styledText = StyledText(text, config.listFont, Black.paint)
+    }
 
-    private val photoCanvasDestination = Rectangle(0, 0, 30, 30)
+    private val photoCanvasDestination = Rectangle(5, 5, 30, 30)
     private val photo = LazyBaseRingPhotoView(ring.image, photoCanvasDestination)
 
     init {
@@ -177,7 +159,7 @@ class BaseRingListView(
             labelBounds.width.preserve
             labelBounds.height.preserve
 
-            photoBounds.left eq labelBounds.right + 20
+            photoBounds.left eq labelBounds.right + 5
             photoBounds.centerY eq parent.centerY
             photoBounds.width.preserve
             photoBounds.height.preserve

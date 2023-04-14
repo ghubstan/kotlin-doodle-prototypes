@@ -36,9 +36,6 @@ class LazyBaseRingPhotoView(pendingImage: Deferred<Image>, private val canvasDes
         pendingImage.callOnCompleted {
             image = it
 
-            // This just clips the image, does not resize it.
-            // size = Size(40.0, 40.0)
-
             if (size.empty) {
                 size = it.size
             }
@@ -48,7 +45,6 @@ class LazyBaseRingPhotoView(pendingImage: Deferred<Image>, private val canvasDes
     }
 
     override fun render(canvas: Canvas) {
-        // image?.let { canvas.image(image = it, destination = Rectangle(0, 0, 30, 30)) }
         image?.let { canvas.image(image = it, destination = canvasDestination) }
     }
 
