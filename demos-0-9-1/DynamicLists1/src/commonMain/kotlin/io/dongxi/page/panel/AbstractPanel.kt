@@ -163,7 +163,6 @@ abstract class AbstractPanel(
     abstract fun layoutForCurrentAccessorySelection()
     abstract fun layoutForCompletedJewel()
 
-
     fun getDummyBaseProductsContainer(): Container {
         return DummyBaseProductsContainer(
             config,

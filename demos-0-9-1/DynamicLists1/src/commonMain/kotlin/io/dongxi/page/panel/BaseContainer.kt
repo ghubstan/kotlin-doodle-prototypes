@@ -166,6 +166,7 @@ class BaseContainer(
         children += leftPanel
         children += centerPanel
         children += rightPanel
+        children += footerPanel
 
         val inset = 5
 
@@ -173,11 +174,13 @@ class BaseContainer(
             topPanel,
             leftPanel,
             centerPanel,
-            rightPanel
+            rightPanel,
+            footerPanel
         ) { topPanelBounds,
             leftPanelBounds,
             centerPanelBounds,
-            rightPanelBounds ->
+            rightPanelBounds,
+            footerPanelBounds ->
 
             topPanelBounds.top eq inset
             topPanelBounds.left eq inset
@@ -187,17 +190,22 @@ class BaseContainer(
             leftPanelBounds.top eq topPanelBounds.bottom + inset
             leftPanelBounds.left eq inset
             leftPanelBounds.right eq parent.right * 0.20 - inset
-            leftPanelBounds.bottom eq parent.bottom - inset
+            leftPanelBounds.bottom eq parent.height * 0.82
 
             centerPanelBounds.top eq topPanelBounds.bottom + inset
             centerPanelBounds.left eq leftPanelBounds.right + inset
             centerPanelBounds.right eq parent.right * 0.80 - inset
-            centerPanelBounds.bottom eq parent.bottom - inset
+            centerPanelBounds.bottom eq parent.height * 0.82
 
             rightPanelBounds.top eq topPanelBounds.bottom + inset
             rightPanelBounds.left eq centerPanelBounds.right + inset
-            rightPanelBounds.right eq parent.right - inset // The rest of the horizontal space
-            rightPanelBounds.bottom eq parent.bottom - inset
+            rightPanelBounds.right eq parent.right - inset // The remaining horizontal space
+            rightPanelBounds.bottom eq parent.height * 0.82
+
+            footerPanelBounds.top eq leftPanelBounds.bottom + inset
+            footerPanelBounds.left eq inset
+            footerPanelBounds.right eq parent.right - inset // Span all 3 columns
+            footerPanelBounds.bottom eq parent.bottom - inset
         }
         Resizer(this)
     }

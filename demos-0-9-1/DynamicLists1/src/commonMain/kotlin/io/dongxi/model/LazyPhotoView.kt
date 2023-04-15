@@ -2,6 +2,7 @@ package io.dongxi.model
 
 import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.Canvas
+import io.nacular.doodle.geometry.Rectangle
 import io.nacular.doodle.image.Image
 import io.nacular.doodle.utils.observable
 import kotlinx.coroutines.Deferred
@@ -15,7 +16,7 @@ import kotlinx.coroutines.job
  * All these LazyPhotoView implementations can be refactored to one after being sure how to use them for different
  * kinds of images.
  */
-class LazyPhotoView(pendingImage: Deferred<Image>) : View() {
+class LazyPhotoView(pendingImage: Deferred<Image>, private val canvasDestination: Rectangle) : View() {
 
     // Do not expose the image;  it should just render it when it loads.
     // That way you can treat it like an image view.
@@ -50,7 +51,7 @@ class LazyPhotoView(pendingImage: Deferred<Image>) : View() {
         if (!::image.isInitialized) return // or render a place holder
         canvas.image(image)
          */
-        image?.let { canvas.image(it) }
+        image?.let { canvas.image(image = it, destination = canvasDestination) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

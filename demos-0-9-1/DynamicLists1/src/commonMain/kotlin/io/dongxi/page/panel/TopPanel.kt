@@ -1,6 +1,7 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.LazyPhotoView
 import io.dongxi.page.Menu
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
@@ -15,6 +16,7 @@ import io.nacular.doodle.drawing.*
 import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
+import io.nacular.doodle.geometry.Rectangle
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
@@ -27,6 +29,7 @@ import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.async
 
 class TopPanel(
     pageType: PageType,
@@ -72,6 +75,10 @@ class TopPanel(
         styledText = StyledText(text, config.titleFont, Black.paint)
     }
 
+    private val logo = LazyPhotoView(mainScope.async { images.load("natty-logo.svg")!! }, RECT_SHORT_TITLE)
+
+    private val pageTitleImage = getPageTitlePhotoView()
+
     private val menu = Menu(
         config,
         uiDispatcher,
@@ -94,12 +101,24 @@ class TopPanel(
     init {
         size = Size(300, 100)
 
-        children += listOf(labelPageTitle, menu)
-        layout = constrain(labelPageTitle, menu) { labelPageTitleBounds, menuBounds ->
-            labelPageTitleBounds.top eq 5
-            labelPageTitleBounds.centerX eq parent.centerX
-            labelPageTitleBounds.centerY eq parent.centerY
-            labelPageTitleBounds.height.preserve
+        children += logo
+        children += pageTitleImage
+        children += menu
+
+        layout = constrain(logo, pageTitleImage, menu) { logoBounds,
+                                                         pageTitleImageBounds,
+                                                         menuBounds ->
+
+            logoBounds.top eq 5
+            logoBounds.left eq 5
+            logoBounds.width.preserve
+            logoBounds.height.preserve
+
+            pageTitleImageBounds.top eq 5
+            pageTitleImageBounds.centerX eq parent.centerX
+            pageTitleImageBounds.centerY eq parent.centerY
+            pageTitleImageBounds.width.preserve
+            pageTitleImageBounds.height.preserve
 
             menuBounds.top eq 2
             menuBounds.centerY eq parent.centerY
@@ -128,4 +147,56 @@ class TopPanel(
     override fun layoutForCompletedJewel() {
         // noop
     }
+
+
+    private fun getPageTitlePhotoView(): LazyPhotoView {
+        when (pageType) {
+            PageType.HOME -> {
+                /*
+                // TODO This does work because it attempted GET from server, i.e., URL = base64-string
+                val svg = SVGUtils.genPageNameSVG(pageType.pageTitle)
+                return LazyPhotoView(
+                    mainScope.async { images.load(svg)!! }, Rectangle(0, 0, 85, 30)
+                )
+                */
+                return LazyPhotoView(mainScope.async { images.load("page-title-home.svg")!! }, RECT_SHORT_TITLE)
+            }
+
+            PageType.RINGS -> {
+                return LazyPhotoView(mainScope.async { images.load("page-title-rings.svg")!! }, RECT_SHORT_TITLE)
+            }
+
+            PageType.NECKLACES -> {
+                return LazyPhotoView(mainScope.async { images.load("page-title-necklaces.svg")!! }, RECT_SHORT_TITLE)
+            }
+
+            PageType.SCAPULARS -> {
+                return LazyPhotoView(
+                    // A little wider for longer word.
+                    mainScope.async { images.load("page-title-scapulars.svg")!! }, RECT_LONG_TITLE
+                )
+            }
+
+            PageType.BRACELETS -> {
+                return LazyPhotoView(mainScope.async { images.load("page-title-bracelets.svg")!! }, RECT_SHORT_TITLE)
+            }
+
+            PageType.EAR_RINGS -> {
+                return LazyPhotoView(mainScope.async { images.load("page-title-earrings.svg")!! }, RECT_SHORT_TITLE)
+            }
+
+            PageType.ABOUT -> {
+                return LazyPhotoView(
+                    mainScope.async { images.load("page-title-about.svg")!! },
+                    Rectangle(0, 0, 85, 30)
+                )
+            }
+        }
+    }
+
+    private companion object {
+        private val RECT_LONG_TITLE: Rectangle = Rectangle(0, 0, 120, 30)
+        private val RECT_SHORT_TITLE: Rectangle = Rectangle(0, 0, 85, 30)
+    }
+
 }
