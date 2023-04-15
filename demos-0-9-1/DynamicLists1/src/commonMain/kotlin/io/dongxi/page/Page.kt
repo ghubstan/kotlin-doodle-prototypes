@@ -82,10 +82,6 @@ class Page(
         layout = constrain(baseContainer, fill)
     }
 
-    override fun description(): String {
-        return pageType.pageTitle // TODO delete?
-    }
-
     override fun render(canvas: Canvas) {
         canvas.rect(bounds.atOrigin, Color.White)
     }

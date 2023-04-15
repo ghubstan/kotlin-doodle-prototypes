@@ -21,6 +21,7 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 
+// TODO Rename BasePanel?
 class BaseContainer(
     pageType: PageType,
     config: DongxiConfig,
