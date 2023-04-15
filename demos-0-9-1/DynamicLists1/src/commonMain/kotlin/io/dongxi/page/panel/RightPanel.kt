@@ -1,8 +1,8 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.IAccessoryListContainer
 import io.dongxi.model.ProductCategory.RING
-import io.dongxi.model.RingStonesContainer
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
@@ -104,18 +104,24 @@ class RightPanel(
     }
 
     override fun layoutForCurrentProductCategory() {
-        // println("RightPanel currentProductCategory: $currentProductCategory")
+        // println("${panelInstanceName()} currentProductCategory: $currentProductCategory")
         relayout()
     }
 
     override fun layoutForCurrentBaseProductSelection() {
-        println("RightPanel currentBaseProduct: $currentBaseProduct")
+        println("${panelInstanceName()} currentBaseProduct: $currentBaseProduct")
 
-        tempLabel.text =
-            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} with STONE ${currentAccessory.name ?: ""}"
+        tempLabel.text = "STONE ${currentAccessory.name ?: ""}"
 
-        (accessoryListContainer as RingStonesContainer).clearModel()
-        accessoryListContainer.loadModel(currentBaseProduct.name ?: "A")
+        try {
+            if (accessoryListContainer is IAccessoryListContainer) {
+                accessoryListContainer.clearModel()
+                accessoryListContainer.loadModel(currentBaseProduct.name ?: "A")
+            }
+        } catch (ex: Exception) {
+            println("EXCEPTION ${panelInstanceName()} -> layoutForCurrentBaseProductSelection():  $ex")
+        }
+
         accessoryListContainer.relayout()
 
         relayout()
@@ -123,10 +129,9 @@ class RightPanel(
 
 
     override fun layoutForCurrentAccessorySelection() {
-        println("RightPanel currentAccessory: $currentAccessory")
+        println("${panelInstanceName()} currentAccessory: $currentAccessory")
 
-        tempLabel.text =
-            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} with STONE ${currentAccessory.name ?: ""}"
+        tempLabel.text = "STONE ${currentAccessory.name ?: ""}"
 
         relayout()
     }

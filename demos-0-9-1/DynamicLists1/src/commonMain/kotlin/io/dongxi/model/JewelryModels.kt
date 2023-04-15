@@ -14,7 +14,11 @@ data class SelectedBaseProduct(
     var name: String?,
     var file: String?,
     var image: Deferred<Image>?
-)
+) {
+    fun isSet(): Boolean {
+        return this.name != null && this.file != null
+    }
+}
 
 /**
  * Data representing a selected, updatable product accessory (item) selected from a list.
@@ -25,7 +29,11 @@ data class SelectedAccessory(
     var name: String?,
     var file: String?,
     var image: Deferred<Image>?
-)
+) {
+    fun isSet(): Boolean {
+        return this.name != null && this.file != null
+    }
+}
 
 /**
  * Data representing a ring image.

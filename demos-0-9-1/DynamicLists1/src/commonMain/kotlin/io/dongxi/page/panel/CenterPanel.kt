@@ -2,7 +2,7 @@ package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.ICompleteRingContainer
-import io.dongxi.model.ProductCategory
+import io.dongxi.model.ProductCategory.RING
 import io.dongxi.model.Ring
 import io.dongxi.model.RingStone
 import io.dongxi.page.MenuEventBus
@@ -79,7 +79,7 @@ class CenterPanel(
         foregroundColor = Color.Transparent
     }
 
-    private val completeProductContainer = if (pageType.productCategory == ProductCategory.RING) {
+    private val completeProductContainer = if (pageType.productCategory == RING) {
         getCompleteRingContainer()
     } else {
         getDummyBaseProductsContainer()
@@ -108,12 +108,12 @@ class CenterPanel(
     }
 
     override fun layoutForCurrentProductCategory() {
-        // println("CenterPanel currentProductCategory: $currentProductCategory")
+        // println("${panelInstanceName()} currentProductCategory: $currentProductCategory")
         relayout()
     }
 
     override fun layoutForCurrentBaseProductSelection() {
-        println("CenterPanel currentBaseProduct: $currentBaseProduct")
+        println("${panelInstanceName()} currentBaseProduct: $currentBaseProduct")
 
         tempLabel.text =
             "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} with STONE ${currentAccessory.name ?: ""}"
@@ -122,7 +122,7 @@ class CenterPanel(
     }
 
     override fun layoutForCurrentAccessorySelection() {
-        println("CenterPanel currentAccessory: $currentAccessory")
+        println("${panelInstanceName()} currentAccessory: $currentAccessory")
 
         tempLabel.text =
             "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} with STONE ${currentAccessory.name ?: ""}"
@@ -131,20 +131,33 @@ class CenterPanel(
     }
 
     override fun layoutForCompletedJewel() {
-        val largeRingMetadata = getLargeRingMetadata(currentBaseProduct.name.toString()) // toString() -> NPE?
-        val newRingName: String = largeRingMetadata.first
-        val newRingFile: String = largeRingMetadata.second
-        val newRingImage = mainScope.async { newRingFile?.let { images.load(it) }!! }
-        val newRing = Ring(newRingName, newRingFile, newRingImage)
+        try {
+            val largeRingMetadata = getLargeRingMetadata(currentBaseProduct.name.toString()) // toString() -> NPE?
+            val newRingName: String = largeRingMetadata.first
+            val newRingFile: String = largeRingMetadata.second
+            val newRingImage = mainScope.async { newRingFile.let { images.load(it) }!! }
+            val newRing = Ring(newRingName, newRingFile, newRingImage)
 
-        val newStoneName: String = currentAccessory.name.toString() // NPE?
-        val newStoneFile: String = currentAccessory.file.toString() // NPE?
-        val newStoneImage = mainScope.async { newStoneFile?.let { images.load(it) }!! }
-        val newStone = RingStone(newStoneName, newStoneFile, newStoneImage)
+            val newStoneName: String = currentAccessory.name.toString() // NPE?
+            val newStoneFile: String = currentAccessory.file.toString() // NPE?
+            val newStoneImage = mainScope.async { newStoneFile.let { images.load(it) }!! }
+            val newStone = RingStone(newStoneName, newStoneFile, newStoneImage)
 
-        (completeProductContainer as ICompleteRingContainer).update(newRing, newStone)
-        completeProductContainer.relayout()
-        relayout()
+            try {
+                if (completeProductContainer is ICompleteRingContainer) {
+                    completeProductContainer.update(newRing, newStone)
+                }
+            } catch (ex: Exception) {
+                println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
+                println("Illegal Cast!")
+            }
+
+            completeProductContainer.relayout()
+            relayout()
+        } catch (ex: Exception) {
+            println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
+            println("${panelInstanceName()} currentAccessory = $currentAccessory")
+        }
     }
 
 }

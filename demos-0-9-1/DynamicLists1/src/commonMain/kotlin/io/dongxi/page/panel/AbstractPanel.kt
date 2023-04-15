@@ -7,12 +7,10 @@ import io.dongxi.model.ProductCategory.*
 import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
-import io.dongxi.page.PageType.RINGS
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.RingStoneStoreMetadata.getStones
 import io.dongxi.storage.RingStoreMetadata
-import io.dongxi.util.ClassUtils
 import io.dongxi.util.ColorUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -98,62 +96,45 @@ abstract class AbstractPanel(
                     }
                 }
 
-                // println("${simpleClassName(this)} current ProductCategory: $currentProductCategory")
+                // println("${panelInstanceName()} current ProductCategory: $currentProductCategory")
                 // Now update the panel with the current product category, if there is one.
                 layoutForCurrentProductCategory()
             }
         }
 
         mainScope.launch {
-            baseProductSelectEventBus.events.filterNotNull().collectLatest {
-                currentBaseProduct = it.baseProductDetail()
+            try {
+                baseProductSelectEventBus.events.filterNotNull().collectLatest {
+                    currentBaseProduct = it.baseProductDetail()
 
-                // Hack default stone for selected ring.
-                if (pageType == RINGS) {
-                    val ringName = currentBaseProduct.name.toString() // Just askin' for an NPE?
+                    setDefaultAccessory()
 
-                    // TODO Refactor
-                    var defaultStoneMetadata: Pair<String, String> = getStones(ringName)[0]
-                    val defaultStone = RingStone(defaultStoneMetadata.first,
-                        defaultStoneMetadata.second,
-                        mainScope.async { images.load(defaultStoneMetadata.second)!! })
-                    currentAccessory = SelectedAccessory(
-                        STONE,
-                        defaultStone.name,
-                        defaultStone.file,
-                        defaultStone.image
-                    )
+                    layoutForCurrentBaseProductSelection()
+                    layoutForCompletedJewel()
                 }
-
-                layoutForCurrentBaseProductSelection()
-                layoutForCompletedJewel()
+            } catch (ex: Exception) {
+                println("EXCEPTION ${panelInstanceName()} -> baseProductSelectEventBus.events.filterNotNull():  $ex")
+                println("${panelInstanceName()} currentBaseProduct.isSet = ${currentBaseProduct.isSet()}")
+                println("${panelInstanceName()} currentAccessory.isSet = ${currentAccessory.isSet()}")
             }
         }
 
         mainScope.launch {
-            accessorySelectEventBus.events.filterNotNull().collectLatest {
-                currentAccessory = it.accessoryDetail()
+            try {
+                accessorySelectEventBus.events.filterNotNull().collectLatest {
+                    currentAccessory = it.accessoryDetail()
 
-                // Hack default ring?
-                if (pageType == RINGS) {
-                    if (currentBaseProduct.name == null) {
-                        println("AbstractPanel->${ClassUtils.simpleClassName(this)}: WTF! $currentBaseProduct")
-
-                        // TODO Fix design bug:  What is selected product (size)?  Which is it, LARGE or small?
-                        // val defaultRingMetadata = RingStoreMetadata.getLargeRingMetadata("A")
-                        val defaultRingMetadata = RingStoreMetadata.getSmallRingMetadata("A")
-
-                        currentBaseProduct = SelectedBaseProduct(
-                            currentProductCategory,
-                            defaultRingMetadata.first,
-                            defaultRingMetadata.second,
-                            mainScope.async { images.load(defaultRingMetadata.second)!! })
-
+                    if (!currentBaseProduct.isSet()) {
+                        setDefaultBaseProduct()
                     }
-                }
 
-                layoutForCurrentAccessorySelection()
-                layoutForCompletedJewel()
+                    layoutForCurrentAccessorySelection()
+                    layoutForCompletedJewel()
+                }
+            } catch (ex: Exception) {
+                println("EXCEPTION ${panelInstanceName()} -> accessorySelectEventBus.events.filterNotNull():  $ex")
+                println("${panelInstanceName()} currentBaseProduct.isSet = ${currentBaseProduct.isSet()}")
+                println("${panelInstanceName()} currentAccessory.isSet = ${currentAccessory.isSet()}")
             }
         }
     }
@@ -255,6 +236,92 @@ abstract class AbstractPanel(
         // Cancels all coroutines launched in this scope.
         mainScope.cancel()
         // cleanup here
+    }
+
+
+    fun setDefaultBaseProduct() {
+        if (currentProductCategory == NONE) {
+            println("${panelInstanceName()} cannot set default base product for product category NONE.")
+            return
+        }
+
+        if (pageType.productCategory == RING) {
+            println("${panelInstanceName()} -> set default ${pageType.productCategory}")
+            // A base product image is a small image.  Complete products are large images.
+            val defaultRingMetadata = RingStoreMetadata.getSmallRingMetadata("A")
+            val defaultRingName = defaultRingMetadata.first
+            val defaultRingFile = defaultRingMetadata.second
+            val defaultRingImage = mainScope.async { images.load(defaultRingFile)!! }
+            currentBaseProduct = SelectedBaseProduct(
+                currentProductCategory,
+                defaultRingName,
+                defaultRingFile,
+                defaultRingImage
+            )
+
+        } else {
+            // TODO
+            println("${panelInstanceName()} -> TODO set default base product for product category $currentProductCategory")
+        }
+    }
+
+    fun setDefaultAccessory() {
+        if (currentProductCategory == NONE) {
+            println("${panelInstanceName()} cannot set default accessory for product category NONE.")
+            return
+        }
+
+        if (pageType.productCategory == RING) {
+            val ringName = currentBaseProduct.name.toString() // Just askin' for an NPE?
+
+            // TODO Refactor
+            var defaultStoneMetadata: Pair<String, String> = getStones(ringName)[0]
+            val defaultStone = RingStone(defaultStoneMetadata.first,
+                defaultStoneMetadata.second,
+                mainScope.async { images.load(defaultStoneMetadata.second)!! })
+            currentAccessory = SelectedAccessory(
+                STONE,
+                defaultStone.name,
+                defaultStone.file,
+                defaultStone.image
+            )
+
+        } else {
+            // TODO
+            println("${panelInstanceName()} -> TODO set default accessory for product category $currentProductCategory")
+        }
+    }
+
+    fun panelInstanceName(): String {
+        return when (this) {
+            is TopPanel -> {
+                "TopPanel"
+            }
+
+            is LeftPanel -> {
+                "LeftPanel"
+            }
+
+            is CenterPanel -> {
+                "CenterPanel"
+            }
+
+            is RightPanel -> {
+                "RightPanel"
+            }
+
+            is FooterPanel -> {
+                "FooterPanel"
+            }
+
+            is BaseContainer -> {
+                "BaseContainer"
+            }
+
+            else -> {
+                "UnknownPanel"
+            }
+        }
     }
 
     // Helper to use constrain with 6 items
