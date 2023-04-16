@@ -24,15 +24,21 @@ object PendantStoreMetadata {
     }
 
     private val necklaceAPendants: List<Pair<String, String>> = listOf(
-        "Agate" to pathTo("agate.png"),
         "Amethyst" to pathTo("amethyst.png"),
         "Beryl" to pathTo("beryl.png"),
+        "Bloodstone" to pathTo("bloodstone.png"),
         "Carnelian" to pathTo("carnelian.png"),
         "Bloodstone" to pathTo("bloodstone.png"),
+        "Earth" to pathTo("earth.svg"),
         "Emerald" to pathTo("emerald.png"),
+        "Fleur de Lis" to pathTo("fleur-de-lis.svg"),
+        "Green Diamond" to pathTo("green-diamond.svg"),
+        "Jewel Beetle" to pathTo("jewel-beetle.svg"),
         "Onyx" to pathTo("onyx.png"),
         "Peridot" to pathTo("peridot.png"),
+        "Rat King" to pathTo("rat-king.svg"),
         "Sapphire" to pathTo("sapphire.png"),
+        "Snake" to pathTo("snake.svg"),
         "Topaz" to pathTo("topaz.png")
     )
 
@@ -79,16 +85,29 @@ object PendantStoreMetadata {
     )
 
     private val necklaceFPendants: List<Pair<String, String>> = listOf(
-        "Agate" to pathTo("agate.png"),
-        "Beryl" to pathTo("beryl.png"),
-        "Bloodstone" to pathTo("bloodstone.png"),
-        "Carnelian" to pathTo("carnelian.png"),
-        "Emerald" to pathTo("emerald.png"),
-        "Garnet" to pathTo("garnet.png"),
-        "Onyx" to pathTo("onyx.png"),
-        "Peridot" to pathTo("peridot.png"),
-        "Ruby" to pathTo("ruby.png"),
-        "Sapphire" to pathTo("sapphire.png")
+        "Flamengo" to pathTo("flamengo.svg"),
+        "Fleur de Lis" to pathTo("fleur-de-lis.svg"),
+        "Green Diamond" to pathTo("green-diamond.svg"),
+        "Orange Diamond" to pathTo("orange-diamond.svg"),
+        "Jewel Beetle" to pathTo("jewel-beetle.svg"),
+        "Bozo of Hate" to pathTo("the-bozo.svg"),
+        "Buddhist Peace" to pathTo("buddhist-swastika.svg"),
+        "Earth" to pathTo("earth.svg"),
+        "Red Cross" to pathTo("red-cross.svg"),
+        "Jesus" to pathTo("black-cross.svg"),
+        "Another Jesus" to pathTo("brown-cross.svg"),
+        "Rat King" to pathTo("rat-king.svg"),
+        "Russian Jesus" to pathTo("russian-orthodox-cross.svg"),
+        "Satan" to pathTo("satan.svg"),
+        "Snake" to pathTo("snake.svg"),
+        "Tiger" to pathTo("tiger.svg")
+
+        // Problems:
+        //  "Red Chrystal" to pathTo("red-chrystal.svg"),       // Can't size properly to fit center panel.
+        //  "Yinyang" to pathTo("yinyang.png")                  // Background not transparent.
+        //  "Lotus" to pathTo("lotus.png"),                    // Background not transparent.
+        //  blue-diamond.svg  can't re-size
+        //  nassak-diamond.svg  can't re-size
     )
 
     private fun pathTo(imageFilename: String): String {

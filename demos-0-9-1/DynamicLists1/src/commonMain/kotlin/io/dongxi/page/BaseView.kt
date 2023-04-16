@@ -72,8 +72,9 @@ class BaseView(
         accessorySelectEventBus
     )
 
-    private var currentPage = pageFactory.buildPage(HOME) as View
+    // private var currentPage = pageFactory.buildPage(HOME) as View
     // private var currentPage = pageFactory.buildPage(RINGS) as View
+    private var currentPage = pageFactory.buildPage(NECKLACES) as View
 
     init {
 
