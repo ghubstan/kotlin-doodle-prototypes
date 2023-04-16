@@ -50,7 +50,7 @@ abstract class AbstractPanel(
     val accessorySelectEventBus: AccessorySelectEventBus
 ) : IPanel, Container() {
 
-    val mainScope = MainScope() // The scope of Panel class (and subclasses), uses Dispatchers.Main.
+    val mainScope = MainScope() // The scope of AbstractPanel class (and subclasses), uses Dispatchers.Main.
 
     var currentProductCategory: ProductCategory = pageType.productCategory
     var currentBaseProduct: SelectedBaseProduct = SelectedBaseProduct(currentProductCategory, null, null, null)
@@ -112,9 +112,9 @@ abstract class AbstractPanel(
                     layoutForCompletedJewel()
                 }
             } catch (ex: Exception) {
-                println("EXCEPTION ${panelInstanceName()} -> baseProductSelectEventBus.events.filterNotNull():  $ex")
-                println("${panelInstanceName()} currentBaseProduct.isSet = ${currentBaseProduct.isSet()}")
-                println("${panelInstanceName()} currentAccessory.isSet = ${currentAccessory.isSet()}")
+                println("EXCEPTION ${panelInstanceName()} -> baseProductSelectEventBus.events.filterNotNull():  ${ex.stackTraceToString()}")
+                println("${panelInstanceName()}.currentBaseProduct.isSet = ${currentBaseProduct.isSet()}")
+                println("${panelInstanceName()}.currentAccessory.isSet = ${currentAccessory.isSet()}")
             }
         }
 
@@ -131,9 +131,9 @@ abstract class AbstractPanel(
                     layoutForCompletedJewel()
                 }
             } catch (ex: Exception) {
-                println("EXCEPTION ${panelInstanceName()} -> accessorySelectEventBus.events.filterNotNull():  $ex")
-                println("${panelInstanceName()} currentBaseProduct.isSet = ${currentBaseProduct.isSet()}")
-                println("${panelInstanceName()} currentAccessory.isSet = ${currentAccessory.isSet()}")
+                println("EXCEPTION ${panelInstanceName()} -> accessorySelectEventBus.events.filterNotNull():  ${ex.stackTraceToString()}")
+                println("${panelInstanceName()}.currentBaseProduct.isSet = ${currentBaseProduct.isSet()}")
+                println("${panelInstanceName()}.currentAccessory.isSet = ${currentAccessory.isSet()}")
             }
         }
     }
@@ -248,15 +248,10 @@ abstract class AbstractPanel(
             println("${panelInstanceName()} -> set default ${pageType.productCategory}")
             // A base product image is a small image.  Complete products are large images.
             val defaultRingMetadata = RingStoreMetadata.getSmallRingMetadata("A")
-            val defaultRingName = defaultRingMetadata.first
-            val defaultRingFile = defaultRingMetadata.second
-            val defaultRingImage = mainScope.async { images.load(defaultRingFile)!! }
-            currentBaseProduct = SelectedBaseProduct(
-                currentProductCategory,
-                defaultRingName,
-                defaultRingFile,
-                defaultRingImage
-            )
+            val ringName = defaultRingMetadata.first
+            val ringFile = defaultRingMetadata.second
+            val ringImage = mainScope.async { images.load(ringFile)!! }
+            currentBaseProduct = SelectedBaseProduct(currentProductCategory, ringName, ringFile, ringImage)
 
         } else {
             // TODO
@@ -273,17 +268,11 @@ abstract class AbstractPanel(
         if (pageType.productCategory == RING) {
             val ringName = currentBaseProduct.name!!
 
-            // TODO Refactor
-            var defaultStoneMetadata: Pair<String, String> = getStones(ringName)[0]
-            val defaultStone = RingStone(defaultStoneMetadata.first,
-                defaultStoneMetadata.second,
-                mainScope.async { images.load(defaultStoneMetadata.second)!! })
-            currentAccessory = SelectedAccessory(
-                STONE,
-                defaultStone.name,
-                defaultStone.file,
-                defaultStone.image
-            )
+            val defaultStoneMetadata: Pair<String, String> = getStones(ringName)[0]
+            val stoneName = defaultStoneMetadata.first
+            val stoneFile = defaultStoneMetadata.second
+            val stoneImage = mainScope.async { images.load(stoneFile)!! }
+            currentAccessory = SelectedAccessory(STONE, stoneName, stoneFile, stoneImage)
 
         } else {
             // TODO
