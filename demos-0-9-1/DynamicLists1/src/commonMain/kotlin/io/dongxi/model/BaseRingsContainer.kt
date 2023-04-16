@@ -10,6 +10,7 @@ import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.*
 import io.nacular.doodle.controls.list.DynamicList
 import io.nacular.doodle.controls.modal.ModalManager
+import io.nacular.doodle.controls.panels.ScrollPanel
 import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.core.Container
 import io.nacular.doodle.core.View
@@ -68,12 +69,18 @@ class BaseRingsContainer(
     override val model = SimpleMutableListModel<Ring>()
     override val list = build()
 
+    private fun scrollPanel(content: View) = ScrollPanel(content).apply {
+        contentWidthConstraints = { it eq width - verticalScrollBarWidth }
+    }
+
+    private val scrollableList = scrollPanel(list)
+
     init {
         clipCanvasToBounds = false
         size = Size(150, 200)
         loadModel()
-        children += list
-        layout = constrain(list, fill)
+        children += scrollableList
+        layout = constrain(scrollableList, fill)
     }
 
     // TODO Remove from interface and make private?
