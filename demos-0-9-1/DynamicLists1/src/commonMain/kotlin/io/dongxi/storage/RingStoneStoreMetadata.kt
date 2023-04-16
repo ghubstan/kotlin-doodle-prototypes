@@ -1,38 +1,18 @@
 package io.dongxi.storage
 
-import io.dongxi.model.Ring
-import kotlin.random.Random
-
 
 object RingStoneStoreMetadata {
 
     private const val STONES_PATH = "stones/mock/"
 
-    private val AVAILABLE_STONES: List<String> = listOf(
-        pathTo("cyan.png"),
-        pathTo("dark-blue.png"),
-        pathTo("dark-coral.png"),
-        pathTo("dark-orchid.png"),
-        pathTo("deep-jungle-green.png"),
-        pathTo("dogwood-rose.png"),
-        pathTo("emerald.png"),
-        pathTo("green.png"),
-        pathTo("harvest-gold.png"),
-        pathTo("indigo.png"),
-        pathTo("lava.png"),
-        pathTo("light-sky-blue.png"),
-        pathTo("magenta.png"),
-        pathTo("medium-persian-blue.png"),
-        pathTo("midnight-blue.png"),
-        pathTo("violet.png"),
-        pathTo("yellow.png")
-    )
-
-    fun stoneImagePathForColorName(colorName: String): String {
-        return stonesByColorName[colorName]!!
-    }
-
+    // Unused, but do not delete.
+    // TODO "List" all files in directory, and load the map instead of like this, by hand.
     private val stonesByColorName = mapOf(
+        "Agate" to pathTo("agate.png"),
+        "Amethyst" to pathTo("amethyst.png"),
+        "Beryl" to pathTo("beryl.png"),
+        "Bloodstone" to pathTo("bloodstone.png"),
+        "Carnelian" to pathTo("carnelian.png"),
         "Cyan" to pathTo("cyan.png"),
         "Dark Blue" to pathTo("dark-blue.png"),
         "Dark Coral" to pathTo("dark-coral.png"),
@@ -40,6 +20,7 @@ object RingStoneStoreMetadata {
         "Deep Jungle Green" to pathTo("deep-jungle-green.png"),
         "Dogwood Rose" to pathTo("dogwood-rose.png"),
         "Emerald" to pathTo("emerald.png"),
+        "Garnet" to pathTo("garnet.png"),
         "Green" to pathTo("green.png"),
         "Harvest Gold" to pathTo("harvest-gold.png"),
         "Indigo" to pathTo("indigo.png"),
@@ -48,6 +29,11 @@ object RingStoneStoreMetadata {
         "Magenta" to pathTo("magenta.png"),
         "Medium Persian Blue" to pathTo("medium-persian-blue.png"),
         "Midnight Blue" to pathTo("midnight-blue.png"),
+        "Onyx" to pathTo("onyx.png"),
+        "Peridot" to pathTo("peridot.png"),
+        "Ruby" to pathTo("ruby.png"),
+        "Sapphire" to pathTo("sapphire.png"),
+        "Topaz" to pathTo("topaz.png"),
         "Violet" to pathTo("violet.png"),
         "Yellow" to pathTo("yellow.png")
     )
@@ -74,6 +60,7 @@ object RingStoneStoreMetadata {
     // Map each ring (a.png, b.png, etc..) to a map of stonesByColorName.
 
     private val ringAStones: List<Pair<String, String>> = listOf(
+        "Amethyst" to pathTo("amethyst.png"),
         "Cyan" to pathTo("cyan.png"),
         "Dark Blue" to pathTo("dark-blue.png"),
         "Dark Coral" to pathTo("dark-coral.png"),
@@ -87,29 +74,43 @@ object RingStoneStoreMetadata {
         "Light Sky Blue" to pathTo("light-sky-blue.png"),
         "Magenta" to pathTo("magenta.png"),
         "Medium Persian Blue" to pathTo("medium-persian-blue.png"),
-        "Midnight Blue" to pathTo("midnight-blue.png")
+        "Midnight Blue" to pathTo("midnight-blue.png"),
+        "Onyx" to pathTo("onyx.png"),
+        "Sapphire" to pathTo("sapphire.png"),
     )
 
     private val ringBStones: List<Pair<String, String>> = listOf(
+        "Beryl" to pathTo("beryl.png"),
         "Deep Jungle Green" to pathTo("deep-jungle-green.png"),
         "Dogwood Rose" to pathTo("dogwood-rose.png"),
         "Emerald" to pathTo("emerald.png"),
         "Green" to pathTo("green.png"),
         "Harvest Gold" to pathTo("harvest-gold.png"),
         "Indigo" to pathTo("indigo.png"),
-        "Lava" to pathTo("lava.png")
+        "Lava" to pathTo("lava.png"),
+        "Sapphire" to pathTo("sapphire.png"),
     )
 
     private val ringCStones: List<Pair<String, String>> = listOf(
+        "Amethyst" to pathTo("amethyst.png"),
+        "Garnet" to pathTo("garnet.png"),
         "Lava" to pathTo("lava.png"),
         "Magenta" to pathTo("magenta.png"),
         "Medium Persian Blue" to pathTo("medium-persian-blue.png"),
         "Midnight Blue" to pathTo("midnight-blue.png"),
+        "Onyx" to pathTo("onyx.png"),
+        "Peridot" to pathTo("peridot.png"),
+        "Ruby" to pathTo("ruby.png"),
         "Violet" to pathTo("violet.png"),
-        "Yellow" to pathTo("yellow.png")
+        "Yellow" to pathTo("yellow.png"),
+        "Sapphire" to pathTo("sapphire.png"),
+        "Topaz" to pathTo("topaz.png")
     )
 
     private val ringDStones: List<Pair<String, String>> = listOf(
+        "Beryl" to pathTo("beryl.png"),
+        "Bloodstone" to pathTo("bloodstone.png"),
+        "Carnelian" to pathTo("carnelian.png"),
         "Dark Blue" to pathTo("dark-blue.png"),
         "Dogwood Rose" to pathTo("dogwood-rose.png"),
         "Emerald" to pathTo("emerald.png"),
@@ -120,11 +121,14 @@ object RingStoneStoreMetadata {
         "Magenta" to pathTo("magenta.png"),
         "Medium Persian Blue" to pathTo("medium-persian-blue.png"),
         "Midnight Blue" to pathTo("midnight-blue.png"),
+        "Onyx" to pathTo("onyx.png"),
+        "Topaz" to pathTo("topaz.png"),
         "Violet" to pathTo("violet.png"),
         "Yellow" to pathTo("yellow.png")
     )
 
     private val ringEStones: List<Pair<String, String>> = listOf(
+        "Amethyst" to pathTo("amethyst.png"),
         "Dark Coral" to pathTo("dark-coral.png"),
         "Dark Orchid" to pathTo("dark-orchid.png"),
         "Deep Jungle Green" to pathTo("deep-jungle-green.png"),
@@ -134,6 +138,7 @@ object RingStoneStoreMetadata {
         "Magenta" to pathTo("magenta.png"),
         "Medium Persian Blue" to pathTo("medium-persian-blue.png"),
         "Midnight Blue" to pathTo("midnight-blue.png"),
+        "Topaz" to pathTo("topaz.png"),
         "Violet" to pathTo("violet.png"),
         "Yellow" to pathTo("yellow.png")
     )
@@ -147,6 +152,8 @@ object RingStoneStoreMetadata {
         "Magenta" to pathTo("magenta.png"),
         "Medium Persian Blue" to pathTo("medium-persian-blue.png"),
         "Midnight Blue" to pathTo("midnight-blue.png"),
+        "Onyx" to pathTo("onyx.png"),
+        "Topaz" to pathTo("topaz.png"),
         "Violet" to pathTo("violet.png"),
         "Yellow" to pathTo("yellow.png")
     )
@@ -154,10 +161,5 @@ object RingStoneStoreMetadata {
 
     private fun pathTo(imageFilename: String): String {
         return STONES_PATH + imageFilename
-    }
-
-    private fun getStones(ring: Ring): List<String> {
-        val randomIndex = Random.nextInt(1, AVAILABLE_STONES.size - 1)
-        return AVAILABLE_STONES.subList(randomIndex, AVAILABLE_STONES.size - 1)
     }
 }

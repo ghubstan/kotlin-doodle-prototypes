@@ -21,10 +21,7 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 
 class ClickMeView(
     private val config: DongxiConfig,
@@ -44,6 +41,7 @@ class ClickMeView(
 
     private val mainScope = MainScope() // the scope of ClickMeView class, uses Dispatchers.Main.
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val menuIcon: LazyPhoto =
         LazyPhoto(mainScope.async { images.load("drawer-menu.svg")!! }).apply {
             // Need a size or it will not render.
