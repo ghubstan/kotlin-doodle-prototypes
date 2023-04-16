@@ -140,7 +140,9 @@ class BaseRingListView(
     }
 
     private val photoCanvasDestination = Rectangle(5, 15, 30, 30)
-    private val photo = LazyBaseRingPhotoView(ring.image, photoCanvasDestination)
+    private val photo = LazyBaseRingPhotoView(ring.image, photoCanvasDestination).apply {
+        toolTipText = ring.name
+    }
 
     init {
         children += label

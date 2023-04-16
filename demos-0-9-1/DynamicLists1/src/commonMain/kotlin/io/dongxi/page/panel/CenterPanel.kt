@@ -132,24 +132,32 @@ class CenterPanel(
 
     override fun layoutForCompletedJewel() {
         try {
-            val largeRingMetadata = getLargeRingMetadata(currentBaseProduct.name.toString()) // toString() -> NPE?
-            val newRingName: String = largeRingMetadata.first
-            val newRingFile: String = largeRingMetadata.second
-            val newRingImage = mainScope.async { newRingFile.let { images.load(it) }!! }
-            val newRing = Ring(newRingName, newRingFile, newRingImage)
+            if (!currentBaseProduct.isSet()) {
+                println("ERROR: ${panelInstanceName()} currentBaseProduct is not set: $currentBaseProduct")
+            }
 
-            val newStoneName: String = currentAccessory.name.toString() // NPE?
-            val newStoneFile: String = currentAccessory.file.toString() // NPE?
-            val newStoneImage = mainScope.async { newStoneFile.let { images.load(it) }!! }
-            val newStone = RingStone(newStoneName, newStoneFile, newStoneImage)
+            if (!currentAccessory.isSet()) {
+                println("WARNING: ${panelInstanceName()} currentAccessory is not set: $currentAccessory")
+                setDefaultAccessory()
+                println(" ${panelInstanceName()} Default currentAccessory: $currentAccessory")
+            }
 
-            try {
-                if (completeProductContainer is ICompleteRingContainer) {
-                    completeProductContainer.update(newRing, newStone)
+            if (currentProductCategory == RING) {
+                val newRing = getLargeRing()
+                val newStone = RingStone(currentAccessory.name!!, currentAccessory.file!!, currentAccessory.image!!)
+
+                try {
+                    // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
+                    if (completeProductContainer is ICompleteRingContainer) {
+                        completeProductContainer.update(newRing, newStone)
+                    }
+                } catch (ex: Exception) {
+                    println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
+                    println("Illegal Cast?")
                 }
-            } catch (ex: Exception) {
-                println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
-                println("Illegal Cast!")
+
+            } else {
+                // TODO
             }
 
             completeProductContainer.relayout()
@@ -160,4 +168,11 @@ class CenterPanel(
         }
     }
 
+    private fun getLargeRing(): Ring {
+        val largeRingMetadata = getLargeRingMetadata(currentBaseProduct.name!!)
+        val newRingName: String = largeRingMetadata.first
+        val newRingFile: String = largeRingMetadata.second
+        val newRingImage = mainScope.async { newRingFile.let { images.load(it) }!! }
+        return Ring(newRingName, newRingFile, newRingImage)
+    }
 }

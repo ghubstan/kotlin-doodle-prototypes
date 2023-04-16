@@ -84,10 +84,6 @@ class LeftPanel(
     }
 
     init {
-        if (!currentBaseProduct.isSet()) {
-            setDefaultBaseProduct()
-        }
-
         clipCanvasToBounds = false
         size = Size(200, 200)
 

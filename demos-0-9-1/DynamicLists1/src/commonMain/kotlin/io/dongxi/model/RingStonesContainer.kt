@@ -141,7 +141,9 @@ class RingStoneListView(
     }
 
     private val photoCanvasDestination = Rectangle(10, 15, 30, 30)
-    private val photo = LazyRingStonePhotoView(stone.image, photoCanvasDestination)
+    private val photo = LazyRingStonePhotoView(stone.image, photoCanvasDestination).apply {
+        toolTipText = stone.name
+    }
 
     init {
         // No label, does not fit phone.

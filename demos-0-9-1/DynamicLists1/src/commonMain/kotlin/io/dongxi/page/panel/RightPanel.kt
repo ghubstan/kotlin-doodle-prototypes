@@ -11,6 +11,7 @@ import io.dongxi.util.ColorUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
+import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.drawing.Canvas
 import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.drawing.FontLoader
@@ -67,7 +68,7 @@ class RightPanel(
     accessorySelectEventBus
 ) {
 
-    private val tempLabel = io.nacular.doodle.controls.text.Label(
+    private val tempLabel = Label(
         "NADA",
         Middle,
         Center
@@ -114,6 +115,7 @@ class RightPanel(
         tempLabel.text = "STONE ${currentAccessory.name ?: ""}"
 
         try {
+            // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
             if (accessoryListContainer is IAccessoryListContainer) {
                 accessoryListContainer.clearModel()
                 accessoryListContainer.loadModel(currentBaseProduct.name ?: "A")
