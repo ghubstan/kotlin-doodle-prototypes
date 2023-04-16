@@ -35,8 +35,10 @@ data class SelectedAccessory(
     }
 }
 
+// TODO Refactor;  probably do not need different data classes for each base product and single accessory.
+
 /**
- * Data representing a ring image.
+ * Data representing a base ring image.
  */
 @Serializable
 data class Ring(val name: String, val file: String, val image: Deferred<Image>)
@@ -47,8 +49,16 @@ data class Ring(val name: String, val file: String, val image: Deferred<Image>)
 @Serializable
 data class RingStone(val name: String, val file: String, val image: Deferred<Image>)
 
+
 /**
- * Data representing a large ring + accessory stone image.
+ * Data representing a base necklace image.
  */
 @Serializable
-data class RingWithStone(val ring: Ring, val stone: RingStone)
+data class Necklace(val name: String, val file: String, val image: Deferred<Image>)
+
+/**
+ * Data representing a necklace-pendants image.
+ */
+@Serializable
+data class NecklacePendant(val name: String, val file: String, val image: Deferred<Image>)
+

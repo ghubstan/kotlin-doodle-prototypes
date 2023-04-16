@@ -2,6 +2,7 @@ package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.*
+import io.dongxi.model.AccessoryCategory.PENDANT
 import io.dongxi.model.AccessoryCategory.STONE
 import io.dongxi.model.ProductCategory.*
 import io.dongxi.page.MenuEvent.*
@@ -9,6 +10,8 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.storage.NecklaceStoreMetadata
+import io.dongxi.storage.PendantStoreMetadata.getPendants
 import io.dongxi.storage.RingStoneStoreMetadata.getStones
 import io.dongxi.storage.RingStoreMetadata
 import io.dongxi.util.ColorUtils
@@ -163,6 +166,47 @@ abstract class AbstractPanel(
         )
     }
 
+    fun getBaseNecklacesContainer(): Container {
+        return BaseNecklacesContainer(
+            config,
+            uiDispatcher,
+            animator,
+            pathMetrics,
+            fonts,
+            theme,
+            themes,
+            images,
+            textMetrics,
+            linkStyler,
+            focusManager,
+            popups,
+            modals,
+            menuEventBus,
+            baseProductSelectEventBus
+        )
+    }
+
+    fun getBaseNecklacePendantsContainer(): Container {
+        return NecklacePendantsContainer(
+            config,
+            uiDispatcher,
+            animator,
+            pathMetrics,
+            fonts,
+            theme,
+            themes,
+            images,
+            textMetrics,
+            linkStyler,
+            focusManager,
+            popups,
+            modals,
+            menuEventBus,
+            baseProductSelectEventBus,
+            accessorySelectEventBus
+        )
+    }
+
     fun getBaseRingsContainer(): Container {
         return BaseRingsContainer(
             config,
@@ -185,6 +229,27 @@ abstract class AbstractPanel(
 
     fun getRingStonesContainer(): Container {
         return RingStonesContainer(
+            config,
+            uiDispatcher,
+            animator,
+            pathMetrics,
+            fonts,
+            theme,
+            themes,
+            images,
+            textMetrics,
+            linkStyler,
+            focusManager,
+            popups,
+            modals,
+            menuEventBus,
+            baseProductSelectEventBus,
+            accessorySelectEventBus
+        )
+    }
+
+    fun getCompleteNecklaceContainer(): Container {
+        return CompleteNecklaceContainer(
             config,
             uiDispatcher,
             animator,
@@ -256,6 +321,35 @@ abstract class AbstractPanel(
     }
 
     private fun getDefaultSelectedBaseProduct(): SelectedBaseProduct {
+
+        return when (currentProductCategory) {
+
+            NECKLACE -> {
+                println("${panelInstanceName()} -> set default ${pageType.productCategory}")
+                val defaultNecklaceMetadata = NecklaceStoreMetadata.getSmallNecklaceMetadata("A")
+                val necklaceName = defaultNecklaceMetadata.first
+                val necklaceFile = defaultNecklaceMetadata.second
+                val necklaceImage = mainScope.async { images.load(necklaceFile)!! }
+                SelectedBaseProduct(currentProductCategory, necklaceName, necklaceFile, necklaceImage)
+            }
+
+            RING -> {
+                println("${panelInstanceName()} -> set default ${pageType.productCategory}")
+                // A base ring image is a small image.  Complete rings are large images.
+                val defaultRingMetadata = RingStoreMetadata.getSmallRingMetadata("A")
+                val ringName = defaultRingMetadata.first
+                val ringFile = defaultRingMetadata.second
+                val ringImage = mainScope.async { images.load(ringFile)!! }
+                SelectedBaseProduct(currentProductCategory, ringName, ringFile, ringImage)
+            }
+
+            else -> {
+                // TODO
+                println("AbstractPanel::${panelInstanceName()} -> TODO set default base product for product category $currentProductCategory")
+                SelectedBaseProduct(NONE, null, null, null)
+            }
+        }
+        /*
         return if (currentProductCategory == RING) {
             println("${panelInstanceName()} -> set default ${pageType.productCategory}")
             // A base product image is a small image.  Complete products are large images.
@@ -269,9 +363,41 @@ abstract class AbstractPanel(
             println("AbstractPanel::${panelInstanceName()} -> TODO set default base product for product category $currentProductCategory")
             SelectedBaseProduct(NONE, null, null, null)
         }
+         */
     }
 
     private fun getDefaultAccessoryForBaseProduct(): SelectedAccessory {
+
+        return when (currentProductCategory) {
+
+            // TODO Refactor out all duplicated code.
+
+            NECKLACE -> {
+                val necklaceName = currentBaseProduct.name!!
+                // The default accessory is the one at the top of the accessory list.
+                val defaultNecklaceMetadata: Pair<String, String> = getPendants(necklaceName)[0]
+                val pendantName = defaultNecklaceMetadata.first
+                val pendantFile = defaultNecklaceMetadata.second
+                val pendantImage = mainScope.async { images.load(pendantFile)!! }
+                SelectedAccessory(PENDANT, pendantName, pendantFile, pendantImage)
+            }
+
+            RING -> {
+                val ringName = currentBaseProduct.name!!
+                // The default accessory is the one at the top of the accessory list.
+                val defaultStoneMetadata: Pair<String, String> = getStones(ringName)[0]
+                val stoneName = defaultStoneMetadata.first
+                val stoneFile = defaultStoneMetadata.second
+                val stoneImage = mainScope.async { images.load(stoneFile)!! }
+                SelectedAccessory(STONE, stoneName, stoneFile, stoneImage)
+            }
+
+            else -> {
+                println("AbstractPanel::${panelInstanceName()} -> TODO set default accessory for product category category $currentProductCategory")
+                return SelectedAccessory(AccessoryCategory.NONE, null, null, null)
+            }
+        }
+        /*
         return if (currentProductCategory == RING) {
             val ringName = currentBaseProduct.name!!
             // The default accessory is the one at the top of the accessory list.
@@ -284,6 +410,7 @@ abstract class AbstractPanel(
             println("AbstractPanel::${panelInstanceName()} -> TODO set default accessory for product category category $currentProductCategory")
             return SelectedAccessory(AccessoryCategory.NONE, null, null, null)
         }
+         */
     }
 
     fun panelInstanceName(): String {

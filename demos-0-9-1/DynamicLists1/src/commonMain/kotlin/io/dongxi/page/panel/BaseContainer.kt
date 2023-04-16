@@ -170,7 +170,7 @@ class BaseContainer(
         children += centerPanel
         children += rightPanel
         children += footerPanel
-        
+
         maybeSetDefaultBaseProductAndAccessory(children)
 
         val inset = 5
