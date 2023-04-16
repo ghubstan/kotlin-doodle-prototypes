@@ -7,6 +7,7 @@ import io.dongxi.model.ProductCategory.*
 import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
+import io.dongxi.page.PageType.RINGS
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.RingStoneStoreMetadata.getStones
@@ -240,11 +241,11 @@ abstract class AbstractPanel(
 
     fun setDefaultBaseProduct() {
         if (currentProductCategory == NONE) {
-            println("${panelInstanceName()} cannot set default base product for product category NONE.")
+            println("AbstractPanel::${panelInstanceName()} cannot set default base product for product category NONE.")
             return
         }
 
-        if (pageType.productCategory == RING) {
+        if (currentProductCategory == RING) {
             println("${panelInstanceName()} -> set default ${pageType.productCategory}")
             // A base product image is a small image.  Complete products are large images.
             val defaultRingMetadata = RingStoreMetadata.getSmallRingMetadata("A")
@@ -255,17 +256,17 @@ abstract class AbstractPanel(
 
         } else {
             // TODO
-            println("${panelInstanceName()} -> TODO set default base product for product category $currentProductCategory")
+            println("AbstractPanel::${panelInstanceName()} -> TODO set default base product for product category $currentProductCategory")
         }
     }
 
     fun setDefaultAccessory() {
         if (currentProductCategory == NONE) {
-            println("${panelInstanceName()} cannot set default accessory for product category NONE.")
+            println("AbstractPanel::${panelInstanceName()} cannot set default accessory for product category NONE.")
             return
         }
 
-        if (pageType.productCategory == RING) {
+        if (currentProductCategory == RING) {
             val ringName = currentBaseProduct.name!!
 
             val defaultStoneMetadata: Pair<String, String> = getStones(ringName)[0]
@@ -276,7 +277,7 @@ abstract class AbstractPanel(
 
         } else {
             // TODO
-            println("${panelInstanceName()} -> TODO set default accessory for product category $currentProductCategory")
+            println("AbstractPanel::${panelInstanceName()} -> TODO set default accessory for product category $currentProductCategory")
         }
     }
 

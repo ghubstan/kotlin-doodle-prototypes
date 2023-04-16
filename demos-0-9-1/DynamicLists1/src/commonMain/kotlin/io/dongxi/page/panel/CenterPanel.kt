@@ -132,16 +132,29 @@ class CenterPanel(
 
     override fun layoutForCompletedJewel() {
         try {
-            val largeRingMetadata = getLargeRingMetadata(currentBaseProduct.name.toString()) // toString() -> NPE?
+            if (!currentBaseProduct.isSet()) {
+                println("ERROR: ${panelInstanceName()} currentBaseProduct is not set: $currentBaseProduct")
+            }
+            val largeRingMetadata = getLargeRingMetadata(currentBaseProduct.name!!)
             val newRingName: String = largeRingMetadata.first
             val newRingFile: String = largeRingMetadata.second
             val newRingImage = mainScope.async { newRingFile.let { images.load(it) }!! }
             val newRing = Ring(newRingName, newRingFile, newRingImage)
 
+            if (!currentAccessory.isSet()) {
+                println("WARNING: ${panelInstanceName()} currentAccessory is not set: $currentAccessory")
+                setDefaultAccessory()
+                println(" ${panelInstanceName()} Default currentAccessory: $currentAccessory")
+            }
+
+            /*
             val newStoneName: String = currentAccessory.name.toString() // NPE?
             val newStoneFile: String = currentAccessory.file.toString() // NPE?
             val newStoneImage = mainScope.async { newStoneFile.let { images.load(it) }!! }
             val newStone = RingStone(newStoneName, newStoneFile, newStoneImage)
+            */
+            val newStone = RingStone(currentAccessory.name!!, currentAccessory.file!!, currentAccessory.image!!)
+
 
             try {
                 if (completeProductContainer is ICompleteRingContainer) {
@@ -149,7 +162,7 @@ class CenterPanel(
                 }
             } catch (ex: Exception) {
                 println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
-                println("Illegal Cast!")
+                println("Illegal Cast?")
             }
 
             completeProductContainer.relayout()
