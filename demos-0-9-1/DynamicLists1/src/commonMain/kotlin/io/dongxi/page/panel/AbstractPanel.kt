@@ -52,7 +52,6 @@ abstract class AbstractPanel(
 
     val mainScope = MainScope() // The scope of Panel class (and subclasses), uses Dispatchers.Main.
 
-    // Default values:  NONE
     var currentProductCategory: ProductCategory = pageType.productCategory
     var currentBaseProduct: SelectedBaseProduct = SelectedBaseProduct(currentProductCategory, null, null, null)
     var currentAccessory: SelectedAccessory = SelectedAccessory(AccessoryCategory.NONE, null, null, null)
@@ -272,7 +271,7 @@ abstract class AbstractPanel(
         }
 
         if (pageType.productCategory == RING) {
-            val ringName = currentBaseProduct.name.toString() // Just askin' for an NPE?
+            val ringName = currentBaseProduct.name!!
 
             // TODO Refactor
             var defaultStoneMetadata: Pair<String, String> = getStones(ringName)[0]

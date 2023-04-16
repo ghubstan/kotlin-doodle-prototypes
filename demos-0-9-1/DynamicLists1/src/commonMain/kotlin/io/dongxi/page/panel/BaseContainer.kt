@@ -1,6 +1,7 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.ProductCategory.NONE
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
@@ -8,6 +9,7 @@ import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
+import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
@@ -18,10 +20,10 @@ import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.utils.ObservableList
 import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 
-// TODO Rename BasePanel?
 class BaseContainer(
     pageType: PageType,
     config: DongxiConfig,
@@ -168,6 +170,8 @@ class BaseContainer(
         children += centerPanel
         children += rightPanel
         children += footerPanel
+        
+        maybeSetDefaultBaseProductAndAccessory(children)
 
         val inset = 5
 
@@ -225,5 +229,34 @@ class BaseContainer(
 
     override fun layoutForCompletedJewel() {
         // noop
+    }
+
+    private fun maybeSetDefaultBaseProductAndAccessory(children: ObservableList<View>) {
+        if (currentProductCategory != NONE) {
+
+            if (!currentBaseProduct.isSet()) {
+                // Set current product in this BaseContain instance.
+                setDefaultBaseProduct()
+            }
+
+            if (!currentAccessory.isSet()) {
+                // Set current accessory in this BaseContain instance.
+                setDefaultAccessory()
+            }
+
+            children.forEach {
+                if (it is AbstractPanel) {
+                    // Set current project & accessory for all child panels.
+                    if (!it.currentBaseProduct.isSet()) {
+                        it.currentBaseProduct = this.currentBaseProduct
+                    }
+                    if (!it.currentAccessory.isSet()) {
+                        it.currentAccessory = this.currentAccessory
+                    }
+                    println("${panelInstanceName()}.${it.panelInstanceName()}.currentBaseProduct = ${it.currentBaseProduct}")
+                    println("${panelInstanceName()}.${it.panelInstanceName()}.currentAccessory = ${it.currentAccessory}")
+                }
+            }
+        }
     }
 }
