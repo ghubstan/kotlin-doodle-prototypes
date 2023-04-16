@@ -115,6 +115,7 @@ class RightPanel(
         tempLabel.text = "STONE ${currentAccessory.name ?: ""}"
 
         try {
+            // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
             if (accessoryListContainer is IAccessoryListContainer) {
                 accessoryListContainer.clearModel()
                 accessoryListContainer.loadModel(currentBaseProduct.name ?: "A")
