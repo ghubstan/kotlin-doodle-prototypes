@@ -76,7 +76,7 @@ object RingStoneStoreMetadata {
         "Medium Persian Blue" to pathTo("medium-persian-blue.png"),
         "Midnight Blue" to pathTo("midnight-blue.png"),
         "Onyx" to pathTo("onyx.png"),
-        "Sapphire" to pathTo("sapphire.png"),
+        "Sapphire" to pathTo("sapphire.png")
     )
 
     private val ringBStones: List<Pair<String, String>> = listOf(
@@ -88,7 +88,7 @@ object RingStoneStoreMetadata {
         "Harvest Gold" to pathTo("harvest-gold.png"),
         "Indigo" to pathTo("indigo.png"),
         "Lava" to pathTo("lava.png"),
-        "Sapphire" to pathTo("sapphire.png"),
+        "Sapphire" to pathTo("sapphire.png")
     )
 
     private val ringCStones: List<Pair<String, String>> = listOf(

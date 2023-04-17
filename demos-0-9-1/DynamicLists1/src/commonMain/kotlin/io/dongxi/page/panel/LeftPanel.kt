@@ -1,6 +1,7 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.ProductCategory.NECKLACE
 import io.dongxi.model.ProductCategory.RING
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
@@ -77,10 +78,19 @@ class LeftPanel(
         foregroundColor = Transparent
     }
 
-    private val baseProductListContainer = if (pageType.productCategory == RING) {
-        getBaseRingsContainer()
-    } else {
-        getDummyBaseProductsContainer()
+
+    private val baseProductListContainer = when (pageType.productCategory) {
+        NECKLACE -> {
+            getBaseNecklacesContainer()
+        }
+
+        RING -> {
+            getBaseRingsContainer()
+        }
+
+        else -> {
+            getDummyBaseProductsContainer()
+        }
     }
 
     init {
@@ -89,21 +99,21 @@ class LeftPanel(
 
 
         // Hack
-        if (pageType.productCategory == RING) {
+        if (pageType.productCategory == NECKLACE || pageType.productCategory == RING) {
             tempLabel.text =
                 "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
         }
 
         children += listOf(tempLabel, baseProductListContainer)
-        layout = constrain(tempLabel, baseProductListContainer) { tempLabelBounds, baseRingsContainerBounds ->
+        layout = constrain(tempLabel, baseProductListContainer) { tempLabelBounds, baseProductListBounds ->
             tempLabelBounds.left eq 5
             tempLabelBounds.top eq 10
             tempLabelBounds.bottom eq 26
 
-            baseRingsContainerBounds.top eq tempLabelBounds.bottom + 5
-            baseRingsContainerBounds.left eq tempLabelBounds.left
-            baseRingsContainerBounds.width eq parent.width
-            baseRingsContainerBounds.bottom eq parent.bottom - 5
+            baseProductListBounds.top eq tempLabelBounds.bottom + 5
+            baseProductListBounds.left eq tempLabelBounds.left
+            baseProductListBounds.width eq parent.width
+            baseProductListBounds.bottom eq parent.bottom - 5
         }
     }
 

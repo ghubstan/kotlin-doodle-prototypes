@@ -2,6 +2,7 @@ package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.IAccessoryListContainer
+import io.dongxi.model.ProductCategory.NECKLACE
 import io.dongxi.model.ProductCategory.RING
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
@@ -79,11 +80,28 @@ class RightPanel(
         foregroundColor = Transparent
     }
 
+    private val accessoryListContainer = when (pageType.productCategory) {
+
+        NECKLACE -> {
+            getBaseNecklacePendantsContainer(/*  TODO Pass default necklace to know which pendant list to load? */)
+        }
+
+        RING -> {
+            getRingStonesContainer(/*  TODO Pass default ring to know which stone list to load? */)
+        }
+
+        else -> {
+            getDummyBaseProductsContainer()
+        }
+    }
+
+    /*
     private val accessoryListContainer = if (pageType.productCategory == RING) {
         getRingStonesContainer(/*  TODO Pass default ring to know which stone list to load */)
     } else {
         getDummyBaseProductsContainer()
     }
+     */
 
     init {
         size = Size(200, 200)

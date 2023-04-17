@@ -1,10 +1,11 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.model.LazyPhotoView
+import io.dongxi.model.LazyImage
 import io.dongxi.page.Menu
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
+import io.dongxi.page.PageType.*
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.util.ColorUtils
@@ -75,7 +76,7 @@ class TopPanel(
         styledText = StyledText(text, config.titleFont, Black.paint)
     }
 
-    private val logo = LazyPhotoView(mainScope.async { images.load("natty-logo.svg")!! }, RECT_SHORT_TITLE)
+    private val logo = LazyImage(mainScope.async { images.load("natty-logo.svg")!! }, RECT_SHORT_TITLE)
 
     private val pageTitleImage = getPageTitlePhotoView()
 
@@ -149,9 +150,9 @@ class TopPanel(
     }
 
 
-    private fun getPageTitlePhotoView(): LazyPhotoView {
+    private fun getPageTitlePhotoView(): LazyImage {
         when (pageType) {
-            PageType.HOME -> {
+            HOME -> {
                 /*
                 // TODO This does work because it attempted GET from server, i.e., URL = base64-string
                 val svg = SVGUtils.genPageNameSVG(pageType.pageTitle)
@@ -159,37 +160,31 @@ class TopPanel(
                     mainScope.async { images.load(svg)!! }, Rectangle(0, 0, 85, 30)
                 )
                 */
-                return LazyPhotoView(mainScope.async { images.load("page-title-home.svg")!! }, RECT_SHORT_TITLE)
+                return LazyImage(mainScope.async { images.load("page-title-home.svg")!! }, RECT_SHORT_TITLE)
             }
 
-            PageType.RINGS -> {
-                return LazyPhotoView(mainScope.async { images.load("page-title-rings.svg")!! }, RECT_SHORT_TITLE)
+            RINGS -> {
+                return LazyImage(mainScope.async { images.load("page-title-rings.svg")!! }, RECT_SHORT_TITLE)
             }
 
-            PageType.NECKLACES -> {
-                return LazyPhotoView(mainScope.async { images.load("page-title-necklaces.svg")!! }, RECT_SHORT_TITLE)
+            NECKLACES -> {
+                return LazyImage(mainScope.async { images.load("page-title-necklaces.svg")!! }, RECT_SHORT_TITLE)
             }
 
-            PageType.SCAPULARS -> {
-                return LazyPhotoView(
-                    // A little wider for longer word.
-                    mainScope.async { images.load("page-title-scapulars.svg")!! }, RECT_LONG_TITLE
-                )
+            SCAPULARS -> {
+                return LazyImage(mainScope.async { images.load("page-title-scapulars.svg")!! }, RECT_LONG_TITLE)
             }
 
-            PageType.BRACELETS -> {
-                return LazyPhotoView(mainScope.async { images.load("page-title-bracelets.svg")!! }, RECT_SHORT_TITLE)
+            BRACELETS -> {
+                return LazyImage(mainScope.async { images.load("page-title-bracelets.svg")!! }, RECT_SHORT_TITLE)
             }
 
-            PageType.EAR_RINGS -> {
-                return LazyPhotoView(mainScope.async { images.load("page-title-earrings.svg")!! }, RECT_SHORT_TITLE)
+            EAR_RINGS -> {
+                return LazyImage(mainScope.async { images.load("page-title-earrings.svg")!! }, RECT_SHORT_TITLE)
             }
 
-            PageType.ABOUT -> {
-                return LazyPhotoView(
-                    mainScope.async { images.load("page-title-about.svg")!! },
-                    Rectangle(0, 0, 85, 30)
-                )
+            ABOUT -> {
+                return LazyImage(mainScope.async { images.load("page-title-about.svg")!! }, RECT_SHORT_TITLE)
             }
         }
     }

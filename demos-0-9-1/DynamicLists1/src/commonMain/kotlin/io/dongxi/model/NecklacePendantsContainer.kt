@@ -1,13 +1,13 @@
 package io.dongxi.model
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.model.ProductCategory.RING
-import io.dongxi.model.ScaledImage.SMALL_RING_STONE
+import io.dongxi.model.ProductCategory.NECKLACE
+import io.dongxi.model.ScaledImage.SMALL_NECKLACE_PENDANT
 import io.dongxi.page.MenuEventBus
-import io.dongxi.page.panel.event.AccessorySelectEvent.SELECT_STONE
+import io.dongxi.page.panel.event.AccessorySelectEvent.SELECT_PENDANT
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
-import io.dongxi.storage.RingStoneStoreMetadata
+import io.dongxi.storage.PendantStoreMetadata
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.*
 import io.nacular.doodle.controls.list.DynamicList
@@ -37,14 +37,14 @@ import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.*
 
 
-interface IRingStonesContainer {
-    val listCache: MutableMap<ProductCategory, DynamicList<RingStone, SimpleMutableListModel<RingStone>>>
-    val list: DynamicList<RingStone, SimpleMutableListModel<RingStone>>
-    val model: SimpleMutableListModel<RingStone>
-    fun build(productCategory: ProductCategory): DynamicList<RingStone, SimpleMutableListModel<RingStone>>
+interface INecklacePendantsContainer {
+    val listCache: MutableMap<ProductCategory, DynamicList<NecklacePendant, SimpleMutableListModel<NecklacePendant>>>
+    val list: DynamicList<NecklacePendant, SimpleMutableListModel<NecklacePendant>>
+    val model: SimpleMutableListModel<NecklacePendant>
+    fun build(productCategory: ProductCategory): DynamicList<NecklacePendant, SimpleMutableListModel<NecklacePendant>>
 }
 
-class RingStonesContainer(
+class NecklacePendantsContainer(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
     private val animator: Animator,
@@ -61,16 +61,17 @@ class RingStonesContainer(
     private val menuEventBus: MenuEventBus,
     private val baseProductSelectEventBus: BaseProductSelectEventBus,
     private val accessorySelectEventBus: AccessorySelectEventBus
-) : IAccessoryListContainer, IRingStonesContainer, Container() {
+) : IAccessoryListContainer, INecklacePendantsContainer, Container() {
 
-    private val mainScope = MainScope() // The scope of RingStonesContainer class, uses Dispatchers.Main.
+    private val mainScope = MainScope() // The scope of NecklacePendantsContainer class, uses Dispatchers.Main.
 
-    // This cache is not useless, because each ring has its own set up compatible stones.
+    // This cache is not useless, because each ring has its own set up compatible pendants.
     // TODO implement the map cache for selected base product (ring).
-    override val listCache = mutableMapOf<ProductCategory, DynamicList<RingStone, SimpleMutableListModel<RingStone>>>()
+    override val listCache =
+        mutableMapOf<ProductCategory, DynamicList<NecklacePendant, SimpleMutableListModel<NecklacePendant>>>()
 
-    override val model = SimpleMutableListModel<RingStone>()
-    override val list = build(RING)
+    override val model = SimpleMutableListModel<NecklacePendant>()
+    override val list = build(NECKLACE)
 
     private fun scrollPanel(content: View) = ScrollPanel(content).apply {
         contentWidthConstraints = { it eq width - verticalScrollBarWidth }
@@ -88,24 +89,24 @@ class RingStonesContainer(
     }
 
     // TODO Remove from interface and make private?
-    override fun build(productCategory: ProductCategory): DynamicList<RingStone, SimpleMutableListModel<RingStone>> {
+    override fun build(productCategory: ProductCategory): DynamicList<NecklacePendant, SimpleMutableListModel<NecklacePendant>> {
         val list = DynamicList(
             model,
             selectionModel = SingleItemSelectionModel(),
-            itemVisualizer = RingStoneVisualizer(config),
+            itemVisualizer = NecklacePendantVisualizer(config),
             fitContent = setOf(Width, Height)
         ).apply {
             acceptsThemes = true // true when using inline behaviors, false when not using inline behaviors.
             cellAlignment = fill
 
             selectionChanged += { list, _, added ->
-                list[added.first()].getOrNull()?.let { selectedRingStone ->
-                    println("RingStonesContainer selected stone: ${selectedRingStone.name} file: ${selectedRingStone.file}")
+                list[added.first()].getOrNull()?.let { selectedNecklacePendant ->
+                    println("NecklacePendantsContainer selected pendant: ${selectedNecklacePendant.name} file: ${selectedNecklacePendant.file}")
                     mainScope.launch {
-                        SELECT_STONE.setAccessoryDetail(
-                            selectedRingStone.name, selectedRingStone.file, selectedRingStone.image
+                        SELECT_PENDANT.setAccessoryDetail(
+                            selectedNecklacePendant.name, selectedNecklacePendant.file, selectedNecklacePendant.image
                         )
-                        accessorySelectEventBus.produceEvent(SELECT_STONE)
+                        accessorySelectEventBus.produceEvent(SELECT_PENDANT)
                     }
                 }
             }
@@ -118,8 +119,8 @@ class RingStonesContainer(
 
     override fun loadModel(baseProductName: String) {
         mainScope.launch {
-            RingStoneStoreMetadata.getStones(baseProductName).sortedBy { it.first }.map { (name, path) ->
-                model.add(RingStone(name, path, mainScope.async { images.load(path)!! }))
+            PendantStoreMetadata.getPendants(baseProductName).sortedBy { it.first }.map { (name, path) ->
+                model.add(NecklacePendant(name, path, mainScope.async { images.load(path)!! }))
             }
         }
     }
@@ -136,23 +137,23 @@ class RingStonesContainer(
 }
 
 
-class RingStoneListView(
-    var stone: RingStone,
+class NecklacePendantListView(
+    var pendant: NecklacePendant,
     var index: Int,
     var selected: Boolean,
     val config: DongxiConfig
 ) : View() {
 
-    private val label = Label(stone.name, Middle, Center).apply {
+    private val label = Label(pendant.name, Middle, Center).apply {
         fitText = setOf(Width, Height)
         styledText = StyledText(text, config.listFont, Black.paint)
     }
 
     private val photo = LazyImage(
-        pendingImage = stone.image,
-        canvasDestination = SMALL_RING_STONE.canvasDestination
+        pendingImage = pendant.image,
+        canvasDestination = SMALL_NECKLACE_PENDANT.canvasDestination
     ).apply {
-        toolTipText = stone.name
+        toolTipText = pendant.name
     }
 
     init {
@@ -160,30 +161,35 @@ class RingStoneListView(
         layout = constrain(photo, fill)
     }
 
-    fun update(stone: RingStone, index: Int, selected: Boolean) {
+    fun update(pendant: NecklacePendant, index: Int, selected: Boolean) {
         // Reconfigure the view to represent the new ring installed in it.
-        this.stone = stone
+        this.pendant = pendant
         this.index = index
         this.selected = selected
 
-        label.text = stone.name
-        photo.pendingImage = stone.image
+        label.text = pendant.name
+        photo.pendingImage = pendant.image
     }
 }
 
 // The Visualizer is designed to recycle view: reconfigure the view,
 // to represent the new ring installed into it (the "infinite" list of items).
-class RingStoneVisualizer(val config: DongxiConfig) : ItemVisualizer<RingStone, IndexedItem> {
-    override fun invoke(item: RingStone, previous: View?, context: IndexedItem): View = when (previous) {
-        is RingStoneListView -> previous.apply {
+class NecklacePendantVisualizer(val config: DongxiConfig) : ItemVisualizer<NecklacePendant, IndexedItem> {
+    override fun invoke(item: NecklacePendant, previous: View?, context: IndexedItem): View = when (previous) {
+        is NecklacePendantListView -> previous.apply {
             update(
-                stone = item,
+                pendant = item,
                 index = context.index,
                 selected = context.selected
             )
         }
 
-        else -> RingStoneListView(stone = item, index = context.index, selected = context.selected, config = config)
+        else -> NecklacePendantListView(
+            pendant = item,
+            index = context.index,
+            selected = context.selected,
+            config = config
+        )
     }
 }
 

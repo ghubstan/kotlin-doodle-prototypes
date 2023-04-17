@@ -1,14 +1,14 @@
 package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.model.ICompleteRingContainer
+import io.dongxi.model.*
+import io.dongxi.model.ProductCategory.NECKLACE
 import io.dongxi.model.ProductCategory.RING
-import io.dongxi.model.Ring
-import io.dongxi.model.RingStone
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.storage.NecklaceStoreMetadata
 import io.dongxi.storage.RingStoreMetadata.getLargeRingMetadata
 import io.dongxi.util.ColorUtils
 import io.nacular.doodle.animation.Animator
@@ -79,12 +79,19 @@ class CenterPanel(
         foregroundColor = Color.Transparent
     }
 
-    private val completeProductContainer = if (pageType.productCategory == RING) {
-        getCompleteRingContainer()
-    } else {
-        getDummyBaseProductsContainer()
-    }
+    private val completeProductContainer = when (pageType.productCategory) {
+        NECKLACE -> {
+            getCompleteNecklaceContainer()
+        }
 
+        RING -> {
+            getCompleteRingContainer()
+        }
+
+        else -> {
+            getDummyBaseProductsContainer()
+        }
+    }
 
     init {
         clipCanvasToBounds = false
@@ -142,6 +149,47 @@ class CenterPanel(
                 println(" ${panelInstanceName()} Default currentAccessory: $currentAccessory")
             }
 
+            when (currentProductCategory) {
+
+                // TODO Refactor out duplicated code.
+
+                NECKLACE -> {
+                    val newNecklace = getBaseNecklace()
+                    val newPendant =
+                        NecklacePendant(currentAccessory.name!!, currentAccessory.file!!, currentAccessory.image!!)
+
+                    try {
+                        // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
+                        if (completeProductContainer is ICompleteNecklaceContainer) {
+                            completeProductContainer.update(newNecklace, newPendant)
+                        }
+                    } catch (ex: Exception) {
+                        println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
+                        println("Illegal Cast?")
+                    }
+                }
+
+                RING -> {
+                    val newRing = getLargeRing()
+                    val newStone = RingStone(currentAccessory.name!!, currentAccessory.file!!, currentAccessory.image!!)
+
+                    try {
+                        // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
+                        if (completeProductContainer is ICompleteRingContainer) {
+                            completeProductContainer.update(newRing, newStone)
+                        }
+                    } catch (ex: Exception) {
+                        println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
+                        println("Illegal Cast?")
+                    }
+                }
+
+                else -> {
+                    // TODO
+                }
+            }
+
+            /*
             if (currentProductCategory == RING) {
                 val newRing = getLargeRing()
                 val newStone = RingStone(currentAccessory.name!!, currentAccessory.file!!, currentAccessory.image!!)
@@ -159,6 +207,7 @@ class CenterPanel(
             } else {
                 // TODO
             }
+             */
 
             completeProductContainer.relayout()
             relayout()
@@ -166,6 +215,14 @@ class CenterPanel(
             println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
             println("${panelInstanceName()} currentAccessory = $currentAccessory")
         }
+    }
+
+    private fun getBaseNecklace(): Necklace {
+        val baseNecklaceMetadata = NecklaceStoreMetadata.getLargeNecklaceMetadata(currentBaseProduct.name!!)
+        val newNecklaceName: String = baseNecklaceMetadata.first
+        val newNecklaceFile: String = baseNecklaceMetadata.second
+        val newNecklaceImage = mainScope.async { newNecklaceFile.let { images.load(it) }!! }
+        return Necklace(newNecklaceName, newNecklaceFile, newNecklaceImage)
     }
 
     private fun getLargeRing(): Ring {

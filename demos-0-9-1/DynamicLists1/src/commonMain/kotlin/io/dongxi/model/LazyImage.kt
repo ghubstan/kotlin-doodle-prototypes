@@ -9,14 +9,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.job
 
-/**
- * Release v0.9.1 LazyPhoto impl is missing var pendingImage by observable(pendingImage) ...
- *
- * TODO
- * All these LazyPhotoView implementations can be refactored to one after being sure how to use them for different
- * kinds of images.
- */
-class LazyBaseRingPhotoView(pendingImage: Deferred<Image>, private val canvasDestination: Rectangle) : View() {
+class LazyImage(pendingImage: Deferred<Image>, private val canvasDestination: Rectangle?) : View() {
 
     // Do not expose the image;  it should just render it when it loads.
     // That way you can treat it like an image view.
@@ -49,7 +42,7 @@ class LazyBaseRingPhotoView(pendingImage: Deferred<Image>, private val canvasDes
     }
 
     override fun render(canvas: Canvas) {
-        image?.let { canvas.image(image = it, destination = canvasDestination) }
+        image?.let { canvas.image(image = it, destination = canvasDestination ?: bounds.atOrigin) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -61,6 +54,3 @@ class LazyBaseRingPhotoView(pendingImage: Deferred<Image>, private val canvasDes
         }
     }
 }
-
-
-

@@ -1,12 +1,12 @@
 package io.dongxi.model
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.model.ProductCategory.RING
-import io.dongxi.model.ScaledImage.SMALL_RING
+import io.dongxi.model.ProductCategory.NECKLACE
+import io.dongxi.model.ScaledImage.SMALL_NECKLACE
 import io.dongxi.page.MenuEventBus
-import io.dongxi.page.panel.event.BaseProductSelectEvent.SELECT_BASE_RING
+import io.dongxi.page.panel.event.BaseProductSelectEvent.SELECT_BASE_NECKLACE
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
-import io.dongxi.storage.RingStoreMetadata
+import io.dongxi.storage.NecklaceStoreMetadata
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.*
 import io.nacular.doodle.controls.list.DynamicList
@@ -36,14 +36,14 @@ import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.*
 
 
-interface IBaseRingsContainer {
-    val listCache: MutableMap<ProductCategory, DynamicList<Ring, SimpleMutableListModel<Ring>>>
-    val list: DynamicList<Ring, SimpleMutableListModel<Ring>>
-    val model: SimpleMutableListModel<Ring>
-    fun build(): DynamicList<Ring, SimpleMutableListModel<Ring>>
+interface IBaseNecklacesContainer {
+    val listCache: MutableMap<ProductCategory, DynamicList<Necklace, SimpleMutableListModel<Necklace>>>
+    val list: DynamicList<Necklace, SimpleMutableListModel<Necklace>>
+    val model: SimpleMutableListModel<Necklace>
+    fun build(): DynamicList<Necklace, SimpleMutableListModel<Necklace>>
 }
 
-class BaseRingsContainer(
+class BaseNecklacesContainer(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
     private val animator: Animator,
@@ -59,14 +59,14 @@ class BaseRingsContainer(
     private val modals: ModalManager,
     private val menuEventBus: MenuEventBus,
     private val baseProductSelectEventBus: BaseProductSelectEventBus
-) : IProductListContainer, IBaseRingsContainer, Container() {
+) : IProductListContainer, IBaseNecklacesContainer, Container() {
 
-    private val mainScope = MainScope() // The scope of BaseRingsContainer class, uses Dispatchers.Main.
+    private val mainScope = MainScope() // The scope of BaseNecklacesContainer class, uses Dispatchers.Main.
 
     // This map is useless because every container is specific to product category.  Just cache the list -- no map.
-    override val listCache = mutableMapOf<ProductCategory, DynamicList<Ring, SimpleMutableListModel<Ring>>>()
+    override val listCache = mutableMapOf<ProductCategory, DynamicList<Necklace, SimpleMutableListModel<Necklace>>>()
 
-    override val model = SimpleMutableListModel<Ring>()
+    override val model = SimpleMutableListModel<Necklace>()
     override val list = build()
 
     private fun scrollPanel(content: View) = ScrollPanel(content).apply {
@@ -84,27 +84,27 @@ class BaseRingsContainer(
     }
 
     // TODO Remove from interface and make private?
-    override fun build(): DynamicList<Ring, SimpleMutableListModel<Ring>> {
-        if (listCache.containsKey(RING)) {
-            return listCache[RING]!!
+    override fun build(): DynamicList<Necklace, SimpleMutableListModel<Necklace>> {
+        if (listCache.containsKey(NECKLACE)) {
+            return listCache[NECKLACE]!!
         } else {
             val list = DynamicList(
                 model,
                 selectionModel = SingleItemSelectionModel(),
-                itemVisualizer = BaseRingVisualizer(config),
+                itemVisualizer = BaseNecklaceVisualizer(config),
                 fitContent = setOf(Width, Height)
             ).apply {
                 acceptsThemes = true // true when using inline behaviors, false when not using inline behaviors.
                 cellAlignment = fill
 
                 selectionChanged += { list, _, added ->
-                    list[added.first()].getOrNull()?.let { selectedRing ->
-                        println("BaseRingsContainer selected ring: ${selectedRing.name} file: ${selectedRing.file}")
+                    list[added.first()].getOrNull()?.let { selectedNecklace ->
+                        println("BaseNecklacesContainer selected necklace: ${selectedNecklace.name} file: ${selectedNecklace.file}")
                         mainScope.launch {
-                            SELECT_BASE_RING.setBaseProductDetail(
-                                selectedRing.name, selectedRing.file, selectedRing.image
+                            SELECT_BASE_NECKLACE.setBaseProductDetail(
+                                selectedNecklace.name, selectedNecklace.file, selectedNecklace.image
                             )
-                            baseProductSelectEventBus.produceEvent(SELECT_BASE_RING)
+                            baseProductSelectEventBus.produceEvent(SELECT_BASE_NECKLACE)
                         }
                     }
                 }
@@ -117,8 +117,8 @@ class BaseRingsContainer(
 
     override fun loadModel() {
         mainScope.launch {
-            RingStoreMetadata.allSmallRings.sortedBy { it.first }.map { (name, path) ->
-                model.add(Ring(name, path, mainScope.async { images.load(path)!! }))
+            NecklaceStoreMetadata.allSmallNecklaces.sortedBy { it.first }.map { (name, path) ->
+                model.add(Necklace(name, path, mainScope.async { images.load(path)!! }))
             }
         }
     }
@@ -134,23 +134,23 @@ class BaseRingsContainer(
     }
 }
 
-class BaseRingListView(
-    var ring: Ring,
+class BaseNecklaceListView(
+    var necklace: Necklace,
     var index: Int,
     var selected: Boolean,
     val config: DongxiConfig
 ) : View() {
 
-    private val label = Label(ring.name, Middle, Center).apply {
+    private val label = Label(necklace.name, Middle, Center).apply {
         fitText = setOf(Width, Height)
         styledText = StyledText(text, config.listFont, Black.paint)
     }
 
     private val photo = LazyImage(
-        pendingImage = ring.image,
-        canvasDestination = SMALL_RING.canvasDestination
+        pendingImage = necklace.image,
+        canvasDestination = SMALL_NECKLACE.canvasDestination
     ).apply {
-        toolTipText = ring.name
+        toolTipText = necklace.name
     }
 
     init {
@@ -170,30 +170,35 @@ class BaseRingListView(
         }
     }
 
-    fun update(ring: Ring, index: Int, selected: Boolean) {
-        // Reconfigure the view to represent the new ring installed in it.
-        this.ring = ring
+    fun update(necklace: Necklace, index: Int, selected: Boolean) {
+        // Reconfigure the view to represent the new necklace installed in it.
+        this.necklace = necklace
         this.index = index
         this.selected = selected
 
-        label.text = ring.name
-        photo.pendingImage = ring.image
+        label.text = necklace.name
+        photo.pendingImage = necklace.image
     }
 }
 
 // The Visualizer is designed to recycle view: reconfigure the view,
-// to represent the new ring installed into it (the "infinite" list of items).
-class BaseRingVisualizer(val config: DongxiConfig) : ItemVisualizer<Ring, IndexedItem> {
-    override fun invoke(item: Ring, previous: View?, context: IndexedItem): View = when (previous) {
-        is BaseRingListView -> previous.apply {
+// to represent the new necklace installed into it (the "infinite" list of items).
+class BaseNecklaceVisualizer(val config: DongxiConfig) : ItemVisualizer<Necklace, IndexedItem> {
+    override fun invoke(item: Necklace, previous: View?, context: IndexedItem): View = when (previous) {
+        is BaseNecklaceListView -> previous.apply {
             update(
-                ring = item,
+                necklace = item,
                 index = context.index,
                 selected = context.selected
             )
         }
 
-        else -> BaseRingListView(ring = item, index = context.index, selected = context.selected, config = config)
+        else -> BaseNecklaceListView(
+            necklace = item,
+            index = context.index,
+            selected = context.selected,
+            config = config
+        )
     }
 }
 
