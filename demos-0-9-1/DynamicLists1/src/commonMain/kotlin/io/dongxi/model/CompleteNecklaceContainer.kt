@@ -1,6 +1,8 @@
 package io.dongxi.model
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.ScaledImage.LARGE_NECKLACE
+import io.dongxi.model.ScaledImage.LARGE_NECKLACE_PENDANT
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
@@ -14,7 +16,6 @@ import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
-import io.nacular.doodle.geometry.Rectangle
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
@@ -65,12 +66,8 @@ class CompleteNecklaceContainer(
         defaultPendantMetadata.second,
         mainScope.async { images.load(defaultPendantMetadata.second)!! })
 
-    private val necklacePhotoCanvasDestination = Rectangle(5, 15, 190, 190)
-    private val necklacePhoto = LazyNecklacePendantPhotoView(necklace.image, necklacePhotoCanvasDestination)
-
-    private val pendantPhotoCanvasDestination = Rectangle(5, 15, 43, 43)
-    private val pendantPhoto = LazyNecklacePendantPhotoView(pendant.image, pendantPhotoCanvasDestination)
-
+    private val necklacePhoto = LazyNecklacePendantPhotoView(necklace.image, LARGE_NECKLACE.canvasDestination)
+    private val pendantPhoto = LazyNecklacePendantPhotoView(pendant.image, LARGE_NECKLACE_PENDANT.canvasDestination)
 
     init {
         clipCanvasToBounds = false

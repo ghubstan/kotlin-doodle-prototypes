@@ -2,6 +2,7 @@ package io.dongxi.model
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.ProductCategory.NECKLACE
+import io.dongxi.model.ScaledImage.SMALL_NECKLACE_PENDANT
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.panel.event.AccessorySelectEvent.SELECT_PENDANT
 import io.dongxi.page.panel.event.AccessorySelectEventBus
@@ -21,7 +22,6 @@ import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.drawing.paint
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
-import io.nacular.doodle.geometry.Rectangle
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
@@ -149,8 +149,7 @@ class NecklacePendantListView(
         styledText = StyledText(text, config.listFont, Black.paint)
     }
 
-    private val photoCanvasDestination = Rectangle(10, 15, 30, 30)
-    private val photo = LazyNecklacePendantPhotoView(pendant.image, photoCanvasDestination).apply {
+    private val photo = LazyNecklacePendantPhotoView(pendant.image, SMALL_NECKLACE_PENDANT.canvasDestination).apply {
         toolTipText = pendant.name
     }
 
