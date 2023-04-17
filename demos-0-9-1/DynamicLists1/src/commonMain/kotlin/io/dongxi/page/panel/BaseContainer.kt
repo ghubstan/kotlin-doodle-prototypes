@@ -212,7 +212,7 @@ class BaseContainer(
             footerPanelBounds.right eq parent.right - inset // Span all 3 columns
             footerPanelBounds.bottom eq parent.bottom - inset
         }
-        Resizer(this)
+        Resizer(this).apply { movable = false }
     }
 
     override fun layoutForCurrentProductCategory() {

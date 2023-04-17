@@ -7,13 +7,11 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
-import io.dongxi.util.ColorUtils
+import io.dongxi.util.ColorUtils.floralWhite
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
-import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.drawing.Canvas
-import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.drawing.rect
@@ -22,12 +20,11 @@ import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
+import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.utils.Dimension.Width
-import io.nacular.doodle.utils.HorizontalAlignment.Center
-import io.nacular.doodle.utils.VerticalAlignment.Middle
+import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 
 class LeftPanel(
@@ -67,17 +64,6 @@ class LeftPanel(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
-    private val tempLabel = Label(
-        "NADA",
-        Middle,
-        Center
-    ).apply {
-        font = config.panelDebugFont
-        height = 24.0
-        fitText = setOf(Width)
-        foregroundColor = Transparent
-    }
-
 
     private val baseProductListContainer = when (pageType.productCategory) {
         NECKLACE -> {
@@ -96,29 +82,13 @@ class LeftPanel(
     init {
         clipCanvasToBounds = false
         size = Size(200, 200)
-
-
-        // Hack
-        if (pageType.productCategory == NECKLACE || pageType.productCategory == RING) {
-            tempLabel.text =
-                "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
-        }
-
-        children += listOf(tempLabel, baseProductListContainer)
-        layout = constrain(tempLabel, baseProductListContainer) { tempLabelBounds, baseProductListBounds ->
-            tempLabelBounds.left eq 5
-            tempLabelBounds.top eq 10
-            tempLabelBounds.bottom eq 26
-
-            baseProductListBounds.top eq tempLabelBounds.bottom + 5
-            baseProductListBounds.left eq tempLabelBounds.left
-            baseProductListBounds.width eq parent.width
-            baseProductListBounds.bottom eq parent.bottom - 5
-        }
+        children += baseProductListContainer
+        layout = constrain(baseProductListContainer, fill)
+        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {
-        canvas.rect(bounds.atOrigin, ColorUtils.floralWhite())
+        canvas.rect(bounds.atOrigin, floralWhite())
     }
 
     override fun layoutForCurrentProductCategory() {
@@ -128,10 +98,6 @@ class LeftPanel(
 
     override fun layoutForCurrentBaseProductSelection() {
         println("${panelInstanceName()} currentBaseProduct: $currentBaseProduct")
-
-        tempLabel.text =
-            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} ${currentBaseProduct.file ?: ""}"
-
         relayout()
     }
 

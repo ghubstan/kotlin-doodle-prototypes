@@ -28,6 +28,7 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension.Height
 import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment.Center
+import io.nacular.doodle.utils.Resizer
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -127,6 +128,7 @@ class TopPanel(
             menuBounds.right eq parent.right - 5
             menuBounds.height eq parent.height - 5
         }
+        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {

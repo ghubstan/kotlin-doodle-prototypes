@@ -10,23 +10,24 @@ import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.NecklaceStoreMetadata
 import io.dongxi.storage.RingStoreMetadata.getLargeRingMetadata
-import io.dongxi.util.ColorUtils
+import io.dongxi.util.ColorUtils.floralWhite
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
-import io.nacular.doodle.controls.text.Label
-import io.nacular.doodle.drawing.*
+import io.nacular.doodle.drawing.Canvas
+import io.nacular.doodle.drawing.FontLoader
+import io.nacular.doodle.drawing.TextMetrics
+import io.nacular.doodle.drawing.rect
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
+import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.utils.Dimension
-import io.nacular.doodle.utils.HorizontalAlignment.Center
-import io.nacular.doodle.utils.VerticalAlignment.Middle
+import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 
@@ -67,18 +68,6 @@ class CenterPanel(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
-
-    private val tempLabel = Label(
-        "NADA",
-        Middle,
-        Center
-    ).apply {
-        font = config.panelDebugFont
-        height = 24.0
-        fitText = setOf(Dimension.Width)
-        foregroundColor = Color.Transparent
-    }
-
     private val completeProductContainer = when (pageType.productCategory) {
         NECKLACE -> {
             getCompleteNecklaceContainer()
@@ -97,21 +86,13 @@ class CenterPanel(
         clipCanvasToBounds = false
         size = Size(200, 200)
 
-        children += listOf(tempLabel, completeProductContainer)
-        layout = constrain(tempLabel, completeProductContainer) { tempLabelBounds, completeProductContainerBounds ->
-            tempLabelBounds.left eq 5
-            tempLabelBounds.top eq 10
-            tempLabelBounds.bottom eq 26
-
-            completeProductContainerBounds.top eq tempLabelBounds.bottom + 5
-            completeProductContainerBounds.left eq tempLabelBounds.left
-            completeProductContainerBounds.width eq parent.width
-            completeProductContainerBounds.bottom eq parent.bottom - 5
-        }
+        children += listOf(completeProductContainer)
+        layout = constrain(completeProductContainer, fill)
+        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {
-        canvas.rect(bounds.atOrigin, ColorUtils.floralWhite())
+        canvas.rect(bounds.atOrigin, floralWhite())
     }
 
     override fun layoutForCurrentProductCategory() {
@@ -121,19 +102,11 @@ class CenterPanel(
 
     override fun layoutForCurrentBaseProductSelection() {
         println("${panelInstanceName()} currentBaseProduct: $currentBaseProduct")
-
-        tempLabel.text =
-            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} with STONE ${currentAccessory.name ?: ""}"
-
         relayout()
     }
 
     override fun layoutForCurrentAccessorySelection() {
         println("${panelInstanceName()} currentAccessory: $currentAccessory")
-
-        tempLabel.text =
-            "${currentBaseProduct.productCategory.name} ${currentBaseProduct.name ?: ""} with STONE ${currentAccessory.name ?: ""}"
-
         relayout()
     }
 
@@ -189,28 +162,9 @@ class CenterPanel(
                 }
             }
 
-            /*
-            if (currentProductCategory == RING) {
-                val newRing = getLargeRing()
-                val newStone = RingStone(currentAccessory.name!!, currentAccessory.file!!, currentAccessory.image!!)
-
-                try {
-                    // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
-                    if (completeProductContainer is ICompleteRingContainer) {
-                        completeProductContainer.update(newRing, newStone)
-                    }
-                } catch (ex: Exception) {
-                    println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
-                    println("Illegal Cast?")
-                }
-
-            } else {
-                // TODO
-            }
-             */
-
-            completeProductContainer.relayout()
+            // completeProductContainer.relayout()
             relayout()
+
         } catch (ex: Exception) {
             println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
             println("${panelInstanceName()} currentAccessory = $currentAccessory")

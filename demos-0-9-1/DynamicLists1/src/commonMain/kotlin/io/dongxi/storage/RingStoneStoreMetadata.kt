@@ -77,7 +77,7 @@ object RingStoneStoreMetadata {
         "Midnight Blue" to pathTo("midnight-blue.png"),
         "Onyx" to pathTo("onyx.png"),
         "Sapphire" to pathTo("sapphire.png")
-    )
+    ).sortedBy { it.first }
 
     private val ringBStones: List<Pair<String, String>> = listOf(
         "Beryl" to pathTo("beryl.png"),
@@ -89,10 +89,11 @@ object RingStoneStoreMetadata {
         "Indigo" to pathTo("indigo.png"),
         "Lava" to pathTo("lava.png"),
         "Sapphire" to pathTo("sapphire.png")
-    )
+    ).sortedBy { it.first }
 
     private val ringCStones: List<Pair<String, String>> = listOf(
-        "Amethyst" to pathTo("amethyst.png"),
+        "Dark Blue" to pathTo("dark-blue.png"),
+        "Dark Coral" to pathTo("dark-coral.png"),
         "Garnet" to pathTo("garnet.png"),
         "Lava" to pathTo("lava.png"),
         "Magenta" to pathTo("magenta.png"),
@@ -105,10 +106,9 @@ object RingStoneStoreMetadata {
         "Yellow" to pathTo("yellow.png"),
         "Sapphire" to pathTo("sapphire.png"),
         "Topaz" to pathTo("topaz.png")
-    )
+    ).sortedBy { it.first }
 
     private val ringDStones: List<Pair<String, String>> = listOf(
-        "Beryl" to pathTo("beryl.png"),
         "Bloodstone" to pathTo("bloodstone.png"),
         "Carnelian" to pathTo("carnelian.png"),
         "Dark Blue" to pathTo("dark-blue.png"),
@@ -125,7 +125,7 @@ object RingStoneStoreMetadata {
         "Topaz" to pathTo("topaz.png"),
         "Violet" to pathTo("violet.png"),
         "Yellow" to pathTo("yellow.png")
-    )
+    ).sortedBy { it.first }
 
     private val ringEStones: List<Pair<String, String>> = listOf(
         "Amethyst" to pathTo("amethyst.png"),
@@ -141,7 +141,7 @@ object RingStoneStoreMetadata {
         "Topaz" to pathTo("topaz.png"),
         "Violet" to pathTo("violet.png"),
         "Yellow" to pathTo("yellow.png")
-    )
+    ).sortedBy { it.first }
 
     private val ringFStones: List<Pair<String, String>> = listOf(
         "Emerald" to pathTo("emerald.png"),
@@ -156,8 +156,7 @@ object RingStoneStoreMetadata {
         "Topaz" to pathTo("topaz.png"),
         "Violet" to pathTo("violet.png"),
         "Yellow" to pathTo("yellow.png")
-    )
-
+    ).sortedBy { it.first }
 
     private fun pathTo(imageFilename: String): String {
         return STONES_PATH + imageFilename

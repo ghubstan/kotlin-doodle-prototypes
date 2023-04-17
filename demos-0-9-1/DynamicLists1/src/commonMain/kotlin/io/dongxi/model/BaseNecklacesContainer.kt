@@ -16,6 +16,7 @@ import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.core.Container
 import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.Color.Companion.Black
+import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.drawing.paint
@@ -75,12 +76,34 @@ class BaseNecklacesContainer(
 
     private val scrollableList = scrollPanel(list)
 
+    private val debugLabel = Label(
+        "NADA",
+        Middle,
+        Center
+    ).apply {
+        font = config.panelDebugFont
+        height = 24.0
+        fitText = setOf(Width)
+        foregroundColor = Transparent
+    }
+
     init {
         clipCanvasToBounds = false
         size = Size(150, 200)
         loadModel()
+        children += debugLabel
         children += scrollableList
-        layout = constrain(scrollableList, fill)
+        layout = constrain(debugLabel, scrollableList) { debugLabelBounds, listBounds ->
+            debugLabelBounds.top eq 5
+            debugLabelBounds.left eq 5
+            debugLabelBounds.width.preserve
+            debugLabelBounds.height.preserve
+
+            listBounds.top eq debugLabelBounds.bottom + 5
+            listBounds.left eq 5
+            listBounds.width eq parent.width
+            listBounds.bottom eq parent.bottom - 5
+        }
     }
 
     // TODO Remove from interface and make private?
@@ -105,10 +128,10 @@ class BaseNecklacesContainer(
                                 selectedNecklace.name, selectedNecklace.file, selectedNecklace.image
                             )
                             baseProductSelectEventBus.produceEvent(SELECT_BASE_NECKLACE)
+                            updateDebugLabelText(selectedNecklace)
                         }
                     }
                 }
-
                 setSelection(setOf(0))
             }
             return list
@@ -117,9 +140,11 @@ class BaseNecklacesContainer(
 
     override fun loadModel() {
         mainScope.launch {
-            NecklaceStoreMetadata.allSmallNecklaces.sortedBy { it.first }.map { (name, path) ->
-                model.add(Necklace(name, path, mainScope.async { images.load(path)!! }))
+            val necklaces = NecklaceStoreMetadata.allSmallNecklaces.sortedBy { it.first }.map { (name, path) ->
+                Necklace(name, path, mainScope.async { images.load(path)!! })
             }
+            necklaces.forEach { model.add(it) }
+            updateDebugLabelText(necklaces[0])
         }
     }
 
@@ -131,6 +156,10 @@ class BaseNecklacesContainer(
         // Cancels all coroutines launched in this scope.
         mainScope.cancel()
         // cleanup here
+    }
+
+    private fun updateDebugLabelText(necklace: Necklace) {
+        debugLabel.text = "Color:  ${necklace.name}  File:  ${necklace.file}"
     }
 }
 

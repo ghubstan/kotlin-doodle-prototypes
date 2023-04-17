@@ -23,6 +23,7 @@ import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -123,6 +124,8 @@ class BaseView(
 
         children += currentPage
         layout = constrain(currentPage, fill)
+
+        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {

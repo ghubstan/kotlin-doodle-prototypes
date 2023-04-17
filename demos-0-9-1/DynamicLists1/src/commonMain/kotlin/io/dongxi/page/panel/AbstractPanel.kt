@@ -349,21 +349,6 @@ abstract class AbstractPanel(
                 SelectedBaseProduct(NONE, null, null, null)
             }
         }
-        /*
-        return if (currentProductCategory == RING) {
-            println("${panelInstanceName()} -> set default ${pageType.productCategory}")
-            // A base product image is a small image.  Complete products are large images.
-            val defaultRingMetadata = RingStoreMetadata.getSmallRingMetadata("A")
-            val ringName = defaultRingMetadata.first
-            val ringFile = defaultRingMetadata.second
-            val ringImage = mainScope.async { images.load(ringFile)!! }
-            SelectedBaseProduct(currentProductCategory, ringName, ringFile, ringImage)
-        } else {
-            // TODO
-            println("AbstractPanel::${panelInstanceName()} -> TODO set default base product for product category $currentProductCategory")
-            SelectedBaseProduct(NONE, null, null, null)
-        }
-         */
     }
 
     private fun getDefaultAccessoryForBaseProduct(): SelectedAccessory {
@@ -397,20 +382,6 @@ abstract class AbstractPanel(
                 return SelectedAccessory(AccessoryCategory.NONE, null, null, null)
             }
         }
-        /*
-        return if (currentProductCategory == RING) {
-            val ringName = currentBaseProduct.name!!
-            // The default accessory is the one at the top of the accessory list.
-            val defaultStoneMetadata: Pair<String, String> = getStones(ringName)[0]
-            val stoneName = defaultStoneMetadata.first
-            val stoneFile = defaultStoneMetadata.second
-            val stoneImage = mainScope.async { images.load(stoneFile)!! }
-            SelectedAccessory(STONE, stoneName, stoneFile, stoneImage)
-        } else {
-            println("AbstractPanel::${panelInstanceName()} -> TODO set default accessory for product category category $currentProductCategory")
-            return SelectedAccessory(AccessoryCategory.NONE, null, null, null)
-        }
-         */
     }
 
     fun panelInstanceName(): String {

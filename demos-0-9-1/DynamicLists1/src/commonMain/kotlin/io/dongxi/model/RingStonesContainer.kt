@@ -17,6 +17,7 @@ import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.core.Container
 import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.Color.Companion.Black
+import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.drawing.paint
@@ -33,6 +34,7 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension.Height
 import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment.Center
+import io.nacular.doodle.utils.Resizer
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.*
 
@@ -78,13 +80,35 @@ class RingStonesContainer(
 
     private val scrollableList = scrollPanel(list)
 
+    private val debugLabel = Label(
+        "NADA",
+        Middle,
+        Center
+    ).apply {
+        font = config.panelDebugFont
+        height = 24.0
+        fitText = setOf(Width)
+        foregroundColor = Transparent
+    }
+
     init {
         clipCanvasToBounds = false
         size = Size(150, 200)
         loadModel("A")
+        children += debugLabel
         children += scrollableList
-        layout = constrain(scrollableList, fill)
+        layout = constrain(debugLabel, scrollableList) { debugLabelBounds, listBounds ->
+            debugLabelBounds.top eq 5
+            debugLabelBounds.left eq 5
+            debugLabelBounds.width.preserve
+            debugLabelBounds.height.preserve
 
+            listBounds.top eq debugLabelBounds.bottom + 5
+            listBounds.left eq 5
+            listBounds.width eq parent.width
+            listBounds.bottom eq parent.bottom - 5
+        }
+        Resizer(this).apply { movable = false }
     }
 
     // TODO Remove from interface and make private?
@@ -106,21 +130,23 @@ class RingStonesContainer(
                             selectedRingStone.name, selectedRingStone.file, selectedRingStone.image
                         )
                         accessorySelectEventBus.produceEvent(SELECT_STONE)
+                        updateDebugLabelText(selectedRingStone)
                     }
                 }
             }
-
             setSelection(setOf(0))
-
         }
         return list
     }
 
     override fun loadModel(baseProductName: String) {
         mainScope.launch {
-            RingStoneStoreMetadata.getStones(baseProductName).sortedBy { it.first }.map { (name, path) ->
-                model.add(RingStone(name, path, mainScope.async { images.load(path)!! }))
-            }
+            val stones =
+                RingStoneStoreMetadata.getStones(baseProductName).sortedBy { it.first }.map { (name, path) ->
+                    RingStone(name, path, mainScope.async { images.load(path)!! })
+                }
+            stones.forEach { model.add(it) }
+            updateDebugLabelText(stones[0])
         }
     }
 
@@ -132,6 +158,10 @@ class RingStonesContainer(
         // Cancels all coroutines launched in this scope.
         mainScope.cancel()
         // cleanup here
+    }
+
+    private fun updateDebugLabelText(stone: RingStone) {
+        debugLabel.text = "Pedra:  ${stone.name}  File:  ${stone.file}"
     }
 }
 
