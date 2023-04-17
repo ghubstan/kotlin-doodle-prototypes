@@ -16,6 +16,7 @@ import io.nacular.doodle.controls.panels.ScrollPanel
 import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.core.Container
 import io.nacular.doodle.core.View
+import io.nacular.doodle.drawing.Color
 import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
@@ -33,6 +34,7 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension.Height
 import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment.Center
+import io.nacular.doodle.utils.Resizer
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.*
 
@@ -79,13 +81,35 @@ class NecklacePendantsContainer(
 
     private val scrollableList = scrollPanel(list)
 
+    private val debugLabel = Label(
+        "NADA",
+        Middle,
+        Center
+    ).apply {
+        font = config.panelDebugFont
+        height = 24.0
+        fitText = setOf(Width)
+        foregroundColor = Color.Transparent
+    }
+
     init {
         clipCanvasToBounds = false
         size = Size(150, 200)
         loadModel("A")
+        children += debugLabel
         children += scrollableList
-        layout = constrain(scrollableList, fill)
+        layout = constrain(debugLabel, scrollableList) { debugLabelBounds, listBounds ->
+            debugLabelBounds.top eq 5
+            debugLabelBounds.left eq 5
+            debugLabelBounds.width.preserve
+            debugLabelBounds.height.preserve
 
+            listBounds.top eq debugLabelBounds.bottom + 5
+            listBounds.left eq 5
+            listBounds.width eq parent.width
+            listBounds.bottom eq parent.bottom - 5
+        }
+        Resizer(this).apply { movable = false }
     }
 
     // TODO Remove from interface and make private?
@@ -107,21 +131,23 @@ class NecklacePendantsContainer(
                             selectedNecklacePendant.name, selectedNecklacePendant.file, selectedNecklacePendant.image
                         )
                         accessorySelectEventBus.produceEvent(SELECT_PENDANT)
+                        updateDebugLabelText(selectedNecklacePendant)
                     }
                 }
             }
-
             setSelection(setOf(0))
-
         }
         return list
     }
 
     override fun loadModel(baseProductName: String) {
         mainScope.launch {
-            PendantStoreMetadata.getPendants(baseProductName).sortedBy { it.first }.map { (name, path) ->
-                model.add(NecklacePendant(name, path, mainScope.async { images.load(path)!! }))
-            }
+            val pendants =
+                PendantStoreMetadata.getPendants(baseProductName).sortedBy { it.first }.map { (name, path) ->
+                    NecklacePendant(name, path, mainScope.async { images.load(path)!! })
+                }
+            pendants.forEach { model.add(it) }
+            updateDebugLabelText(pendants[0])
         }
     }
 
@@ -133,6 +159,10 @@ class NecklacePendantsContainer(
         // Cancels all coroutines launched in this scope.
         mainScope.cancel()
         // cleanup here
+    }
+
+    private fun updateDebugLabelText(pendant: NecklacePendant) {
+        debugLabel.text = "Pendant:  ${pendant.name}  File:  ${pendant.file}"
     }
 }
 

@@ -12,7 +12,7 @@ object RingStoreMetadata {
         "D" to pathToSmallRing("d.png"),
         "E" to pathToSmallRing("e.png"),
         "F" to pathToSmallRing("f.png")
-    )
+    ).sortedBy { it.first }
 
     fun getSmallRingMetadata(ringName: String): Pair<String, String> {
         val filename = "${ringName.lowercase()}.png"

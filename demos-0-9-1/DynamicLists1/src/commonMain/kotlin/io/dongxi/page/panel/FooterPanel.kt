@@ -20,6 +20,7 @@ import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 
 class FooterPanel(
@@ -62,12 +63,13 @@ class FooterPanel(
 
     init {
         size = Size(100, 600)
+        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {
         canvas.rect(bounds.atOrigin, ColorUtils.floralWhite())
     }
-    
+
     override fun layoutForCurrentProductCategory() {
         // noop
     }

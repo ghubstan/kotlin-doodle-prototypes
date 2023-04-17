@@ -40,17 +40,17 @@ object PendantStoreMetadata {
         "Sapphire" to pathTo("sapphire.png"),
         "Snake" to pathTo("snake.svg"),
         "Topaz" to pathTo("topaz.png")
-    )
+    ).sortedBy { it.first }
 
     private val necklaceBPendants: List<Pair<String, String>> = listOf(
-        "Agate" to pathTo("agate.png"),
         "Carnelian" to pathTo("carnelian.png"),
+        "Earth" to pathTo("earth.svg"),
         "Emerald" to pathTo("emerald.png"),
         "Garnet" to pathTo("garnet.png"),
         "Onyx" to pathTo("onyx.png"),
         "Ruby" to pathTo("ruby.png"),
         "Sapphire" to pathTo("sapphire.png")
-    )
+    ).sortedBy { it.first }
 
     private val necklaceCPendants: List<Pair<String, String>> = listOf(
         "Agate" to pathTo("agate.png"),
@@ -60,31 +60,33 @@ object PendantStoreMetadata {
         "Peridot" to pathTo("peridot.png"),
         "Sapphire" to pathTo("sapphire.png"),
         "Topaz" to pathTo("topaz.png")
-    )
+    ).sortedBy { it.first }
 
     private val necklaceDPendants: List<Pair<String, String>> = listOf(
-        "Agate" to pathTo("agate.png"),
         "Beryl" to pathTo("beryl.png"),
         "Bloodstone" to pathTo("bloodstone.png"),
         "Emerald" to pathTo("emerald.png"),
+        "Fleur de Lis" to pathTo("fleur-de-lis.svg"),
         "Garnet" to pathTo("garnet.png"),
         "Onyx" to pathTo("onyx.png"),
         "Peridot" to pathTo("peridot.png"),
         "Ruby" to pathTo("ruby.png"),
         "Sapphire" to pathTo("sapphire.png"),
         "Topaz" to pathTo("topaz.png")
-    )
+    ).sortedBy { it.first }
 
     private val necklaceEPendants: List<Pair<String, String>> = listOf(
-        "Agate" to pathTo("agate.png"),
+        "Bloodstone" to pathTo("bloodstone.png"),
         "Emerald" to pathTo("emerald.png"),
         "Garnet" to pathTo("garnet.png"),
+        "Jewel Beetle" to pathTo("jewel-beetle.svg"),
         "Onyx" to pathTo("onyx.png"),
         "Sapphire" to pathTo("sapphire.png"),
         "Topaz" to pathTo("topaz.png")
-    )
+    ).sortedBy { it.first }
 
     private val necklaceFPendants: List<Pair<String, String>> = listOf(
+        "Bloodstone" to pathTo("bloodstone.png"),
         "Flamengo" to pathTo("flamengo.svg"),
         "Fleur de Lis" to pathTo("fleur-de-lis.svg"),
         "Green Diamond" to pathTo("green-diamond.svg"),
@@ -108,7 +110,7 @@ object PendantStoreMetadata {
         //  "Lotus" to pathTo("lotus.png"),                    // Background not transparent.
         //  blue-diamond.svg  can't re-size
         //  nassak-diamond.svg  can't re-size
-    )
+    ).sortedBy { it.first }
 
     private fun pathTo(imageFilename: String): String {
         return PENDANTS_PATH + imageFilename

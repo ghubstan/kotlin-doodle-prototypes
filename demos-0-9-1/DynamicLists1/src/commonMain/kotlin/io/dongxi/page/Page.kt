@@ -16,6 +16,7 @@ import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 
 class Page(
@@ -80,6 +81,7 @@ class Page(
     init {
         children += listOf(baseContainer)
         layout = constrain(baseContainer, fill)
+        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {

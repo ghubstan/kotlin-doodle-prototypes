@@ -11,7 +11,9 @@ import io.dongxi.storage.PendantStoreMetadata
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
+import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.core.Container
+import io.nacular.doodle.drawing.Color
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
@@ -22,6 +24,9 @@ import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.utils.Dimension
+import io.nacular.doodle.utils.HorizontalAlignment
+import io.nacular.doodle.utils.VerticalAlignment
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
@@ -53,6 +58,17 @@ class CompleteNecklaceContainer(
 
     private val mainScope = MainScope() // The scope of NecklaceWithStoneContainer class, uses Dispatchers.Main.
 
+    private val debugLabel = Label(
+        "NADA",
+        VerticalAlignment.Middle,
+        HorizontalAlignment.Center
+    ).apply {
+        font = config.panelDebugFont
+        height = 24.0
+        fitText = setOf(Dimension.Width)
+        foregroundColor = Color.Transparent
+    }
+
     private val defaultNecklaceMetadata = getLargeNecklaceMetadata("A")
     private var defaultPendantMetadata: Pair<String, String> =
         PendantStoreMetadata.getPendants(defaultNecklaceMetadata.first)[0]
@@ -78,19 +94,26 @@ class CompleteNecklaceContainer(
     )
 
     init {
+        updateDebugLabelText()
         clipCanvasToBounds = false
         size = Size(200, 200)
 
-        children += listOf(necklacePhoto, pendantPhoto)
-        layout = constrain(necklacePhoto, pendantPhoto) { necklacePhotoBounds,
-                                                          pendantPhotoBounds ->
-            necklacePhotoBounds.top eq 10
+        children += listOf(debugLabel, necklacePhoto, pendantPhoto)
+        layout = constrain(debugLabel, necklacePhoto, pendantPhoto) { debugLabelBounds,
+                                                                      necklacePhotoBounds,
+                                                                      pendantPhotoBounds ->
+            debugLabelBounds.top eq 5
+            debugLabelBounds.left eq 5
+            debugLabelBounds.width.preserve
+            debugLabelBounds.height.preserve
+
+            necklacePhotoBounds.top eq debugLabelBounds.bottom + 10
             necklacePhotoBounds.left eq 10
             necklacePhotoBounds.width.preserve
             necklacePhotoBounds.height.preserve
 
             pendantPhotoBounds.left eq 83
-            pendantPhotoBounds.centerY eq 188
+            pendantPhotoBounds.centerY eq 217
             pendantPhotoBounds.width.preserve
             pendantPhotoBounds.height.preserve
         }
@@ -103,5 +126,11 @@ class CompleteNecklaceContainer(
 
         necklacePhoto.pendingImage = necklace.image
         pendantPhoto.pendingImage = pendant.image
+
+        updateDebugLabelText()
+    }
+
+    private fun updateDebugLabelText() {
+        debugLabel.text = "Colar:  ${necklace.name}  Pendant:  ${pendant.name}"
     }
 }
