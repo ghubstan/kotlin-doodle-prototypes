@@ -112,8 +112,8 @@ class CompleteNecklaceContainer(
             necklacePhotoBounds.width.preserve
             necklacePhotoBounds.height.preserve
 
-            pendantPhotoBounds.left eq 84
-            pendantPhotoBounds.centerY eq 222
+            pendantPhotoBounds.left eq 83
+            pendantPhotoBounds.centerY eq 217
             pendantPhotoBounds.width.preserve
             pendantPhotoBounds.height.preserve
         }
