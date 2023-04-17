@@ -65,8 +65,16 @@ class CompleteRingContainer(
         defaultStoneMetadata.second,
         mainScope.async { images.load(defaultStoneMetadata.second)!! })
 
-    private val ringPhoto = LazyCompleteRingPhotoView(ring.image, LARGE_RING.canvasDestination)
-    private val stonePhoto = LazyCompleteRingPhotoView(stone.image, LARGE_RING_STONE.canvasDestination)
+
+    private val ringPhoto = LazyImage(
+        pendingImage = ring.image,
+        canvasDestination = LARGE_RING.canvasDestination
+    )
+
+    private val stonePhoto = LazyImage(
+        pendingImage = stone.image,
+        canvasDestination = LARGE_RING_STONE.canvasDestination
+    )
 
     init {
         clipCanvasToBounds = false

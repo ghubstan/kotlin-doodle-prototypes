@@ -149,7 +149,10 @@ class NecklacePendantListView(
         styledText = StyledText(text, config.listFont, Black.paint)
     }
 
-    private val photo = LazyNecklacePendantPhotoView(pendant.image, SMALL_NECKLACE_PENDANT.canvasDestination).apply {
+    private val photo = LazyImage(
+        pendingImage = pendant.image,
+        canvasDestination = SMALL_NECKLACE_PENDANT.canvasDestination
+    ).apply {
         toolTipText = pendant.name
     }
 

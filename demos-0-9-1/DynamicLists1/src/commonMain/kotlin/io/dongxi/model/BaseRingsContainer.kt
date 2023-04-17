@@ -146,7 +146,10 @@ class BaseRingListView(
         styledText = StyledText(text, config.listFont, Black.paint)
     }
 
-    private val photo = LazyBaseRingPhotoView(ring.image, SMALL_RING.canvasDestination).apply {
+    private val photo = LazyImage(
+        pendingImage = ring.image,
+        canvasDestination = SMALL_RING.canvasDestination
+    ).apply {
         toolTipText = ring.name
     }
 

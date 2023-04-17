@@ -145,8 +145,11 @@ class BaseNecklaceListView(
         fitText = setOf(Width, Height)
         styledText = StyledText(text, config.listFont, Black.paint)
     }
-    
-    private val photo = LazyBaseNecklacePhotoView(necklace.image, SMALL_NECKLACE.canvasDestination).apply {
+
+    private val photo = LazyImage(
+        pendingImage = necklace.image,
+        canvasDestination = SMALL_NECKLACE.canvasDestination
+    ).apply {
         toolTipText = necklace.name
     }
 

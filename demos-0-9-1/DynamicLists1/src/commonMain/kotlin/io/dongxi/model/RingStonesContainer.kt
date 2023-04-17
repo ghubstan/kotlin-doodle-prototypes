@@ -148,7 +148,10 @@ class RingStoneListView(
         styledText = StyledText(text, config.listFont, Black.paint)
     }
 
-    private val photo = LazyRingStonePhotoView(stone.image, SMALL_RING_STONE.canvasDestination).apply {
+    private val photo = LazyImage(
+        pendingImage = stone.image,
+        canvasDestination = SMALL_RING_STONE.canvasDestination
+    ).apply {
         toolTipText = stone.name
     }
 

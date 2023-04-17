@@ -66,8 +66,16 @@ class CompleteNecklaceContainer(
         defaultPendantMetadata.second,
         mainScope.async { images.load(defaultPendantMetadata.second)!! })
 
-    private val necklacePhoto = LazyNecklacePendantPhotoView(necklace.image, LARGE_NECKLACE.canvasDestination)
-    private val pendantPhoto = LazyNecklacePendantPhotoView(pendant.image, LARGE_NECKLACE_PENDANT.canvasDestination)
+
+    private val necklacePhoto = LazyImage(
+        pendingImage = necklace.image,
+        canvasDestination = LARGE_NECKLACE.canvasDestination
+    )
+
+    private val pendantPhoto = LazyImage(
+        pendingImage = pendant.image,
+        canvasDestination = LARGE_NECKLACE_PENDANT.canvasDestination
+    )
 
     init {
         clipCanvasToBounds = false
