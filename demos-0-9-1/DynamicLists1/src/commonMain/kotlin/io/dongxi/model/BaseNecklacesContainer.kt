@@ -165,6 +165,7 @@ class BaseNecklacesContainer(
     }
 }
 
+@Deprecated("Use BaseProductListContainer")
 class BaseNecklaceListView(
     var necklace: Necklace,
     var index: Int,
@@ -214,6 +215,7 @@ class BaseNecklaceListView(
 
 // The Visualizer is designed to recycle view: reconfigure the view,
 // to represent the new necklace installed into it (the "infinite" list of items).
+@Deprecated("Use BaseProductListContainer")
 class BaseNecklaceVisualizer(val config: DongxiConfig) : ItemVisualizer<Necklace, IndexedItem> {
     override fun invoke(item: Necklace, previous: View?, context: IndexedItem): View = when (previous) {
         is BaseNecklaceListView -> previous.apply {
