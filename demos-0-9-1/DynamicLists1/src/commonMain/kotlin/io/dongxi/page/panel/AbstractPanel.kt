@@ -65,37 +65,14 @@ abstract class AbstractPanel(
                 // println("${simpleClassName(this)} Received ${it.name} event")
 
                 when (it) {
-                    GO_HOME -> {
-                        currentProductCategory = NONE
-                    }
-
-                    GO_BRACELETS -> {
-                        currentProductCategory = BRACELET
-                    }
-
-                    GO_EARRINGS -> {
-                        currentProductCategory = EARRING
-                    }
-
-                    GO_NECKLACES -> {
-                        currentProductCategory = NECKLACE
-                    }
-
-                    GO_RINGS -> {
-                        currentProductCategory = RING
-                    }
-
-                    GO_SCAPULARS -> {
-                        currentProductCategory = SCAPULAR
-                    }
-
-                    GO_ABOUT -> {
-                        currentProductCategory = NONE
-                    }
-
-                    LOGOUT -> {
-                        currentProductCategory = NONE
-                    }
+                    GO_HOME -> currentProductCategory = NONE
+                    GO_BRACELETS -> currentProductCategory = BRACELET
+                    GO_EARRINGS -> currentProductCategory = EARRING
+                    GO_NECKLACES -> currentProductCategory = NECKLACE
+                    GO_RINGS -> currentProductCategory = RING
+                    GO_SCAPULARS -> currentProductCategory = SCAPULAR
+                    GO_ABOUT -> currentProductCategory = NONE
+                    LOGOUT -> currentProductCategory = NONE
                 }
 
                 // println("${panelInstanceName()} current ProductCategory: $currentProductCategory")
@@ -166,7 +143,6 @@ abstract class AbstractPanel(
         )
     }
 
-
     fun getBaseProductListContainer(): Container {
         return BaseProductListContainer(
             pageType,
@@ -185,6 +161,28 @@ abstract class AbstractPanel(
             modals,
             menuEventBus,
             baseProductSelectEventBus
+        )
+    }
+
+    fun getProductAccessoryListContainer(): Container {
+        return ProductAccessoryListContainer(
+            pageType,
+            config,
+            uiDispatcher,
+            animator,
+            pathMetrics,
+            fonts,
+            theme,
+            themes,
+            images,
+            textMetrics,
+            linkStyler,
+            focusManager,
+            popups,
+            modals,
+            menuEventBus,
+            baseProductSelectEventBus,
+            accessorySelectEventBus
         )
     }
 
@@ -209,6 +207,8 @@ abstract class AbstractPanel(
         )
     }
 
+
+    @Deprecated("Call getProductAccessoryListContainer()")
     fun getBaseNecklacePendantsContainer(): Container {
         return NecklacePendantsContainer(
             config,
@@ -251,6 +251,7 @@ abstract class AbstractPanel(
         )
     }
 
+    @Deprecated("Call getProductAccessoryListContainer()")
     fun getRingStonesContainer(): Container {
         return RingStonesContainer(
             config,
@@ -337,7 +338,6 @@ abstract class AbstractPanel(
             accessorySelectEventBus
         )
     }
-
 
     override fun render(canvas: Canvas) {
         canvas.rect(bounds.atOrigin, ColorUtils.ghostWhite())

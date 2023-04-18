@@ -68,19 +68,10 @@ class CenterPanel(
     accessorySelectEventBus
 ) {
     private val completeProductContainer = when (pageType.productCategory) {
-        NECKLACE -> {
-            // getCompleteNecklaceContainer() // Deprecated
-            getCompleteProductContainer()
-        }
-
-        RING -> {
-            // getCompleteRingContainer() // Deprecated
-            getCompleteProductContainer()
-        }
-
-        else -> {
-            getDummyBaseProductsContainer()
-        }
+        // TODO Fix bug:  switch product pages does not show correct product (but does show correct accessory)
+        NECKLACE -> getCompleteNecklaceContainer() // getCompleteProductContainer()     // getCompleteNecklaceContainer()
+        RING -> getCompleteRingContainer()          // getCompleteProductContainer()    // getCompleteRingContainer()
+        else -> getDummyBaseProductsContainer()
     }
 
     init {
