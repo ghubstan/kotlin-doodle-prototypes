@@ -31,12 +31,12 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 
-
+@Deprecated("Use CompleteProductContainer()")
 interface ICompleteRingContainer {
     fun update(ring: Ring, stone: RingStone)
 }
 
-
+@Deprecated("Use CompleteProductContainer()")
 class CompleteRingContainer(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,

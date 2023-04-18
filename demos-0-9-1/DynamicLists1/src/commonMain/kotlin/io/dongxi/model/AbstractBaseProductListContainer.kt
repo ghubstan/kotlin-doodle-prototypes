@@ -83,10 +83,10 @@ abstract class AbstractBaseProductListContainer(
                     println("Selected baseProduct name: ${baseProduct.name} file: ${baseProduct.file}")
                     mainScope.launch {
                         val event: BaseProductSelectEvent = when (pageType.productCategory) {
-                            NECKLACE -> SELECT_BASE_NECKLACE
-                            RING -> SELECT_BASE_RING
                             BRACELET -> SELECT_BASE_BRACELET
                             EARRING -> SELECT_BASE_EARRING
+                            NECKLACE -> SELECT_BASE_NECKLACE
+                            RING -> SELECT_BASE_RING
                             SCAPULAR -> SELECT_BASE_SCAPULAR
                             NONE -> TODO()
                         }
@@ -188,10 +188,10 @@ class BaseProductListView(
     private val photo = LazyImage(
         pendingImage = baseProduct.image,
         canvasDestination = when (pageType.productCategory) {
-            NECKLACE -> SMALL_NECKLACE.canvasDestination
-            RING -> SMALL_RING.canvasDestination
             BRACELET -> TODO()
             EARRING -> TODO()
+            NECKLACE -> SMALL_NECKLACE.canvasDestination
+            RING -> SMALL_RING.canvasDestination
             SCAPULAR -> TODO()
             NONE -> TODO()
         }

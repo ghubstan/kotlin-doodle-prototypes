@@ -27,7 +27,6 @@ import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 
@@ -70,11 +69,13 @@ class CenterPanel(
 ) {
     private val completeProductContainer = when (pageType.productCategory) {
         NECKLACE -> {
-            getCompleteNecklaceContainer()
+            // getCompleteNecklaceContainer() // Deprecated
+            getCompleteProductContainer()
         }
 
         RING -> {
-            getCompleteRingContainer()
+            // getCompleteRingContainer() // Deprecated
+            getCompleteProductContainer()
         }
 
         else -> {
@@ -135,6 +136,11 @@ class CenterPanel(
                         if (completeProductContainer is ICompleteNecklaceContainer) {
                             completeProductContainer.update(newNecklace, newPendant)
                         }
+                        // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
+                        if (completeProductContainer is ICompleteProductContainer) {
+                            completeProductContainer.update(newNecklace, newPendant)
+                        }
+
                     } catch (ex: Exception) {
                         println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
                         println("Illegal Cast?")
@@ -150,6 +156,11 @@ class CenterPanel(
                         if (completeProductContainer is ICompleteRingContainer) {
                             completeProductContainer.update(newRing, newStone)
                         }
+                        // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
+                        if (completeProductContainer is ICompleteProductContainer) {
+                            completeProductContainer.update(newRing, newStone)
+                        }
+
                     } catch (ex: Exception) {
                         println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
                         println("Illegal Cast?")

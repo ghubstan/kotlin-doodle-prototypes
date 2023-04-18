@@ -13,7 +13,6 @@ import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.core.Container
-import io.nacular.doodle.drawing.Color
 import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
@@ -25,7 +24,6 @@ import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.utils.Dimension
 import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment
 import io.nacular.doodle.utils.VerticalAlignment
@@ -33,12 +31,12 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 
-
+@Deprecated("Use CompleteProductContainer()")
 interface ICompleteNecklaceContainer {
     fun update(necklace: Necklace, pendant: NecklacePendant)
 }
 
-
+@Deprecated("Use CompleteProductContainer()")
 class CompleteNecklaceContainer(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
