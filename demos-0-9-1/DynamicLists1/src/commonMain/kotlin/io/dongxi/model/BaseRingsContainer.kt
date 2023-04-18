@@ -165,6 +165,7 @@ class BaseRingsContainer(
     }
 }
 
+@Deprecated("Use BaseProductListContainer")
 class BaseRingListView(
     var ring: Ring,
     var index: Int,
@@ -214,6 +215,7 @@ class BaseRingListView(
 
 // The Visualizer is designed to recycle view: reconfigure the view,
 // to represent the new ring installed into it (the "infinite" list of items).
+@Deprecated("Use BaseProductListContainer")
 class BaseRingVisualizer(val config: DongxiConfig) : ItemVisualizer<Ring, IndexedItem> {
     override fun invoke(item: Ring, previous: View?, context: IndexedItem): View = when (previous) {
         is BaseRingListView -> previous.apply {
