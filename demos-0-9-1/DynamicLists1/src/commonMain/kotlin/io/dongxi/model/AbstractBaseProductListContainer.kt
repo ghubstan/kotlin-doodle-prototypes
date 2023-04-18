@@ -59,7 +59,7 @@ abstract class AbstractBaseProductListContainer(
     private val baseProductSelectEventBus: BaseProductSelectEventBus
 ) : IBaseProductListContainer, Container() {
 
-    override val mainScope = MainScope() // The scope of AbstractProductContainer (this) class, uses Dispatchers.Main.
+    override val mainScope = MainScope()
 
     val debugLabel = Label("Nenhum", Middle, Center).apply {
         font = config.panelDebugFont
@@ -143,7 +143,6 @@ abstract class AbstractBaseProductListContainer(
         mainScope.cancel()
         // cleanup here
     }
-
 
     private fun updateDebugLabelText(baseProduct: IProduct) {
         debugLabel.text = "Name:  ${baseProduct.name}  File:  ${baseProduct.file}"
