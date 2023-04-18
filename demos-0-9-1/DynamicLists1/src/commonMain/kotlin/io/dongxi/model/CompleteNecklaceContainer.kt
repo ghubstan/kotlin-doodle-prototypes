@@ -14,6 +14,7 @@ import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.core.Container
 import io.nacular.doodle.drawing.Color
+import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
@@ -25,6 +26,7 @@ import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension
+import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment
 import io.nacular.doodle.utils.VerticalAlignment
 import kotlinx.coroutines.CoroutineDispatcher
@@ -65,8 +67,8 @@ class CompleteNecklaceContainer(
     ).apply {
         font = config.panelDebugFont
         height = 24.0
-        fitText = setOf(Dimension.Width)
-        foregroundColor = Color.Transparent
+        fitText = setOf(Width)
+        foregroundColor = Transparent
     }
 
     private val defaultNecklaceMetadata = getLargeNecklaceMetadata("A")
