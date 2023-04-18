@@ -84,7 +84,6 @@ class LeftPanel(
         size = Size(200, 200)
         children += baseProductListContainer
         layout = constrain(baseProductListContainer, fill)
-        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {

@@ -109,7 +109,6 @@ class NecklacePendantsContainer(
             listBounds.width eq parent.width
             listBounds.bottom eq parent.bottom - 5
         }
-        Resizer(this).apply { movable = false }
     }
 
     // TODO Remove from interface and make private?

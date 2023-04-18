@@ -84,7 +84,6 @@ class RightPanel(
         size = Size(200, 200)
         children += listOf(accessoryListContainer)
         layout = constrain(accessoryListContainer, fill)
-        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {

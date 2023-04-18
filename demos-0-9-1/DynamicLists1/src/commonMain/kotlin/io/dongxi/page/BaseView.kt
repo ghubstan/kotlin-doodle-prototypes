@@ -124,8 +124,6 @@ class BaseView(
 
         children += currentPage
         layout = constrain(currentPage, fill)
-
-        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {

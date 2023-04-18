@@ -63,7 +63,6 @@ class FooterPanel(
 
     init {
         size = Size(100, 600)
-        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {

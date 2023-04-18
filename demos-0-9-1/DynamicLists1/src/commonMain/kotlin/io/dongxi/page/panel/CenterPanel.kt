@@ -88,7 +88,6 @@ class CenterPanel(
 
         children += listOf(completeProductContainer)
         layout = constrain(completeProductContainer, fill)
-        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {

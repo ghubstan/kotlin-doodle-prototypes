@@ -81,7 +81,6 @@ class Page(
     init {
         children += listOf(baseContainer)
         layout = constrain(baseContainer, fill)
-        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {
