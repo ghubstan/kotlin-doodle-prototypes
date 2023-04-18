@@ -24,7 +24,6 @@ import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 
 class LeftPanel(
@@ -67,11 +66,13 @@ class LeftPanel(
 
     private val baseProductListContainer = when (pageType.productCategory) {
         NECKLACE -> {
-            getBaseNecklacesContainer()
+            getBaseProductListContainer()
+            // getBaseNecklacesContainer()
         }
 
         RING -> {
-            getBaseRingsContainer()
+            getBaseProductListContainer()
+            // getBaseRingsContainer()
         }
 
         else -> {

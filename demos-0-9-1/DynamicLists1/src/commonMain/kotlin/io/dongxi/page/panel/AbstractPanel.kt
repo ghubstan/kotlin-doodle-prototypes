@@ -166,6 +166,29 @@ abstract class AbstractPanel(
         )
     }
 
+
+    fun getBaseProductListContainer(): Container {
+        return BaseProductListContainer(
+            pageType,
+            config,
+            uiDispatcher,
+            animator,
+            pathMetrics,
+            fonts,
+            theme,
+            themes,
+            images,
+            textMetrics,
+            linkStyler,
+            focusManager,
+            popups,
+            modals,
+            menuEventBus,
+            baseProductSelectEventBus
+        )
+    }
+
+    @Deprecated(message = "Call getBaseProductListContainer()")
     fun getBaseNecklacesContainer(): Container {
         return BaseNecklacesContainer(
             config,
@@ -207,6 +230,7 @@ abstract class AbstractPanel(
         )
     }
 
+    @Deprecated(message = "Call getBaseProductListContainer()")
     fun getBaseRingsContainer(): Container {
         return BaseRingsContainer(
             config,

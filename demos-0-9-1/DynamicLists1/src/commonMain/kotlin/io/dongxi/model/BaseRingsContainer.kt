@@ -37,6 +37,7 @@ import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.*
 
 
+@Deprecated("Use BaseProductListContainer")
 interface IBaseRingsContainer {
     val listCache: MutableMap<ProductCategory, DynamicList<Ring, SimpleMutableListModel<Ring>>>
     val list: DynamicList<Ring, SimpleMutableListModel<Ring>>
@@ -44,6 +45,7 @@ interface IBaseRingsContainer {
     fun build(): DynamicList<Ring, SimpleMutableListModel<Ring>>
 }
 
+@Deprecated("Use BaseProductListContainer")
 class BaseRingsContainer(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
