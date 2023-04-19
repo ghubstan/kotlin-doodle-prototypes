@@ -196,127 +196,7 @@ abstract class AbstractPanel(
         )
     }
 
-    @Deprecated(message = "Call getBaseProductListContainer()")
-    fun getBaseNecklacesContainer(): Container {
-        return BaseNecklacesContainer(
-            config,
-            uiDispatcher,
-            animator,
-            pathMetrics,
-            fonts,
-            theme,
-            themes,
-            images,
-            textMetrics,
-            linkStyler,
-            focusManager,
-            popups,
-            modals,
-            menuEventBus,
-            baseProductSelectEventBus
-        )
-    }
-
-
-    @Deprecated("Call getProductAccessoryListContainer()")
-    fun getBaseNecklacePendantsContainer(): Container {
-        return NecklacePendantsContainer(
-            config,
-            uiDispatcher,
-            animator,
-            pathMetrics,
-            fonts,
-            theme,
-            themes,
-            images,
-            textMetrics,
-            linkStyler,
-            focusManager,
-            popups,
-            modals,
-            menuEventBus,
-            baseProductSelectEventBus,
-            accessorySelectEventBus
-        )
-    }
-
-    @Deprecated(message = "Call getBaseProductListContainer()")
-    fun getBaseRingsContainer(): Container {
-        return BaseRingsContainer(
-            config,
-            uiDispatcher,
-            animator,
-            pathMetrics,
-            fonts,
-            theme,
-            themes,
-            images,
-            textMetrics,
-            linkStyler,
-            focusManager,
-            popups,
-            modals,
-            menuEventBus,
-            baseProductSelectEventBus
-        )
-    }
-
-    @Deprecated("Call getProductAccessoryListContainer()")
-    fun getRingStonesContainer(): Container {
-        return RingStonesContainer(
-            config,
-            uiDispatcher,
-            animator,
-            pathMetrics,
-            fonts,
-            theme,
-            themes,
-            images,
-            textMetrics,
-            linkStyler,
-            focusManager,
-            popups,
-            modals,
-            menuEventBus,
-            baseProductSelectEventBus,
-            accessorySelectEventBus
-        )
-    }
-
-    /*
-    // TODO Is this necessary?  It does not fix bug.
-    private val completeJewelContainerCache = mutableMapOf<ProductCategory, CompleteProductContainer>()
-    fun getCompleteProductContainer(): Container {
-        if (completeJewelContainerCache.containsKey(currentProductCategory)) {
-            println("!!!!! CompleteJewelContainerCache contains entry for $currentProductCategory")
-            return completeJewelContainerCache[currentProductCategory] as CompleteProductContainer
-        } else {
-            var newContainer = CompleteProductContainer(
-                pageType,
-                config,
-                uiDispatcher,
-                animator,
-                pathMetrics,
-                fonts,
-                theme,
-                themes,
-                images,
-                textMetrics,
-                linkStyler,
-                focusManager,
-                popups,
-                modals,
-                menuEventBus,
-                baseProductSelectEventBus,
-                accessorySelectEventBus
-            )
-            println("!!!!! CompleteJewelContainerCache receiving a new entry for $currentProductCategory")
-            completeJewelContainerCache[currentProductCategory] = newContainer
-            return newContainer;
-        }
-    }
-     */
-
+    @Deprecated("Unused due to inheritance problems (in javascript?)")
     fun getCompleteProductContainer(): Container {
         return CompleteProductContainer(
             pageType,
@@ -339,8 +219,6 @@ abstract class AbstractPanel(
         )
     }
 
-
-    @Deprecated("Call getCompleteProductContainer()")
     fun getCompleteNecklaceContainer(): Container {
         return CompleteNecklaceContainer(
             config,
@@ -362,7 +240,6 @@ abstract class AbstractPanel(
         )
     }
 
-    @Deprecated("Call getCompleteProductContainer()")
     fun getCompleteRingContainer(): Container {
         return CompleteRingContainer(
             config,

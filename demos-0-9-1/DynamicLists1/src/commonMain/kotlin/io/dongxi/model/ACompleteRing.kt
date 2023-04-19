@@ -1,7 +1,6 @@
 package io.dongxi.model
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.model.ProductCategory.*
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
@@ -21,10 +20,9 @@ import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import kotlinx.coroutines.CoroutineDispatcher
 
-@Deprecated("Unused due to inheritance problems (in javascript?)")
-// TODO Do not delete until I find out why using this fails to consistently
+@Deprecated("Unused due to inheritance problems (in javascript?)")// TODO Do not delete until I find out why using this fails to consistently
 //      update the center panel's complete product images.
-class CompleteProductContainer(
+class ACompleteRing(
     pageType: PageType,
     config: DongxiConfig,
     uiDispatcher: CoroutineDispatcher,
@@ -62,22 +60,22 @@ class CompleteProductContainer(
     accessorySelectEventBus
 ) {
 
-    private val accessoryPhotoLeftBounds: Int = when (pageType.productCategory) {
-        BRACELET -> TODO()
-        EARRING -> TODO()
-        NECKLACE -> 83
-        RING -> 50
-        SCAPULAR -> TODO()
-        NONE -> TODO()
+    val accessoryPhotoLeftBounds: Int = when (pageType.productCategory) {
+        ProductCategory.BRACELET -> TODO()
+        ProductCategory.EARRING -> TODO()
+        ProductCategory.NECKLACE -> 83
+        ProductCategory.RING -> 50
+        ProductCategory.SCAPULAR -> TODO()
+        ProductCategory.NONE -> TODO()
     }
 
-    private val accessoryPhotoCenterYBounds: Int = when (pageType.productCategory) {
-        BRACELET -> TODO()
-        EARRING -> TODO()
-        NECKLACE -> 217
-        RING -> 122
-        SCAPULAR -> TODO()
-        NONE -> TODO()
+    val accessoryPhotoCenterYBounds: Int = when (pageType.productCategory) {
+        ProductCategory.BRACELET -> TODO()
+        ProductCategory.EARRING -> TODO()
+        ProductCategory.NECKLACE -> 217
+        ProductCategory.RING -> 122
+        ProductCategory.SCAPULAR -> TODO()
+        ProductCategory.NONE -> TODO()
     }
 
     init {

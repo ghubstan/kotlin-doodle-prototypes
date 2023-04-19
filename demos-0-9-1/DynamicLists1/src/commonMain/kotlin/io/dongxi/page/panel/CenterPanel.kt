@@ -68,8 +68,14 @@ class CenterPanel(
     accessorySelectEventBus
 ) {
     private val completeProductContainer = when (pageType.productCategory) {
-        NECKLACE -> getCompleteNecklaceContainer() // getCompleteProductContainer()   // getCompleteNecklaceContainer()
-        RING -> getCompleteRingContainer() // getCompleteProductContainer()       // getCompleteRingContainer()
+        NECKLACE -> getCompleteNecklaceContainer()
+        RING -> getCompleteRingContainer()
+
+        // TODO Do not delete until I find out why using this fails to consistently
+        //      update the center panel's complete product images.
+        // NECKLACE -> getCompleteProductContainer()
+        // RING -> getCompleteProductContainer()
+
         else -> getDummyBaseProductsContainer()
     }
 

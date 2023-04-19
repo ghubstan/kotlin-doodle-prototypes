@@ -8,6 +8,8 @@ import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.NecklaceStoreMetadata.getLargeNecklaceMetadata
 import io.dongxi.storage.PendantStoreMetadata
+import io.dongxi.util.StringUtils.accessoryLabelText
+import io.dongxi.util.StringUtils.productLabelText
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -25,18 +27,16 @@ import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension.Width
-import io.nacular.doodle.utils.HorizontalAlignment
-import io.nacular.doodle.utils.VerticalAlignment
+import io.nacular.doodle.utils.HorizontalAlignment.Center
+import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 
-@Deprecated("Use CompleteProductContainer()")
 interface ICompleteNecklaceContainer {
     fun update(necklace: Necklace, pendant: NecklacePendant)
 }
 
-@Deprecated("Use CompleteProductContainer()")
 class CompleteNecklaceContainer(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
@@ -58,30 +58,16 @@ class CompleteNecklaceContainer(
 
     private val mainScope = MainScope() // The scope of NecklaceWithStoneContainer class, uses Dispatchers.Main.
 
-    private val debugLabel = Label(
-        "NADA",
-        VerticalAlignment.Middle,
-        HorizontalAlignment.Center
-    ).apply {
+    private val debugLabel = Label("Nenhum", Middle, Center).apply {
         font = config.panelDebugFont
         height = 24.0
         fitText = setOf(Width)
         foregroundColor = Transparent
     }
 
-    private val defaultNecklaceMetadata = getLargeNecklaceMetadata("A")
-    private var defaultPendantMetadata: Pair<String, String> =
-        PendantStoreMetadata.getPendants(defaultNecklaceMetadata.first)[0]
+    private var necklace: IProduct = getDefaultProduct("A")
 
-    private var necklace: Necklace = Necklace(
-        defaultNecklaceMetadata.first,
-        defaultNecklaceMetadata.second,
-        mainScope.async { images.load(defaultNecklaceMetadata.second)!! })
-    private var pendant: NecklacePendant = NecklacePendant(
-        defaultPendantMetadata.first,
-        defaultPendantMetadata.second,
-        mainScope.async { images.load(defaultPendantMetadata.second)!! })
-
+    private var necklacePendant: IProductAccessory = getDefaultProductAccessory(necklace)
 
     private val necklacePhoto = LazyImage(
         pendingImage = necklace.image,
@@ -89,7 +75,7 @@ class CompleteNecklaceContainer(
     )
 
     private val pendantPhoto = LazyImage(
-        pendingImage = pendant.image,
+        pendingImage = necklacePendant.image,
         canvasDestination = LARGE_NECKLACE_PENDANT.canvasDestination
     )
 
@@ -122,7 +108,7 @@ class CompleteNecklaceContainer(
     override fun update(necklace: Necklace, pendant: NecklacePendant) {
         // Reconfigure the view to represent the new necklace-pendant installed in it.
         this.necklace = necklace
-        this.pendant = pendant
+        this.necklacePendant = pendant
 
         necklacePhoto.pendingImage = necklace.image
         pendantPhoto.pendingImage = pendant.image
@@ -130,7 +116,23 @@ class CompleteNecklaceContainer(
         updateDebugLabelText()
     }
 
+    private fun getDefaultProduct(name: String): IProduct {
+        val productMetadata = getLargeNecklaceMetadata(name)
+        return Necklace(
+            productMetadata.first,
+            productMetadata.second,
+            mainScope.async { images.load(productMetadata.second)!! })
+    }
+
+    private fun getDefaultProductAccessory(product: IProduct): IProductAccessory {
+        val accessoryMetadata: Pair<String, String> = PendantStoreMetadata.getPendants(product.name)[0]
+        return NecklacePendant(
+            accessoryMetadata.first,
+            accessoryMetadata.second,
+            mainScope.async { images.load(accessoryMetadata.second)!! })
+    }
+
     private fun updateDebugLabelText() {
-        debugLabel.text = "Colar:  ${necklace.name}  Pendant:  ${pendant.name}"
+        debugLabel.text = productLabelText(necklace) + " " + accessoryLabelText(necklacePendant)
     }
 }

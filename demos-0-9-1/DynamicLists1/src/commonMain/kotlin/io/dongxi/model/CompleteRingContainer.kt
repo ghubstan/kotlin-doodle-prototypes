@@ -8,6 +8,8 @@ import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.RingStoneStoreMetadata.getStones
 import io.dongxi.storage.RingStoreMetadata.getLargeRingMetadata
+import io.dongxi.util.StringUtils.accessoryLabelText
+import io.dongxi.util.StringUtils.productLabelText
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -31,12 +33,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 
-@Deprecated("Use CompleteProductContainer()")
 interface ICompleteRingContainer {
     fun update(ring: Ring, stone: RingStone)
 }
 
-@Deprecated("Use CompleteProductContainer()")
 class CompleteRingContainer(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
@@ -58,28 +58,16 @@ class CompleteRingContainer(
 
     private val mainScope = MainScope() // The scope of RingWithStoneContainer class, uses Dispatchers.Main.
 
-    private val debugLabel = Label(
-        "NADA",
-        Middle,
-        Center
-    ).apply {
+    private val debugLabel = Label("Nenhum", Middle, Center).apply {
         font = config.panelDebugFont
         height = 24.0
         fitText = setOf(Width)
         foregroundColor = Transparent
     }
 
-    private val defaultRingMetadata = getLargeRingMetadata("A")
-    private var defaultStoneMetadata: Pair<String, String> = getStones(defaultRingMetadata.first)[0]
+    private var ring: IProduct = getDefaultProduct("A")
 
-    private var ring: Ring = Ring(
-        defaultRingMetadata.first,
-        defaultRingMetadata.second,
-        mainScope.async { images.load(defaultRingMetadata.second)!! })
-    private var stone: RingStone = RingStone(
-        defaultStoneMetadata.first,
-        defaultStoneMetadata.second,
-        mainScope.async { images.load(defaultStoneMetadata.second)!! })
+    private var ringStone: IProductAccessory = getDefaultProductAccessory(ring)
 
 
     private val ringPhoto = LazyImage(
@@ -88,7 +76,7 @@ class CompleteRingContainer(
     )
 
     private val stonePhoto = LazyImage(
-        pendingImage = stone.image,
+        pendingImage = ringStone.image,
         canvasDestination = LARGE_RING_STONE.canvasDestination
     )
 
@@ -121,7 +109,7 @@ class CompleteRingContainer(
     override fun update(ring: Ring, stone: RingStone) {
         // Reconfigure the view to represent the new ring+stone installed in it.
         this.ring = ring
-        this.stone = stone
+        this.ringStone = stone
 
         ringPhoto.pendingImage = ring.image
         stonePhoto.pendingImage = stone.image
@@ -129,8 +117,23 @@ class CompleteRingContainer(
         updateDebugLabelText()
     }
 
+    private fun getDefaultProduct(name: String): IProduct {
+        val productMetadata = getLargeRingMetadata(name)
+        return Ring(
+            productMetadata.first,
+            productMetadata.second,
+            mainScope.async { images.load(productMetadata.second)!! })
+    }
+
+    private fun getDefaultProductAccessory(product: IProduct): IProductAccessory {
+        val accessoryMetadata: Pair<String, String> = getStones(product.name)[0]
+        return RingStone(
+            accessoryMetadata.first,
+            accessoryMetadata.second,
+            mainScope.async { images.load(accessoryMetadata.second)!! })
+    }
 
     private fun updateDebugLabelText() {
-        debugLabel.text = "Anel:  ${ring.name}  Pedra:  ${stone.name}"
+        debugLabel.text = productLabelText(ring) + " " + accessoryLabelText(ringStone)
     }
 }

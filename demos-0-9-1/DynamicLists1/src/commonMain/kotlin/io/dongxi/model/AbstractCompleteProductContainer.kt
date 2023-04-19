@@ -13,7 +13,6 @@ import io.dongxi.storage.NecklaceStoreMetadata
 import io.dongxi.storage.PendantStoreMetadata
 import io.dongxi.storage.RingStoneStoreMetadata
 import io.dongxi.storage.RingStoreMetadata
-import io.dongxi.util.StringUtils
 import io.dongxi.util.StringUtils.accessoryLabelText
 import io.dongxi.util.StringUtils.productLabelText
 import io.nacular.doodle.animation.Animator
@@ -35,7 +34,9 @@ import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.*
 
-@Suppress("unused")
+@Deprecated("Unused due to inheritance problems (in javascript?)")
+// TODO Do not delete until I find out why using this fails to consistently
+//      update the center panel's complete product images.
 abstract class AbstractCompleteProductContainer(
     final override val pageType: PageType,
     private val config: DongxiConfig,
