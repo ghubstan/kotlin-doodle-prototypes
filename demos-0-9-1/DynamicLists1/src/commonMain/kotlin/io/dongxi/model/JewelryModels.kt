@@ -47,12 +47,14 @@ interface IProduct {
     val name: String
     val file: String
     val image: Deferred<Image>
+    val productCategory: ProductCategory
 }
 
 interface IProductAccessory {
     val name: String
     val file: String
     val image: Deferred<Image>
+    val accessoryCategory: AccessoryCategory
 }
 
 /**
@@ -63,7 +65,9 @@ data class DummyProduct(
     override val name: String,
     override val file: String,
     override val image: Deferred<Image>
-) : IProduct
+) : IProduct {
+    override val productCategory: ProductCategory = ProductCategory.NONE
+}
 
 /**
  * Data representing a dummy product accessory image.
@@ -73,7 +77,9 @@ data class DummyProductAccessory(
     override val name: String,
     override val file: String,
     override val image: Deferred<Image>
-) : IProductAccessory
+) : IProductAccessory {
+    override val accessoryCategory: AccessoryCategory = AccessoryCategory.NONE
+}
 
 /**
  * Data representing a base ring image.
@@ -83,7 +89,9 @@ data class Ring(
     override val name: String,
     override val file: String,
     override val image: Deferred<Image>
-) : IProduct
+) : IProduct {
+    override val productCategory: ProductCategory = ProductCategory.RING
+}
 
 /**
  * Data representing a ring-stone image.
@@ -93,7 +101,9 @@ data class RingStone(
     override val name: String,
     override val file: String,
     override val image: Deferred<Image>
-) : IProductAccessory
+) : IProductAccessory {
+    override val accessoryCategory: AccessoryCategory = AccessoryCategory.STONE
+}
 
 /**
  * Data representing a base necklace image.
@@ -103,7 +113,9 @@ data class Necklace(
     override val name: String,
     override val file: String,
     override val image: Deferred<Image>
-) : IProduct
+) : IProduct {
+    override val productCategory: ProductCategory = ProductCategory.NECKLACE
+}
 
 /**
  * Data representing a necklace-pendants image.
@@ -113,4 +125,6 @@ data class NecklacePendant(
     override val name: String,
     override val file: String,
     override val image: Deferred<Image>
-) : IProductAccessory
+) : IProductAccessory {
+    override val accessoryCategory: AccessoryCategory = AccessoryCategory.PENDANT
+}

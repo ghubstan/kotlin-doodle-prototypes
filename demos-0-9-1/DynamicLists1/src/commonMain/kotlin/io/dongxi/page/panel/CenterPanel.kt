@@ -68,13 +68,13 @@ class CenterPanel(
     accessorySelectEventBus
 ) {
     private val completeProductContainer = when (pageType.productCategory) {
-        // TODO Fix bug:  switch product pages does not show correct product (but does show correct accessory)
-        NECKLACE -> getCompleteNecklaceContainer() // getCompleteProductContainer()     // getCompleteNecklaceContainer()
-        RING -> getCompleteRingContainer()          // getCompleteProductContainer()    // getCompleteRingContainer()
+        NECKLACE -> getCompleteNecklaceContainer() // getCompleteProductContainer()   // getCompleteNecklaceContainer()
+        RING -> getCompleteRingContainer() // getCompleteProductContainer()       // getCompleteRingContainer()
         else -> getDummyBaseProductsContainer()
     }
 
     init {
+        println("CENTER PANEL -> INIT -> PAGE TYPE? $pageType")
         clipCanvasToBounds = false
         size = Size(200, 200)
 
@@ -87,7 +87,7 @@ class CenterPanel(
     }
 
     override fun layoutForCurrentProductCategory() {
-        // println("${panelInstanceName()} currentProductCategory: $currentProductCategory")
+        println("${panelInstanceName()} layoutForCurrentProductCategory -> currentProductCategory: $currentProductCategory")
         relayout()
     }
 
@@ -97,11 +97,13 @@ class CenterPanel(
     }
 
     override fun layoutForCurrentAccessorySelection() {
-        println("${panelInstanceName()} currentAccessory: $currentAccessory")
+        println("${panelInstanceName()} layoutForCurrentBaseProductSelection -> currentAccessory: $currentAccessory")
         relayout()
     }
 
     override fun layoutForCompletedJewel() {
+        println("${panelInstanceName()} layoutForCompletedJewel -> currentProductCategory: $currentProductCategory")
+
         try {
             if (!currentBaseProduct.isSet()) {
                 println("ERROR: ${panelInstanceName()} currentBaseProduct is not set: $currentBaseProduct")
@@ -118,17 +120,19 @@ class CenterPanel(
                 // TODO Refactor out duplicated code.
 
                 NECKLACE -> {
-                    val newNecklace = getBaseNecklace()
+                    val newNecklace = getLargeNecklace()
                     val newPendant =
                         NecklacePendant(currentAccessory.name!!, currentAccessory.file!!, currentAccessory.image!!)
 
                     try {
                         // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
                         if (completeProductContainer is ICompleteNecklaceContainer) {
+                            println("${panelInstanceName()} -> Call ICompleteNecklaceContainer.update(newNecklace, newPendant)")
                             completeProductContainer.update(newNecklace, newPendant)
                         }
                         // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
                         if (completeProductContainer is ICompleteProductContainer) {
+                            println("${panelInstanceName()} -> Call ICompleteProductContainer.update(newNecklace, newPendant)")
                             completeProductContainer.update(newNecklace, newPendant)
                         }
 
@@ -145,10 +149,12 @@ class CenterPanel(
                     try {
                         // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
                         if (completeProductContainer is ICompleteRingContainer) {
+                            println("${panelInstanceName()} -> Call ICompleteRingContainer.update(newRing, newStone)")
                             completeProductContainer.update(newRing, newStone)
                         }
                         // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
                         if (completeProductContainer is ICompleteProductContainer) {
+                            println("${panelInstanceName()} -> Call ICompleteProductContainer.update(newRing, newStone)")
                             completeProductContainer.update(newRing, newStone)
                         }
 
@@ -163,7 +169,9 @@ class CenterPanel(
                 }
             }
 
-            // completeProductContainer.relayout()
+            // TODO Is this necessary?
+            completeProductContainer.relayout()
+
             relayout()
 
         } catch (ex: Exception) {
@@ -172,7 +180,7 @@ class CenterPanel(
         }
     }
 
-    private fun getBaseNecklace(): Necklace {
+    private fun getLargeNecklace(): Necklace {
         val baseNecklaceMetadata = NecklaceStoreMetadata.getLargeNecklaceMetadata(currentBaseProduct.name!!)
         val newNecklaceName: String = baseNecklaceMetadata.first
         val newNecklaceFile: String = baseNecklaceMetadata.second

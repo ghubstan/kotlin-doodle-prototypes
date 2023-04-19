@@ -56,23 +56,33 @@ abstract class AbstractPanel(
     val mainScope = MainScope() // The scope of AbstractPanel class (and subclasses), uses Dispatchers.Main.
 
     var currentProductCategory: ProductCategory = pageType.productCategory
-    var currentBaseProduct: SelectedBaseProduct = SelectedBaseProduct(currentProductCategory, null, null, null)
-    var currentAccessory: SelectedAccessory = SelectedAccessory(AccessoryCategory.NONE, null, null, null)
+    var currentBaseProduct: SelectedBaseProduct = SelectedBaseProduct(
+        productCategory = currentProductCategory,
+        name = null,
+        file = null,
+        image = null
+    )
+    var currentAccessory: SelectedAccessory = SelectedAccessory(
+        accessoryCategory = AccessoryCategory.NONE,
+        name = null,
+        file = null,
+        image = null
+    )
 
     init {
         mainScope.launch {
             menuEventBus.events.filterNotNull().collectLatest {
-                // println("${simpleClassName(this)} Received ${it.name} event")
+                println("${panelInstanceName()} Received ${it.name} event")
 
-                when (it) {
-                    GO_HOME -> currentProductCategory = NONE
-                    GO_BRACELETS -> currentProductCategory = BRACELET
-                    GO_EARRINGS -> currentProductCategory = EARRING
-                    GO_NECKLACES -> currentProductCategory = NECKLACE
-                    GO_RINGS -> currentProductCategory = RING
-                    GO_SCAPULARS -> currentProductCategory = SCAPULAR
-                    GO_ABOUT -> currentProductCategory = NONE
-                    LOGOUT -> currentProductCategory = NONE
+                currentProductCategory = when (it) {
+                    GO_HOME -> NONE
+                    GO_BRACELETS -> BRACELET
+                    GO_EARRINGS -> EARRING
+                    GO_NECKLACES -> NECKLACE
+                    GO_RINGS -> RING
+                    GO_SCAPULARS -> SCAPULAR
+                    GO_ABOUT -> NONE
+                    LOGOUT -> NONE
                 }
 
                 // println("${panelInstanceName()} current ProductCategory: $currentProductCategory")
@@ -273,6 +283,40 @@ abstract class AbstractPanel(
         )
     }
 
+    /*
+    // TODO Is this necessary?  It does not fix bug.
+    private val completeJewelContainerCache = mutableMapOf<ProductCategory, CompleteProductContainer>()
+    fun getCompleteProductContainer(): Container {
+        if (completeJewelContainerCache.containsKey(currentProductCategory)) {
+            println("!!!!! CompleteJewelContainerCache contains entry for $currentProductCategory")
+            return completeJewelContainerCache[currentProductCategory] as CompleteProductContainer
+        } else {
+            var newContainer = CompleteProductContainer(
+                pageType,
+                config,
+                uiDispatcher,
+                animator,
+                pathMetrics,
+                fonts,
+                theme,
+                themes,
+                images,
+                textMetrics,
+                linkStyler,
+                focusManager,
+                popups,
+                modals,
+                menuEventBus,
+                baseProductSelectEventBus,
+                accessorySelectEventBus
+            )
+            println("!!!!! CompleteJewelContainerCache receiving a new entry for $currentProductCategory")
+            completeJewelContainerCache[currentProductCategory] = newContainer
+            return newContainer;
+        }
+    }
+     */
+
     fun getCompleteProductContainer(): Container {
         return CompleteProductContainer(
             pageType,
@@ -294,6 +338,7 @@ abstract class AbstractPanel(
             accessorySelectEventBus
         )
     }
+
 
     @Deprecated("Call getCompleteProductContainer()")
     fun getCompleteNecklaceContainer(): Container {
@@ -374,6 +419,7 @@ abstract class AbstractPanel(
 
             NECKLACE -> {
                 println("${panelInstanceName()} -> set default ${pageType.productCategory}")
+                // A base necklace image is a small image.  Complete necklaces are large images.
                 val defaultNecklaceMetadata = NecklaceStoreMetadata.getSmallNecklaceMetadata("A")
                 val necklaceName = defaultNecklaceMetadata.first
                 val necklaceFile = defaultNecklaceMetadata.second

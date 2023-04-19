@@ -5,6 +5,7 @@ import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.PageType.*
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.util.ClassUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -23,7 +24,6 @@ import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -82,7 +82,7 @@ class BaseView(
         mainScope.launch {
             menuEventBus.events.filterNotNull().collectLatest {
 
-                println("Received ${it.name} event")
+                println("${ClassUtils.simpleClassName(this)} Received ${it.name} event")
 
                 when (it) {
                     GO_HOME -> {

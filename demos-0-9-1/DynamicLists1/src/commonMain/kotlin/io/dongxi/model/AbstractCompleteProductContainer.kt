@@ -13,6 +13,9 @@ import io.dongxi.storage.NecklaceStoreMetadata
 import io.dongxi.storage.PendantStoreMetadata
 import io.dongxi.storage.RingStoneStoreMetadata
 import io.dongxi.storage.RingStoreMetadata
+import io.dongxi.util.StringUtils
+import io.dongxi.util.StringUtils.accessoryLabelText
+import io.dongxi.util.StringUtils.productLabelText
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.*
 import io.nacular.doodle.controls.modal.ModalManager
@@ -170,6 +173,6 @@ abstract class AbstractCompleteProductContainer(
     }
 
     fun updateDebugLabelText(product: IProduct, accessory: IProductAccessory) {
-        debugLabel.text = "Name:  ${product.name}  Accessory:  ${accessory.name}"
+        debugLabel.text = productLabelText(product) + " " + accessoryLabelText(accessory)
     }
 }
