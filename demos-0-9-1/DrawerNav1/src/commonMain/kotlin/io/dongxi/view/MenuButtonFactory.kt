@@ -11,7 +11,6 @@ import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.system.Cursor.Companion.Pointer
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
-import io.nacular.measured.units.Angle
 import io.nacular.measured.units.Angle.Companion.degrees
 import io.nacular.measured.units.times
 import kotlinx.coroutines.MainScope
@@ -26,8 +25,19 @@ object MenuButtonFactory {
     private val colorSilver: Color = Color(0xc0c0c0u)
     private val palePlum: Color = Color(0xdda0ddu)
 
+    // Note to self:  Don’t dance all over the color wheel.
+
     // See https://en.wikipedia.org/wiki/HSL_and_HSV
     // See https://www.lifewire.com/what-is-hsv-in-design-1078068
+    // See https://www.rapidtables.com/web/color/color-picker.html
+    // See https://www.rapidtables.com/web/color/color-wheel.html
+    // See https://www.rapidtables.com/convert/color/rgb-to-hsv.html
+    // See https://en.wikipedia.org/wiki/Hue
+    // Good ones:
+    //          https://colorizer.org
+    //          https://www.w3schools.com/colors/colors_hsl.asp
+    //          https://www.developmenttools.com/color-picker
+    //          https://learn.leighcotnoir.com/artspeak/elements-color/hue-value-saturation
 
     // Hue is the color portion of the model, expressed as a number from 0 to 360 degrees:
     //      Red falls between 0 and 60 degrees.
@@ -44,8 +54,10 @@ object MenuButtonFactory {
     // Value works in conjunction with saturation and describes the brightness or intensity of the color,
     // from 0 to 100 percent, where 0 is completely black, and 100 is the brightest and reveals the most color.
 
-    // private val hsvColor1: HsvColor = HsvColor(0 * Angle.degrees, 0f, 0.8f)
-    private val hsvColor1: HsvColor = HsvColor(21.4 * degrees, 7.0f, 0.99f)
+    // private val hsvColor1: HsvColor = HsvColor(313 * degrees, 5.0f, 83.0f) // ~ Mahogany
+    // private val hsvColor1: HsvColor = HsvColor(28 * degrees, 34.0f, 44.0f) // ~ Very Hot Pink (nice)
+    // private val hsvColor1: HsvColor = HsvColor(262 * degrees, 7.0f, 69.0f) // ~ Aqua/Green (nice)
+    private val hsvColor1: HsvColor = HsvColor(180 * degrees, 7.0f, 69.0f) // ~ Greyish Green (nice)
 
     // private val hsvColor1: HsvColor = HsvColor(colorPaleSilver)
     private val hsvColor1ToColor = hsvColor1.toRgb()
