@@ -38,7 +38,7 @@ class CompleteNecklaceContainer(
     menuEventBus: MenuEventBus,
     baseProductSelectEventBus: BaseProductSelectEventBus,
     accessorySelectEventBus: AccessorySelectEventBus
-) : ICompleteProductContainer, AbstractCompleteProduct(
+) : ICompleteProductContainer, AbstractCompleteProductContainer(
     pageType,
     config,
     uiDispatcher,
@@ -56,6 +56,7 @@ class CompleteNecklaceContainer(
     menuEventBus,
     baseProductSelectEventBus
 ) {
+
     init {
         updateDebugLabelText()
         clipCanvasToBounds = false
@@ -63,22 +64,22 @@ class CompleteNecklaceContainer(
 
         children += listOf(debugLabel, productPhoto, accessoryPhoto)
         layout = constrain(debugLabel, productPhoto, accessoryPhoto) { debugLabelBounds,
-                                                                       necklacePhotoBounds,
-                                                                       pendantPhotoBounds ->
+                                                                       productPhotoBounds,
+                                                                       accessoryPhotoBounds ->
             debugLabelBounds.top eq 5
             debugLabelBounds.left eq 5
             debugLabelBounds.width.preserve
             debugLabelBounds.height.preserve
 
-            necklacePhotoBounds.top eq debugLabelBounds.bottom + 10
-            necklacePhotoBounds.left eq 10
-            necklacePhotoBounds.width.preserve
-            necklacePhotoBounds.height.preserve
+            productPhotoBounds.top eq debugLabelBounds.bottom + 10
+            productPhotoBounds.left eq 10
+            productPhotoBounds.width.preserve
+            productPhotoBounds.height.preserve
 
-            pendantPhotoBounds.left eq accessoryPhotoLeftBounds
-            pendantPhotoBounds.centerY eq accessoryPhotoCenterYBounds
-            pendantPhotoBounds.width.preserve
-            pendantPhotoBounds.height.preserve
+            accessoryPhotoBounds.left eq accessoryPhotoLeftBounds
+            accessoryPhotoBounds.centerY eq accessoryPhotoCenterYBounds
+            accessoryPhotoBounds.width.preserve
+            accessoryPhotoBounds.height.preserve
         }
     }
 }

@@ -67,38 +67,18 @@ class CenterPanel(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
-    /*
-    private val completeProductContainerMap = mutableMapOf<ProductCategory, CompleteProductContainer>()
-    private fun completeProductContainer(): Container {
-        return if (completeProductContainerMap.contains(pageType.productCategory)) {
-            completeProductContainerMap[pageType.productCategory]!!
-        } else {
-            val container: Container = when (pageType.productCategory) {
-                NECKLACE -> getCompleteProductContainer()
-                RING -> getCompleteProductContainer()
-                else -> getDummyBaseProductsContainer()
-            }
-            completeProductContainerMap[pageType.productCategory] = container as CompleteProductContainer
-            completeProductContainerMap[pageType.productCategory]!!
-        }
-    }
-     */
-
 
     private val completeProductContainer = when (pageType.productCategory) {
+        // TODO Find out why I cannot reduce the # of ICompleteProductContainer
+        //  impls to 1  because of failed center panel image updates.  But it
+        //  it probably OK to have separate AbstractCompleteProductContainer
+        //  subclasses for each product category, so leave it as it is for now.
         NECKLACE -> getCompleteNecklaceContainer()
         RING -> getCompleteRingContainer()
-
-        // TODO Do not delete until I find out why using this fails to consistently
-        //      update the center panel's complete product images.
-        // NECKLACE -> getCompleteProductContainer()
-        // RING -> getCompleteProductContainer()
-
         else -> getDummyBaseProductsContainer()
     }
 
     init {
-        println("CENTER PANEL -> INIT -> PAGE TYPE? $pageType")
         clipCanvasToBounds = false
         size = Size(200, 200)
 
@@ -111,17 +91,17 @@ class CenterPanel(
     }
 
     override fun layoutForCurrentProductCategory() {
-        println("${panelInstanceName()} layoutForCurrentProductCategory -> currentProductCategory: $currentProductCategory")
+        // println("${panelInstanceName()} layoutForCurrentProductCategory -> currentProductCategory: $currentProductCategory")
         relayout()
     }
 
     override fun layoutForCurrentBaseProductSelection() {
-        println("${panelInstanceName()} currentBaseProduct: $currentBaseProduct")
+        // println("${panelInstanceName()} currentBaseProduct: $currentBaseProduct")
         relayout()
     }
 
     override fun layoutForCurrentAccessorySelection() {
-        println("${panelInstanceName()} layoutForCurrentBaseProductSelection -> currentAccessory: $currentAccessory")
+        // println("${panelInstanceName()} layoutForCurrentBaseProductSelection -> currentAccessory: $currentAccessory")
         relayout()
     }
 
@@ -149,15 +129,15 @@ class CenterPanel(
                         NecklacePendant(currentAccessory.name!!, currentAccessory.file!!, currentAccessory.image!!)
 
                     try {
-                        // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
+                        // TODO Find out why I cannot reduce the # of ICompleteProductContainer impls to 1
+                        //  because of failed center panel imag updates.
                         if (completeProductContainer is CompleteNecklaceContainer) {
-                            println("${panelInstanceName()} -> Call ICompleteProductContainer.update(newNecklace, newPendant)")
+                            // println("${panelInstanceName()} -> Call ICompleteProductContainer.update(newNecklace, newPendant)")
                             completeProductContainer.update(newNecklace, newPendant)
                         }
 
                     } catch (ex: Exception) {
                         println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
-                        println("Illegal Cast?")
                     }
                 }
 
@@ -166,15 +146,15 @@ class CenterPanel(
                     val newStone = RingStone(currentAccessory.name!!, currentAccessory.file!!, currentAccessory.image!!)
 
                     try {
-                        // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
+                        // TODO Find out why I cannot reduce the # of ICompleteProductContainer impls to 1
+                        //  because of failed center panel imag updates.
                         if (completeProductContainer is CompleteRingContainer) {
-                            println("${panelInstanceName()} -> Call ICompleteProductContainer.update(newRing, newStone)")
+                            // println("${panelInstanceName()} -> Call ICompleteProductContainer.update(newRing, newStone)")
                             completeProductContainer.update(newRing, newStone)
                         }
 
                     } catch (ex: Exception) {
                         println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
-                        println("Illegal Cast?")
                     }
                 }
 
@@ -195,18 +175,18 @@ class CenterPanel(
     }
 
     private fun getLargeNecklace(): Necklace {
-        val baseNecklaceMetadata = NecklaceStoreMetadata.getLargeNecklaceMetadata(currentBaseProduct.name!!)
-        val newNecklaceName: String = baseNecklaceMetadata.first
-        val newNecklaceFile: String = baseNecklaceMetadata.second
-        val newNecklaceImage = mainScope.async { newNecklaceFile.let { images.load(it) }!! }
-        return Necklace(newNecklaceName, newNecklaceFile, newNecklaceImage)
+        val nameFileTuple = NecklaceStoreMetadata.getLargeNecklaceMetadata(currentBaseProduct.name!!)
+        val name: String = nameFileTuple.first
+        val file: String = nameFileTuple.second
+        val image = mainScope.async { file.let { images.load(it) }!! }
+        return Necklace(name, file, image)
     }
 
     private fun getLargeRing(): Ring {
-        val largeRingMetadata = getLargeRingMetadata(currentBaseProduct.name!!)
-        val newRingName: String = largeRingMetadata.first
-        val newRingFile: String = largeRingMetadata.second
-        val newRingImage = mainScope.async { newRingFile.let { images.load(it) }!! }
-        return Ring(newRingName, newRingFile, newRingImage)
+        val nameFileTuple = getLargeRingMetadata(currentBaseProduct.name!!)
+        val name: String = nameFileTuple.first
+        val file: String = nameFileTuple.second
+        val image = mainScope.async { file.let { images.load(it) }!! }
+        return Ring(name, file, image)
     }
 }

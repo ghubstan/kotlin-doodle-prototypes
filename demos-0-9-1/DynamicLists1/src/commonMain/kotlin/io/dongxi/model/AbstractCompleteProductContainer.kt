@@ -1,6 +1,8 @@
 package io.dongxi.model
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.ProductCategory.*
+import io.dongxi.model.ScaledImage.*
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
@@ -8,7 +10,8 @@ import io.dongxi.storage.NecklaceStoreMetadata
 import io.dongxi.storage.PendantStoreMetadata
 import io.dongxi.storage.RingStoneStoreMetadata
 import io.dongxi.storage.RingStoreMetadata
-import io.dongxi.util.StringUtils
+import io.dongxi.util.StringUtils.accessoryLabelText
+import io.dongxi.util.StringUtils.productLabelText
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -31,7 +34,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 
-abstract class AbstractCompleteProduct(
+abstract class AbstractCompleteProductContainer(
     override val pageType: PageType,
     val config: DongxiConfig,
     val uiDispatcher: CoroutineDispatcher,
@@ -52,50 +55,48 @@ abstract class AbstractCompleteProduct(
 
     override val mainScope = MainScope()
 
-    var product: IProduct = getDefaultProduct("A")
-
+    var product: IProduct = defaultProduct()
     val productPhoto = LazyImage(
         pendingImage = product.image,
         canvasDestination = when (pageType.productCategory) {
-            ProductCategory.BRACELET -> TODO()
-            ProductCategory.EARRING -> TODO()
-            ProductCategory.NECKLACE -> ScaledImage.LARGE_NECKLACE.canvasDestination
-            ProductCategory.RING -> ScaledImage.LARGE_RING.canvasDestination
-            ProductCategory.SCAPULAR -> TODO()
-            ProductCategory.NONE -> TODO()
+            BRACELET -> TODO()
+            EARRING -> TODO()
+            NECKLACE -> LARGE_NECKLACE.canvasDestination
+            RING -> LARGE_RING.canvasDestination
+            SCAPULAR -> TODO()
+            NONE -> TODO()
         }
     )
 
-    var accessory: IProductAccessory = getDefaultProductAccessory(product)
-
+    var accessory: IProductAccessory = defaultProductAccessory(product)
     val accessoryPhoto = LazyImage(
         pendingImage = accessory.image,
         canvasDestination = when (pageType.productCategory) {
-            ProductCategory.BRACELET -> TODO()
-            ProductCategory.EARRING -> TODO()
-            ProductCategory.NECKLACE -> ScaledImage.LARGE_NECKLACE_PENDANT.canvasDestination
-            ProductCategory.RING -> ScaledImage.LARGE_RING_STONE.canvasDestination
-            ProductCategory.SCAPULAR -> TODO()
-            ProductCategory.NONE -> TODO()
+            BRACELET -> TODO()
+            EARRING -> TODO()
+            NECKLACE -> LARGE_NECKLACE_PENDANT.canvasDestination
+            RING -> LARGE_RING_STONE.canvasDestination
+            SCAPULAR -> TODO()
+            NONE -> TODO()
         }
     )
 
     val accessoryPhotoLeftBounds: Int = when (pageType.productCategory) {
-        ProductCategory.BRACELET -> TODO()
-        ProductCategory.EARRING -> TODO()
-        ProductCategory.NECKLACE -> 83
-        ProductCategory.RING -> 50
-        ProductCategory.SCAPULAR -> TODO()
-        ProductCategory.NONE -> TODO()
+        BRACELET -> TODO()
+        EARRING -> TODO()
+        NECKLACE -> 83
+        RING -> 50
+        SCAPULAR -> TODO()
+        NONE -> TODO()
     }
 
     val accessoryPhotoCenterYBounds: Int = when (pageType.productCategory) {
-        ProductCategory.BRACELET -> TODO()
-        ProductCategory.EARRING -> TODO()
-        ProductCategory.NECKLACE -> 217
-        ProductCategory.RING -> 122
-        ProductCategory.SCAPULAR -> TODO()
-        ProductCategory.NONE -> TODO()
+        BRACELET -> TODO()
+        EARRING -> TODO()
+        NECKLACE -> 217
+        RING -> 122
+        SCAPULAR -> TODO()
+        NONE -> TODO()
     }
 
 
@@ -107,7 +108,7 @@ abstract class AbstractCompleteProduct(
     }
 
     fun updateDebugLabelText() {
-        debugLabel.text = StringUtils.productLabelText(product) + " " + StringUtils.accessoryLabelText(accessory)
+        debugLabel.text = productLabelText(product) + " " + accessoryLabelText(accessory)
     }
 
     override fun update(product: IProduct, accessory: IProductAccessory) {
@@ -127,25 +128,37 @@ abstract class AbstractCompleteProduct(
         // cleanup here
     }
 
-    fun getDefaultProduct(name: String): IProduct {
+    private fun defaultProduct(): IProduct {
+        val name = defaultProductName()
         return when (pageType.productCategory) {
-            ProductCategory.BRACELET -> TODO()
-            ProductCategory.EARRING -> TODO()
-            ProductCategory.NECKLACE -> defaultNecklace(name)
-            ProductCategory.RING -> defaultRing(name)
-            ProductCategory.SCAPULAR -> TODO()
-            ProductCategory.NONE -> TODO()
+            BRACELET -> TODO()
+            EARRING -> TODO()
+            NECKLACE -> defaultNecklace(name)
+            RING -> defaultRing(name)
+            SCAPULAR -> TODO()
+            NONE -> TODO()
         }
     }
 
-    fun getDefaultProductAccessory(product: IProduct): IProductAccessory {
+    private fun defaultProductName(): String {
+        return when (pageType.productCategory) {
+            BRACELET -> TODO()
+            EARRING -> TODO()
+            NECKLACE -> "A"
+            RING -> "A"
+            SCAPULAR -> TODO()
+            NONE -> TODO()
+        }
+    }
+
+    private fun defaultProductAccessory(product: IProduct): IProductAccessory {
         return when (product.productCategory) {
-            ProductCategory.BRACELET -> TODO()
-            ProductCategory.EARRING -> TODO()
-            ProductCategory.NECKLACE -> defaultNecklacePendant(product)
-            ProductCategory.RING -> defaultRingStone(product)
-            ProductCategory.SCAPULAR -> TODO()
-            ProductCategory.NONE -> TODO()
+            BRACELET -> TODO()
+            EARRING -> TODO()
+            NECKLACE -> defaultNecklacePendant(product)
+            RING -> defaultRingStone(product)
+            SCAPULAR -> TODO()
+            NONE -> TODO()
         }
     }
 
