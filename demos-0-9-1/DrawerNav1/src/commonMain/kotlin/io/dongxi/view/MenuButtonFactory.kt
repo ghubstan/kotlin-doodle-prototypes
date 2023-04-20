@@ -7,6 +7,7 @@ import io.nacular.doodle.drawing.*
 import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.drawing.Color.Companion.Darkgray
 import io.nacular.doodle.focus.FocusManager
+import io.nacular.doodle.geometry.Rectangle
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.system.Cursor.Companion.Pointer
 import io.nacular.doodle.utils.HorizontalAlignment.Center
@@ -15,6 +16,7 @@ import io.nacular.measured.units.Angle.Companion.degrees
 import io.nacular.measured.units.times
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 object MenuButtonFactory {
@@ -86,6 +88,7 @@ object MenuButtonFactory {
             behavior = simpleTextButtonRenderer(textMetrics) { button, canvas ->
 
                 when {
+                    /*
                     button.model.pointerOver -> canvas.rect(
                         bounds.atOrigin,
                         stroke = Stroke(color = Black, thickness = 6.0),
@@ -93,6 +96,10 @@ object MenuButtonFactory {
                         color = hsvColor1ToColor,
                         radius = 10.0
                     )
+                     */
+                    button.model.pointerOver -> {
+                        runColorSchemes(canvas, bounds)
+                    }
 
                     else -> canvas.rect(
                         bounds.atOrigin,
@@ -123,5 +130,20 @@ object MenuButtonFactory {
         // Cancels all coroutines launched in this scope.
         mainScope.cancel()
         // cleanup here
+    }
+
+    private fun runColorSchemes(canvas: Canvas, bounds: Rectangle) {
+        mainScope.launch {
+            for (i in 1..20) {
+                println(i)
+                canvas.rect(
+                    bounds.atOrigin,
+                    stroke = Stroke(color = Black, thickness = 6.0),
+                    color = Color.Green,
+                    radius = 10.0
+                )
+                delay(200)
+            }
+        }
     }
 }
