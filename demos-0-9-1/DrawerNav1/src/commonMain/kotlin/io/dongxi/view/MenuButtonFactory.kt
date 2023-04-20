@@ -42,17 +42,20 @@ object MenuButtonFactory {
             horizontalAlignment = Center
             verticalAlignment = Middle
             behavior = simpleTextButtonRenderer(textMetrics) { button, canvas ->
+
                 when {
                     button.model.pointerOver -> canvas.rect(
                         bounds.atOrigin,
                         stroke = Stroke(color = Black, thickness = 6.0),
-                        color = colorPaleSilver
+                        color = colorPaleSilver,
+                        radius = 10.0
                     )
 
                     else -> canvas.rect(
                         bounds.atOrigin,
                         stroke = Stroke(color = Darkgray, thickness = 3.0),
-                        color = colorSilver
+                        color = colorSilver,
+                        radius = 10.0
                     )
                 }
 
