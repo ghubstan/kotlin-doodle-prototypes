@@ -39,7 +39,7 @@ class CompleteRingContainer(
     menuEventBus: MenuEventBus,
     baseProductSelectEventBus: BaseProductSelectEventBus,
     accessorySelectEventBus: AccessorySelectEventBus
-) : ICompleteProductContainer, AbstractCompleteProduct(
+) : ICompleteProductContainer, AbstractCompleteProductContainer(
     pageType,
     config,
     uiDispatcher,
@@ -57,6 +57,7 @@ class CompleteRingContainer(
     menuEventBus,
     baseProductSelectEventBus
 ) {
+
     init {
         updateDebugLabelText()
         clipCanvasToBounds = false

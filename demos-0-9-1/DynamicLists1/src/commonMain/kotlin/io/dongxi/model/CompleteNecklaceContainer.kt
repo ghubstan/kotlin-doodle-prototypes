@@ -38,7 +38,7 @@ class CompleteNecklaceContainer(
     menuEventBus: MenuEventBus,
     baseProductSelectEventBus: BaseProductSelectEventBus,
     accessorySelectEventBus: AccessorySelectEventBus
-) : ICompleteProductContainer, AbstractCompleteProduct(
+) : ICompleteProductContainer, AbstractCompleteProductContainer(
     pageType,
     config,
     uiDispatcher,
@@ -56,6 +56,7 @@ class CompleteNecklaceContainer(
     menuEventBus,
     baseProductSelectEventBus
 ) {
+
     init {
         updateDebugLabelText()
         clipCanvasToBounds = false
