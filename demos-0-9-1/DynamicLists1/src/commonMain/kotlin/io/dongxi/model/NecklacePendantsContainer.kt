@@ -34,11 +34,10 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension.Height
 import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment.Center
-import io.nacular.doodle.utils.Resizer
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.*
 
-
+@Deprecated("Use IAccessoryListContainer")
 interface INecklacePendantsContainer {
     val listCache: MutableMap<ProductCategory, DynamicList<NecklacePendant, SimpleMutableListModel<NecklacePendant>>>
     val list: DynamicList<NecklacePendant, SimpleMutableListModel<NecklacePendant>>
@@ -46,6 +45,7 @@ interface INecklacePendantsContainer {
     fun build(productCategory: ProductCategory): DynamicList<NecklacePendant, SimpleMutableListModel<NecklacePendant>>
 }
 
+@Deprecated("Use IAccessoryListContainer")
 class NecklacePendantsContainer(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
@@ -109,7 +109,6 @@ class NecklacePendantsContainer(
             listBounds.width eq parent.width
             listBounds.bottom eq parent.bottom - 5
         }
-        Resizer(this).apply { movable = false }
     }
 
     // TODO Remove from interface and make private?
@@ -166,7 +165,7 @@ class NecklacePendantsContainer(
     }
 }
 
-
+@Deprecated("Use IAccessoryListContainer")
 class NecklacePendantListView(
     var pendant: NecklacePendant,
     var index: Int,
@@ -204,6 +203,7 @@ class NecklacePendantListView(
 
 // The Visualizer is designed to recycle view: reconfigure the view,
 // to represent the new ring installed into it (the "infinite" list of items).
+@Deprecated("Use IAccessoryListContainer")
 class NecklacePendantVisualizer(val config: DongxiConfig) : ItemVisualizer<NecklacePendant, IndexedItem> {
     override fun invoke(item: NecklacePendant, previous: View?, context: IndexedItem): View = when (previous) {
         is NecklacePendantListView -> previous.apply {
@@ -222,5 +222,3 @@ class NecklacePendantVisualizer(val config: DongxiConfig) : ItemVisualizer<Neckl
         )
     }
 }
-
-

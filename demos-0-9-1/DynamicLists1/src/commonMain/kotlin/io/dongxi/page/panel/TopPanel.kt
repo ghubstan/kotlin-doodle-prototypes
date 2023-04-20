@@ -128,7 +128,6 @@ class TopPanel(
             menuBounds.right eq parent.right - 5
             menuBounds.height eq parent.height - 5
         }
-        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {

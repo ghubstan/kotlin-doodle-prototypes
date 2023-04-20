@@ -79,7 +79,6 @@ class DynamicListsApp(
                 popups,
                 modals
             ).apply {
-                Resizer(this).apply { }
             }
 
             display += listOf(baseView)

@@ -21,7 +21,6 @@ import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.ObservableList
-import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 
 class BaseContainer(
@@ -61,7 +60,6 @@ class BaseContainer(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
-
     private val topPanel = TopPanel(
         pageType,
         config,
@@ -212,7 +210,6 @@ class BaseContainer(
             footerPanelBounds.right eq parent.right - inset // Span all 3 columns
             footerPanelBounds.bottom eq parent.bottom - inset
         }
-        Resizer(this).apply { movable = false }
     }
 
     override fun layoutForCurrentProductCategory() {

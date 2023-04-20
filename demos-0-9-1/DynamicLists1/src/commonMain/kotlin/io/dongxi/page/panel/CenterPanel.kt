@@ -27,7 +27,6 @@ import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 
@@ -68,27 +67,43 @@ class CenterPanel(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
+    /*
+    private val completeProductContainerMap = mutableMapOf<ProductCategory, CompleteProductContainer>()
+    private fun completeProductContainer(): Container {
+        return if (completeProductContainerMap.contains(pageType.productCategory)) {
+            completeProductContainerMap[pageType.productCategory]!!
+        } else {
+            val container: Container = when (pageType.productCategory) {
+                NECKLACE -> getCompleteProductContainer()
+                RING -> getCompleteProductContainer()
+                else -> getDummyBaseProductsContainer()
+            }
+            completeProductContainerMap[pageType.productCategory] = container as CompleteProductContainer
+            completeProductContainerMap[pageType.productCategory]!!
+        }
+    }
+     */
+
+
     private val completeProductContainer = when (pageType.productCategory) {
-        NECKLACE -> {
-            getCompleteNecklaceContainer()
-        }
+        NECKLACE -> getCompleteNecklaceContainer()
+        RING -> getCompleteRingContainer()
 
-        RING -> {
-            getCompleteRingContainer()
-        }
+        // TODO Do not delete until I find out why using this fails to consistently
+        //      update the center panel's complete product images.
+        // NECKLACE -> getCompleteProductContainer()
+        // RING -> getCompleteProductContainer()
 
-        else -> {
-            getDummyBaseProductsContainer()
-        }
+        else -> getDummyBaseProductsContainer()
     }
 
     init {
+        println("CENTER PANEL -> INIT -> PAGE TYPE? $pageType")
         clipCanvasToBounds = false
         size = Size(200, 200)
 
         children += listOf(completeProductContainer)
         layout = constrain(completeProductContainer, fill)
-        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {
@@ -96,7 +111,7 @@ class CenterPanel(
     }
 
     override fun layoutForCurrentProductCategory() {
-        // println("${panelInstanceName()} currentProductCategory: $currentProductCategory")
+        println("${panelInstanceName()} layoutForCurrentProductCategory -> currentProductCategory: $currentProductCategory")
         relayout()
     }
 
@@ -106,11 +121,13 @@ class CenterPanel(
     }
 
     override fun layoutForCurrentAccessorySelection() {
-        println("${panelInstanceName()} currentAccessory: $currentAccessory")
+        println("${panelInstanceName()} layoutForCurrentBaseProductSelection -> currentAccessory: $currentAccessory")
         relayout()
     }
 
     override fun layoutForCompletedJewel() {
+        println("${panelInstanceName()} layoutForCompletedJewel -> currentProductCategory: $currentProductCategory")
+
         try {
             if (!currentBaseProduct.isSet()) {
                 println("ERROR: ${panelInstanceName()} currentBaseProduct is not set: $currentBaseProduct")
@@ -127,15 +144,17 @@ class CenterPanel(
                 // TODO Refactor out duplicated code.
 
                 NECKLACE -> {
-                    val newNecklace = getBaseNecklace()
+                    val newNecklace = getLargeNecklace()
                     val newPendant =
                         NecklacePendant(currentAccessory.name!!, currentAccessory.file!!, currentAccessory.image!!)
 
                     try {
                         // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
-                        if (completeProductContainer is ICompleteNecklaceContainer) {
+                        if (completeProductContainer is CompleteNecklaceContainer) {
+                            println("${panelInstanceName()} -> Call ICompleteProductContainer.update(newNecklace, newPendant)")
                             completeProductContainer.update(newNecklace, newPendant)
                         }
+
                     } catch (ex: Exception) {
                         println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
                         println("Illegal Cast?")
@@ -148,9 +167,11 @@ class CenterPanel(
 
                     try {
                         // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
-                        if (completeProductContainer is ICompleteRingContainer) {
+                        if (completeProductContainer is CompleteRingContainer) {
+                            println("${panelInstanceName()} -> Call ICompleteProductContainer.update(newRing, newStone)")
                             completeProductContainer.update(newRing, newStone)
                         }
+
                     } catch (ex: Exception) {
                         println("EXCEPTION ${panelInstanceName()} -> layoutForCompletedJewel():  $ex")
                         println("Illegal Cast?")
@@ -162,7 +183,9 @@ class CenterPanel(
                 }
             }
 
-            // completeProductContainer.relayout()
+            // TODO Is this necessary?
+            completeProductContainer.relayout()
+
             relayout()
 
         } catch (ex: Exception) {
@@ -171,7 +194,7 @@ class CenterPanel(
         }
     }
 
-    private fun getBaseNecklace(): Necklace {
+    private fun getLargeNecklace(): Necklace {
         val baseNecklaceMetadata = NecklaceStoreMetadata.getLargeNecklaceMetadata(currentBaseProduct.name!!)
         val newNecklaceName: String = baseNecklaceMetadata.first
         val newNecklaceFile: String = baseNecklaceMetadata.second

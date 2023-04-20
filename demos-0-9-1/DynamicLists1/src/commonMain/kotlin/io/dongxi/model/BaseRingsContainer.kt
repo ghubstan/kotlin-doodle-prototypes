@@ -37,6 +37,7 @@ import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.*
 
 
+@Deprecated("Use BaseProductListContainer")
 interface IBaseRingsContainer {
     val listCache: MutableMap<ProductCategory, DynamicList<Ring, SimpleMutableListModel<Ring>>>
     val list: DynamicList<Ring, SimpleMutableListModel<Ring>>
@@ -44,6 +45,7 @@ interface IBaseRingsContainer {
     fun build(): DynamicList<Ring, SimpleMutableListModel<Ring>>
 }
 
+@Deprecated("Use BaseProductListContainer")
 class BaseRingsContainer(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
@@ -163,6 +165,7 @@ class BaseRingsContainer(
     }
 }
 
+@Deprecated("Use BaseProductListContainer")
 class BaseRingListView(
     var ring: Ring,
     var index: Int,
@@ -212,6 +215,7 @@ class BaseRingListView(
 
 // The Visualizer is designed to recycle view: reconfigure the view,
 // to represent the new ring installed into it (the "infinite" list of items).
+@Deprecated("Use BaseProductListContainer")
 class BaseRingVisualizer(val config: DongxiConfig) : ItemVisualizer<Ring, IndexedItem> {
     override fun invoke(item: Ring, previous: View?, context: IndexedItem): View = when (previous) {
         is BaseRingListView -> previous.apply {

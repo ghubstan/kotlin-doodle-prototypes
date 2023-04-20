@@ -1,32 +1,26 @@
-package io.dongxi.page.panel
+package io.dongxi.model
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.model.ProductCategory.NECKLACE
-import io.dongxi.model.ProductCategory.RING
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
-import io.dongxi.util.ColorUtils.floralWhite
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
-import io.nacular.doodle.drawing.Canvas
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
-import io.nacular.doodle.drawing.rect
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
-import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import kotlinx.coroutines.CoroutineDispatcher
 
-class LeftPanel(
+class ProductAccessoryListContainer(
     pageType: PageType,
     config: DongxiConfig,
     uiDispatcher: CoroutineDispatcher,
@@ -44,7 +38,7 @@ class LeftPanel(
     menuEventBus: MenuEventBus,
     baseProductSelectEventBus: BaseProductSelectEventBus,
     accessorySelectEventBus: AccessorySelectEventBus
-) : AbstractPanel(
+) : IProductAccessoryListContainer, AbstractProductAccessoryListContainer(
     pageType,
     config,
     uiDispatcher,
@@ -64,49 +58,24 @@ class LeftPanel(
     accessorySelectEventBus
 ) {
 
-    private val baseProductListContainer = when (pageType.productCategory) {
-        NECKLACE -> {
-            getBaseProductListContainer()
-            // getBaseNecklacesContainer()
-        }
-
-        RING -> {
-            getBaseProductListContainer()
-            // getBaseRingsContainer()
-        }
-
-        else -> {
-            getDummyBaseProductsContainer()
-        }
-    }
+    private val defaultBaseProductName = "A"
 
     init {
         clipCanvasToBounds = false
-        size = Size(200, 200)
-        children += baseProductListContainer
-        layout = constrain(baseProductListContainer, fill)
-    }
+        size = Size(150, 200)
+        loadModel(defaultBaseProductName)
+        children += debugLabel
+        children += scrollableList
+        layout = constrain(debugLabel, scrollableList) { debugLabelBounds, listBounds ->
+            debugLabelBounds.top eq 5
+            debugLabelBounds.left eq 5
+            debugLabelBounds.width.preserve
+            debugLabelBounds.height.preserve
 
-    override fun render(canvas: Canvas) {
-        canvas.rect(bounds.atOrigin, floralWhite())
-    }
-
-    override fun layoutForCurrentProductCategory() {
-        // println("${panelInstanceName()} currentProductCategory: $currentProductCategory")
-        relayout()
-    }
-
-    override fun layoutForCurrentBaseProductSelection() {
-        println("${panelInstanceName()} currentBaseProduct: $currentBaseProduct")
-        relayout()
-    }
-
-    override fun layoutForCurrentAccessorySelection() {
-        println("${panelInstanceName()} currentAccessory: $currentAccessory")
-        relayout()
-    }
-
-    override fun layoutForCompletedJewel() {
-        // noop
+            listBounds.top eq debugLabelBounds.bottom + 5
+            listBounds.left eq 5
+            listBounds.width eq parent.width
+            listBounds.bottom eq parent.bottom - 5
+        }
     }
 }

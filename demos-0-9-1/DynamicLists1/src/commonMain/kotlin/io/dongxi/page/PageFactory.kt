@@ -67,7 +67,6 @@ class PageFactory(
                 baseProductSelectEventBus,
                 accessorySelectEventBus
             ).apply {
-                Resizer(this).apply { }
             }
             pageCache[pageType] = page
             return page

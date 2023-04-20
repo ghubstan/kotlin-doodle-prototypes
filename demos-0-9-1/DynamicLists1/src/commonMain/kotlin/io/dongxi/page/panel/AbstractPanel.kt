@@ -5,6 +5,7 @@ import io.dongxi.model.*
 import io.dongxi.model.AccessoryCategory.PENDANT
 import io.dongxi.model.AccessoryCategory.STONE
 import io.dongxi.model.ProductCategory.*
+import io.dongxi.model.junk.CompleteProductContainer
 import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
@@ -56,46 +57,33 @@ abstract class AbstractPanel(
     val mainScope = MainScope() // The scope of AbstractPanel class (and subclasses), uses Dispatchers.Main.
 
     var currentProductCategory: ProductCategory = pageType.productCategory
-    var currentBaseProduct: SelectedBaseProduct = SelectedBaseProduct(currentProductCategory, null, null, null)
-    var currentAccessory: SelectedAccessory = SelectedAccessory(AccessoryCategory.NONE, null, null, null)
+    var currentBaseProduct: SelectedBaseProduct = SelectedBaseProduct(
+        productCategory = currentProductCategory,
+        name = null,
+        file = null,
+        image = null
+    )
+    var currentAccessory: SelectedAccessory = SelectedAccessory(
+        accessoryCategory = AccessoryCategory.NONE,
+        name = null,
+        file = null,
+        image = null
+    )
 
     init {
         mainScope.launch {
             menuEventBus.events.filterNotNull().collectLatest {
-                // println("${simpleClassName(this)} Received ${it.name} event")
+                println("${panelInstanceName()} Received ${it.name} event")
 
-                when (it) {
-                    GO_HOME -> {
-                        currentProductCategory = NONE
-                    }
-
-                    GO_BRACELETS -> {
-                        currentProductCategory = BRACELET
-                    }
-
-                    GO_EARRINGS -> {
-                        currentProductCategory = EARRING
-                    }
-
-                    GO_NECKLACES -> {
-                        currentProductCategory = NECKLACE
-                    }
-
-                    GO_RINGS -> {
-                        currentProductCategory = RING
-                    }
-
-                    GO_SCAPULARS -> {
-                        currentProductCategory = SCAPULAR
-                    }
-
-                    GO_ABOUT -> {
-                        currentProductCategory = NONE
-                    }
-
-                    LOGOUT -> {
-                        currentProductCategory = NONE
-                    }
+                currentProductCategory = when (it) {
+                    GO_HOME -> NONE
+                    GO_BRACELETS -> BRACELET
+                    GO_EARRINGS -> EARRING
+                    GO_NECKLACES -> NECKLACE
+                    GO_RINGS -> RING
+                    GO_SCAPULARS -> SCAPULAR
+                    GO_ABOUT -> NONE
+                    LOGOUT -> NONE
                 }
 
                 // println("${panelInstanceName()} current ProductCategory: $currentProductCategory")
@@ -166,8 +154,9 @@ abstract class AbstractPanel(
         )
     }
 
-    fun getBaseNecklacesContainer(): Container {
-        return BaseNecklacesContainer(
+    fun getBaseProductListContainer(): Container {
+        return BaseProductListContainer(
+            pageType,
             config,
             uiDispatcher,
             animator,
@@ -186,8 +175,9 @@ abstract class AbstractPanel(
         )
     }
 
-    fun getBaseNecklacePendantsContainer(): Container {
-        return NecklacePendantsContainer(
+    fun getProductAccessoryListContainer(): Container {
+        return ProductAccessoryListContainer(
+            pageType,
             config,
             uiDispatcher,
             animator,
@@ -207,28 +197,10 @@ abstract class AbstractPanel(
         )
     }
 
-    fun getBaseRingsContainer(): Container {
-        return BaseRingsContainer(
-            config,
-            uiDispatcher,
-            animator,
-            pathMetrics,
-            fonts,
-            theme,
-            themes,
-            images,
-            textMetrics,
-            linkStyler,
-            focusManager,
-            popups,
-            modals,
-            menuEventBus,
-            baseProductSelectEventBus
-        )
-    }
-
-    fun getRingStonesContainer(): Container {
-        return RingStonesContainer(
+    @Deprecated("Unused due to inheritance problems (in javascript?)")
+    fun getCompleteProductContainer(): Container {
+        return CompleteProductContainer(
+            pageType,
             config,
             uiDispatcher,
             animator,
@@ -250,6 +222,7 @@ abstract class AbstractPanel(
 
     fun getCompleteNecklaceContainer(): Container {
         return CompleteNecklaceContainer(
+            pageType,
             config,
             uiDispatcher,
             animator,
@@ -271,6 +244,7 @@ abstract class AbstractPanel(
 
     fun getCompleteRingContainer(): Container {
         return CompleteRingContainer(
+            pageType,
             config,
             uiDispatcher,
             animator,
@@ -289,7 +263,6 @@ abstract class AbstractPanel(
             accessorySelectEventBus
         )
     }
-
 
     override fun render(canvas: Canvas) {
         canvas.rect(bounds.atOrigin, ColorUtils.ghostWhite())
@@ -326,6 +299,7 @@ abstract class AbstractPanel(
 
             NECKLACE -> {
                 println("${panelInstanceName()} -> set default ${pageType.productCategory}")
+                // A base necklace image is a small image.  Complete necklaces are large images.
                 val defaultNecklaceMetadata = NecklaceStoreMetadata.getSmallNecklaceMetadata("A")
                 val necklaceName = defaultNecklaceMetadata.first
                 val necklaceFile = defaultNecklaceMetadata.second

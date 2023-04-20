@@ -34,11 +34,10 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension.Height
 import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment.Center
-import io.nacular.doodle.utils.Resizer
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.*
 
-
+@Deprecated("Use IAccessoryListContainer")
 interface IRingStonesContainer {
     val listCache: MutableMap<ProductCategory, DynamicList<RingStone, SimpleMutableListModel<RingStone>>>
     val list: DynamicList<RingStone, SimpleMutableListModel<RingStone>>
@@ -46,6 +45,7 @@ interface IRingStonesContainer {
     fun build(productCategory: ProductCategory): DynamicList<RingStone, SimpleMutableListModel<RingStone>>
 }
 
+@Deprecated("Use IAccessoryListContainer")
 class RingStonesContainer(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
@@ -108,7 +108,6 @@ class RingStonesContainer(
             listBounds.width eq parent.width
             listBounds.bottom eq parent.bottom - 5
         }
-        Resizer(this).apply { movable = false }
     }
 
     // TODO Remove from interface and make private?
@@ -165,7 +164,7 @@ class RingStonesContainer(
     }
 }
 
-
+@Deprecated("Use IAccessoryListContainer")
 class RingStoneListView(
     var stone: RingStone,
     var index: Int,
@@ -203,6 +202,7 @@ class RingStoneListView(
 
 // The Visualizer is designed to recycle view: reconfigure the view,
 // to represent the new ring installed into it (the "infinite" list of items).
+@Deprecated("Use IAccessoryListContainer")
 class RingStoneVisualizer(val config: DongxiConfig) : ItemVisualizer<RingStone, IndexedItem> {
     override fun invoke(item: RingStone, previous: View?, context: IndexedItem): View = when (previous) {
         is RingStoneListView -> previous.apply {
@@ -216,5 +216,3 @@ class RingStoneVisualizer(val config: DongxiConfig) : ItemVisualizer<RingStone, 
         else -> RingStoneListView(stone = item, index = context.index, selected = context.selected, config = config)
     }
 }
-
-

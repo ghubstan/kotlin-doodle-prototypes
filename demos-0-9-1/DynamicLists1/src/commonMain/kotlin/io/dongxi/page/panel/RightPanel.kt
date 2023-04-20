@@ -2,6 +2,7 @@ package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.IAccessoryListContainer
+import io.dongxi.model.IProductAccessoryListContainer
 import io.dongxi.model.ProductCategory.NECKLACE
 import io.dongxi.model.ProductCategory.RING
 import io.dongxi.page.MenuEventBus
@@ -25,7 +26,6 @@ import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.CoroutineDispatcher
 
 class RightPanel(
@@ -65,26 +65,17 @@ class RightPanel(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
+
     private val accessoryListContainer = when (pageType.productCategory) {
-
-        NECKLACE -> {
-            getBaseNecklacePendantsContainer(/*  TODO Pass default necklace to know which pendant list to load? */)
-        }
-
-        RING -> {
-            getRingStonesContainer(/*  TODO Pass default ring to know which stone list to load? */)
-        }
-
-        else -> {
-            getDummyBaseProductsContainer()
-        }
+        NECKLACE -> getProductAccessoryListContainer()      // getProductAccessoryListContainer()   getBaseNecklacePendantsContainer()
+        RING -> getProductAccessoryListContainer()          // getProductAccessoryListContainer()   getRingStonesContainer()
+        else -> getDummyBaseProductsContainer()
     }
 
     init {
         size = Size(200, 200)
         children += listOf(accessoryListContainer)
         layout = constrain(accessoryListContainer, fill)
-        Resizer(this).apply { movable = false }
     }
 
     override fun render(canvas: Canvas) {
@@ -101,6 +92,12 @@ class RightPanel(
         try {
             // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
             if (accessoryListContainer is IAccessoryListContainer) {
+                accessoryListContainer.clearModel()
+                accessoryListContainer.loadModel(currentBaseProduct.name ?: "A")
+            }
+
+            // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
+            if (accessoryListContainer is IProductAccessoryListContainer) {
                 accessoryListContainer.clearModel()
                 accessoryListContainer.loadModel(currentBaseProduct.name ?: "A")
             }
