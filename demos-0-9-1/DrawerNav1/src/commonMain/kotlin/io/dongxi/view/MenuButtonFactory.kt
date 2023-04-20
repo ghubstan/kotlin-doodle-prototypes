@@ -12,6 +12,7 @@ import io.nacular.doodle.system.Cursor.Companion.Pointer
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import io.nacular.measured.units.Angle
+import io.nacular.measured.units.Angle.Companion.degrees
 import io.nacular.measured.units.times
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -44,12 +45,12 @@ object MenuButtonFactory {
     // from 0 to 100 percent, where 0 is completely black, and 100 is the brightest and reveals the most color.
 
     // private val hsvColor1: HsvColor = HsvColor(0 * Angle.degrees, 0f, 0.8f)
-    private val hsvColor1: HsvColor = HsvColor(21.4 * Angle.degrees, 7.0f, 0.99f)
+    private val hsvColor1: HsvColor = HsvColor(21.4 * degrees, 7.0f, 0.99f)
 
     // private val hsvColor1: HsvColor = HsvColor(colorPaleSilver)
     private val hsvColor1ToColor = hsvColor1.toRgb()
 
-    private val hslColor: HslColor = HslColor(0 * Angle.degrees, 0f, 0.8f)
+    private val hslColor: HslColor = HslColor(0 * degrees, 0f, 0.8f)
     private val hslColor1ToColor = hslColor.toRgb()
 
     fun createMenuButton(
