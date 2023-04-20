@@ -8,6 +8,7 @@ import io.nacular.doodle.image.Image
 
 data class DongxiConfig(
     val listFont: Font,
+    val menuButtonFont: Font,
     val menuLinkFont: Font,
     val titleFont: Font,
     val lineColor: Color = Color(0xEDEDEDu),
