@@ -67,6 +67,24 @@ class CenterPanel(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
+    /*
+    private val completeProductContainerMap = mutableMapOf<ProductCategory, CompleteProductContainer>()
+    private fun completeProductContainer(): Container {
+        return if (completeProductContainerMap.contains(pageType.productCategory)) {
+            completeProductContainerMap[pageType.productCategory]!!
+        } else {
+            val container: Container = when (pageType.productCategory) {
+                NECKLACE -> getCompleteProductContainer()
+                RING -> getCompleteProductContainer()
+                else -> getDummyBaseProductsContainer()
+            }
+            completeProductContainerMap[pageType.productCategory] = container as CompleteProductContainer
+            completeProductContainerMap[pageType.productCategory]!!
+        }
+    }
+     */
+
+
     private val completeProductContainer = when (pageType.productCategory) {
         NECKLACE -> getCompleteNecklaceContainer()
         RING -> getCompleteRingContainer()
@@ -132,12 +150,7 @@ class CenterPanel(
 
                     try {
                         // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
-                        if (completeProductContainer is ICompleteNecklaceContainer) {
-                            println("${panelInstanceName()} -> Call ICompleteNecklaceContainer.update(newNecklace, newPendant)")
-                            completeProductContainer.update(newNecklace, newPendant)
-                        }
-                        // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
-                        if (completeProductContainer is ICompleteProductContainer) {
+                        if (completeProductContainer is CompleteNecklaceContainer) {
                             println("${panelInstanceName()} -> Call ICompleteProductContainer.update(newNecklace, newPendant)")
                             completeProductContainer.update(newNecklace, newPendant)
                         }
@@ -154,12 +167,7 @@ class CenterPanel(
 
                     try {
                         // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
-                        if (completeProductContainer is ICompleteRingContainer) {
-                            println("${panelInstanceName()} -> Call ICompleteRingContainer.update(newRing, newStone)")
-                            completeProductContainer.update(newRing, newStone)
-                        }
-                        // Interesting... In Kotlin, I do not have to cast the object if I check 'object is interface' first.
-                        if (completeProductContainer is ICompleteProductContainer) {
+                        if (completeProductContainer is CompleteRingContainer) {
                             println("${panelInstanceName()} -> Call ICompleteProductContainer.update(newRing, newStone)")
                             completeProductContainer.update(newRing, newStone)
                         }

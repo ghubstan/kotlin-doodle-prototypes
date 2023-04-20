@@ -1,21 +1,13 @@
 package io.dongxi.model
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.model.ScaledImage.LARGE_NECKLACE
-import io.dongxi.model.ScaledImage.LARGE_NECKLACE_PENDANT
 import io.dongxi.page.MenuEventBus
+import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
-import io.dongxi.storage.NecklaceStoreMetadata.getLargeNecklaceMetadata
-import io.dongxi.storage.PendantStoreMetadata
-import io.dongxi.util.StringUtils.accessoryLabelText
-import io.dongxi.util.StringUtils.productLabelText
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
-import io.nacular.doodle.controls.text.Label
-import io.nacular.doodle.core.Container
-import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
@@ -26,68 +18,53 @@ import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.utils.Dimension.Width
-import io.nacular.doodle.utils.HorizontalAlignment.Center
-import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
-
-interface ICompleteNecklaceContainer {
-    fun update(necklace: Necklace, pendant: NecklacePendant)
-}
 
 class CompleteNecklaceContainer(
-    private val config: DongxiConfig,
-    private val uiDispatcher: CoroutineDispatcher,
-    private val animator: Animator,
-    private val pathMetrics: PathMetrics,
-    private val fonts: FontLoader,
-    private val theme: DynamicTheme,
-    private val themes: ThemeManager,
-    private val images: ImageLoader,
-    private val textMetrics: TextMetrics,
-    private val linkStyler: NativeHyperLinkStyler,
-    private val focusManager: FocusManager,
-    private val popups: PopupManager,
-    private val modals: ModalManager,
-    private val menuEventBus: MenuEventBus,
-    private val baseProductSelectEventBus: BaseProductSelectEventBus,
-    private val accessorySelectEventBus: AccessorySelectEventBus
-) : ICompleteNecklaceContainer, Container() {
-
-    private val mainScope = MainScope() // The scope of NecklaceWithStoneContainer class, uses Dispatchers.Main.
-
-    private val debugLabel = Label("Nenhum", Middle, Center).apply {
-        font = config.panelDebugFont
-        height = 24.0
-        fitText = setOf(Width)
-        foregroundColor = Transparent
-    }
-
-    private var necklace: IProduct = getDefaultProduct("A")
-
-    private var necklacePendant: IProductAccessory = getDefaultProductAccessory(necklace)
-
-    private val necklacePhoto = LazyImage(
-        pendingImage = necklace.image,
-        canvasDestination = LARGE_NECKLACE.canvasDestination
-    )
-
-    private val pendantPhoto = LazyImage(
-        pendingImage = necklacePendant.image,
-        canvasDestination = LARGE_NECKLACE_PENDANT.canvasDestination
-    )
-
+    pageType: PageType,
+    config: DongxiConfig,
+    uiDispatcher: CoroutineDispatcher,
+    animator: Animator,
+    pathMetrics: PathMetrics,
+    fonts: FontLoader,
+    theme: DynamicTheme,
+    themes: ThemeManager,
+    images: ImageLoader,
+    textMetrics: TextMetrics,
+    linkStyler: NativeHyperLinkStyler,
+    focusManager: FocusManager,
+    popups: PopupManager,
+    modals: ModalManager,
+    menuEventBus: MenuEventBus,
+    baseProductSelectEventBus: BaseProductSelectEventBus,
+    accessorySelectEventBus: AccessorySelectEventBus
+) : ICompleteProductContainer, AbstractCompleteProduct(
+    pageType,
+    config,
+    uiDispatcher,
+    animator,
+    pathMetrics,
+    fonts,
+    theme,
+    themes,
+    images,
+    textMetrics,
+    linkStyler,
+    focusManager,
+    popups,
+    modals,
+    menuEventBus,
+    baseProductSelectEventBus
+) {
     init {
         updateDebugLabelText()
         clipCanvasToBounds = false
         size = Size(200, 200)
 
-        children += listOf(debugLabel, necklacePhoto, pendantPhoto)
-        layout = constrain(debugLabel, necklacePhoto, pendantPhoto) { debugLabelBounds,
-                                                                      necklacePhotoBounds,
-                                                                      pendantPhotoBounds ->
+        children += listOf(debugLabel, productPhoto, accessoryPhoto)
+        layout = constrain(debugLabel, productPhoto, accessoryPhoto) { debugLabelBounds,
+                                                                       necklacePhotoBounds,
+                                                                       pendantPhotoBounds ->
             debugLabelBounds.top eq 5
             debugLabelBounds.left eq 5
             debugLabelBounds.width.preserve
@@ -98,41 +75,10 @@ class CompleteNecklaceContainer(
             necklacePhotoBounds.width.preserve
             necklacePhotoBounds.height.preserve
 
-            pendantPhotoBounds.left eq 83
-            pendantPhotoBounds.centerY eq 217
+            pendantPhotoBounds.left eq accessoryPhotoLeftBounds
+            pendantPhotoBounds.centerY eq accessoryPhotoCenterYBounds
             pendantPhotoBounds.width.preserve
             pendantPhotoBounds.height.preserve
         }
-    }
-
-    override fun update(necklace: Necklace, pendant: NecklacePendant) {
-        // Reconfigure the view to represent the new necklace-pendant installed in it.
-        this.necklace = necklace
-        this.necklacePendant = pendant
-
-        necklacePhoto.pendingImage = necklace.image
-        pendantPhoto.pendingImage = pendant.image
-
-        updateDebugLabelText()
-    }
-
-    private fun getDefaultProduct(name: String): IProduct {
-        val productMetadata = getLargeNecklaceMetadata(name)
-        return Necklace(
-            productMetadata.first,
-            productMetadata.second,
-            mainScope.async { images.load(productMetadata.second)!! })
-    }
-
-    private fun getDefaultProductAccessory(product: IProduct): IProductAccessory {
-        val accessoryMetadata: Pair<String, String> = PendantStoreMetadata.getPendants(product.name)[0]
-        return NecklacePendant(
-            accessoryMetadata.first,
-            accessoryMetadata.second,
-            mainScope.async { images.load(accessoryMetadata.second)!! })
-    }
-
-    private fun updateDebugLabelText() {
-        debugLabel.text = productLabelText(necklace) + " " + accessoryLabelText(necklacePendant)
     }
 }

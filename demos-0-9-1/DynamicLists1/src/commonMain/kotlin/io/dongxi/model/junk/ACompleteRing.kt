@@ -1,6 +1,7 @@
-package io.dongxi.model
+package io.dongxi.model.junk
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.ProductCategory
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus

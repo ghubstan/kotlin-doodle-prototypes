@@ -5,6 +5,7 @@ import io.dongxi.model.*
 import io.dongxi.model.AccessoryCategory.PENDANT
 import io.dongxi.model.AccessoryCategory.STONE
 import io.dongxi.model.ProductCategory.*
+import io.dongxi.model.junk.CompleteProductContainer
 import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
@@ -221,6 +222,7 @@ abstract class AbstractPanel(
 
     fun getCompleteNecklaceContainer(): Container {
         return CompleteNecklaceContainer(
+            pageType,
             config,
             uiDispatcher,
             animator,
@@ -242,6 +244,7 @@ abstract class AbstractPanel(
 
     fun getCompleteRingContainer(): Container {
         return CompleteRingContainer(
+            pageType,
             config,
             uiDispatcher,
             animator,

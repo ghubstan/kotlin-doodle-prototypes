@@ -1,7 +1,8 @@
-package io.dongxi.model
+package io.dongxi.model.junk
 
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.*
 import io.dongxi.model.ProductCategory.*
 import io.dongxi.model.ScaledImage.*
 import io.dongxi.page.MenuEventBus
@@ -66,72 +67,7 @@ abstract class AbstractCompleteProductContainer(
         foregroundColor = Transparent
     }
 
-    private val defaultProductMetadata = getDefaultProductMetadata()
-    private val defaultProductName = defaultProductMetadata.first
-    private val defaultProductFile = defaultProductMetadata.second
-
-    private val defaultAccessoryMetadata = getDefaultAccessoryMetadata()
-    private val defaultAccessoryName = defaultAccessoryMetadata.first
-    private val defaultAccessoryFile = defaultAccessoryMetadata.second
-
-    private fun getDefaultProductMetadata(): Pair<String, String> {
-        return when (pageType.productCategory) {
-            BRACELET -> TODO()
-            EARRING -> TODO()
-            NECKLACE -> NecklaceStoreMetadata.getLargeNecklaceMetadata("A")
-            RING -> RingStoreMetadata.getLargeRingMetadata("A")
-            SCAPULAR -> TODO()
-            NONE -> TODO()
-        }
-    }
-
-    private fun getDefaultAccessoryMetadata(): Pair<String, String> {
-        return when (pageType.productCategory) {
-            BRACELET -> TODO()
-            EARRING -> TODO()
-            NECKLACE -> PendantStoreMetadata.getPendants(defaultProductMetadata.first)[0]
-            RING -> RingStoneStoreMetadata.getStones(defaultProductMetadata.first)[0]
-            SCAPULAR -> TODO()
-            NONE -> TODO()
-        }
-    }
-
-    var product: IProduct = when (pageType.productCategory) {
-        BRACELET -> TODO()
-        EARRING -> TODO()
-
-        NECKLACE -> Necklace(
-            defaultProductName,
-            defaultProductFile,
-            mainScope.async { images.load(defaultProductFile)!! })
-
-        RING -> Ring(
-            defaultProductName,
-            defaultProductFile,
-            mainScope.async { images.load(defaultProductFile)!! })
-
-        SCAPULAR -> TODO()
-        NONE -> TODO()
-    }
-
-    var accessory: IProductAccessory = when (pageType.productCategory) {
-        BRACELET -> TODO()
-        EARRING -> TODO()
-
-        NECKLACE -> NecklacePendant(
-            defaultAccessoryName,
-            defaultAccessoryFile,
-            mainScope.async { images.load(defaultAccessoryFile)!! })
-
-        RING -> RingStone(
-            defaultAccessoryName,
-            defaultAccessoryFile,
-            mainScope.async { images.load(defaultAccessoryFile)!! })
-
-        SCAPULAR -> TODO()
-        NONE -> TODO()
-    }
-
+    var product: IProduct = getDefaultProduct("A")
     val productPhoto = LazyImage(
         pendingImage = product.image,
         canvasDestination = when (pageType.productCategory) {
@@ -144,6 +80,7 @@ abstract class AbstractCompleteProductContainer(
         }
     )
 
+    var accessory: IProductAccessory = getDefaultProductAccessory(product)
     val accessoryPhoto = LazyImage(
         pendingImage = accessory.image,
         canvasDestination = when (pageType.productCategory) {
@@ -175,5 +112,57 @@ abstract class AbstractCompleteProductContainer(
 
     fun updateDebugLabelText(product: IProduct, accessory: IProductAccessory) {
         debugLabel.text = productLabelText(product) + " " + accessoryLabelText(accessory)
+    }
+
+
+    private fun getDefaultProduct(name: String): IProduct {
+        return when (pageType.productCategory) {
+            BRACELET -> TODO()
+            EARRING -> TODO()
+            NECKLACE -> defaultNecklace(name)
+            RING -> defaultRing(name)
+            SCAPULAR -> TODO()
+            NONE -> TODO()
+        }
+    }
+
+    private fun getDefaultProductAccessory(product: IProduct): IProductAccessory {
+        return when (product.productCategory) {
+            BRACELET -> TODO()
+            EARRING -> TODO()
+            NECKLACE -> defaultNecklacePendant(product)
+            RING -> defaultRingStone(product)
+            SCAPULAR -> TODO()
+            NONE -> TODO()
+        }
+    }
+
+    private fun defaultNecklace(name: String): IProduct {
+        val nameFileTuple = NecklaceStoreMetadata.getLargeNecklaceMetadata(name)
+        return Necklace(
+            nameFileTuple.first,
+            nameFileTuple.second,
+            mainScope.async { images.load(nameFileTuple.second)!! })
+    }
+
+    private fun defaultNecklacePendant(product: IProduct): IProductAccessory {
+        val nameFileTuple: Pair<String, String> = PendantStoreMetadata.getPendants(product.name)[0]
+        return NecklacePendant(
+            nameFileTuple.first,
+            nameFileTuple.second,
+            mainScope.async { images.load(nameFileTuple.second)!! })
+    }
+
+    private fun defaultRing(name: String): IProduct {
+        val nameFileTuple = RingStoreMetadata.getLargeRingMetadata(name)
+        return Ring(nameFileTuple.first, nameFileTuple.second, mainScope.async { images.load(nameFileTuple.second)!! })
+    }
+
+    private fun defaultRingStone(product: IProduct): IProductAccessory {
+        val nameFileTuple: Pair<String, String> = RingStoneStoreMetadata.getStones(product.name)[0]
+        return RingStone(
+            nameFileTuple.first,
+            nameFileTuple.second,
+            mainScope.async { images.load(nameFileTuple.second)!! })
     }
 }
