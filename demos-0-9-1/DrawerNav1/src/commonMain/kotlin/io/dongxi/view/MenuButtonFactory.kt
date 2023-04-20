@@ -33,6 +33,7 @@ object MenuButtonFactory {
     // See https://www.rapidtables.com/web/color/color-wheel.html
     // See https://www.rapidtables.com/convert/color/rgb-to-hsv.html
     // See https://en.wikipedia.org/wiki/Hue
+    // See https://blog.datawrapper.de/beautifulcolors
     // Good ones:
     //          https://colorizer.org
     //          https://www.w3schools.com/colors/colors_hsl.asp
