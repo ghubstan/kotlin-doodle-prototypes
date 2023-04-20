@@ -65,22 +65,22 @@ class CompleteRingContainer(
 
         children += listOf(debugLabel, productPhoto, accessoryPhoto)
         layout = constrain(debugLabel, productPhoto, accessoryPhoto) { debugLabelBounds,
-                                                                       ringPhotoBounds,
-                                                                       stonePhotoBounds ->
+                                                                       productPhotoBounds,
+                                                                       accessoryPhotoBounds ->
             debugLabelBounds.top eq 5
             debugLabelBounds.left eq 5
             debugLabelBounds.width.preserve
             debugLabelBounds.height.preserve
 
-            ringPhotoBounds.top eq debugLabelBounds.bottom + 10
-            ringPhotoBounds.left eq 10
-            ringPhotoBounds.width.preserve
-            ringPhotoBounds.height.preserve
+            productPhotoBounds.top eq debugLabelBounds.bottom + 10
+            productPhotoBounds.left eq 10
+            productPhotoBounds.width.preserve
+            productPhotoBounds.height.preserve
 
-            stonePhotoBounds.left eq accessoryPhotoLeftBounds
-            stonePhotoBounds.centerY eq accessoryPhotoCenterYBounds
-            stonePhotoBounds.width.preserve
-            stonePhotoBounds.height.preserve
+            accessoryPhotoBounds.left eq accessoryPhotoLeftBounds
+            accessoryPhotoBounds.centerY eq accessoryPhotoCenterYBounds
+            accessoryPhotoBounds.width.preserve
+            accessoryPhotoBounds.height.preserve
         }
     }
 }

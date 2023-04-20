@@ -5,7 +5,6 @@ import io.dongxi.model.*
 import io.dongxi.model.AccessoryCategory.PENDANT
 import io.dongxi.model.AccessoryCategory.STONE
 import io.dongxi.model.ProductCategory.*
-import io.dongxi.model.junk.CompleteProductContainer
 import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
@@ -177,29 +176,6 @@ abstract class AbstractPanel(
 
     fun getProductAccessoryListContainer(): Container {
         return ProductAccessoryListContainer(
-            pageType,
-            config,
-            uiDispatcher,
-            animator,
-            pathMetrics,
-            fonts,
-            theme,
-            themes,
-            images,
-            textMetrics,
-            linkStyler,
-            focusManager,
-            popups,
-            modals,
-            menuEventBus,
-            baseProductSelectEventBus,
-            accessorySelectEventBus
-        )
-    }
-
-    @Deprecated("Unused due to inheritance problems (in javascript?)")
-    fun getCompleteProductContainer(): Container {
-        return CompleteProductContainer(
             pageType,
             config,
             uiDispatcher,
