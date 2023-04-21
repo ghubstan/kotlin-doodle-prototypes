@@ -2,6 +2,7 @@ package io.dongxi.view
 
 import io.dongxi.application.DongxiConfig
 import io.nacular.doodle.animation.Animator
+import io.nacular.doodle.controls.LazyPhoto
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.text.Label
@@ -20,9 +21,7 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 
 class HomePage(
     override val config: DongxiConfig,
@@ -48,12 +47,22 @@ class HomePage(
         styledText = StyledText(text, config.titleFont, Black.paint)
     }
 
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val diamondImage = LazyPhoto(mainScope.async { images.load("blue-diamond.svg")!! })
+
+
     init {
-        children += listOf(pageTitle)
-        layout = constrain(pageTitle) { titleBounds ->
+        children += listOf(pageTitle, diamondImage)
+        layout = constrain(pageTitle, diamondImage) { titleBounds, diamondImageBounds ->
             titleBounds.top eq 10
             titleBounds.centerX eq parent.centerX
             titleBounds.height eq 30
+
+            diamondImageBounds.centerX eq parent.centerX
+            diamondImageBounds.centerY eq parent.centerY
+            diamondImageBounds.width.preserve
+            diamondImageBounds.height.preserve
         }
     }
 
