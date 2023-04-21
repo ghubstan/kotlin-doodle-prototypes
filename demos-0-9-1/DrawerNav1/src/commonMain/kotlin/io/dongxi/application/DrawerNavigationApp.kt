@@ -43,6 +43,9 @@ class DrawerNavigationApp(
             val titleFont = fonts {
                 size = 26; weight = 400; families = listOf("Helvetica Neue", "Helvetica", "Arial", "sans-serif")
             }!!
+            val menuButtonFont = fonts {
+                size = 20; weight = 250; families = listOf("Helvetica Neue", "Helvetica", "Arial", "sans-serif")
+            }!!
             val menuLinkFont = fonts {
                 size = 24; weight = 300; families = listOf("Arial")
             }!!
@@ -51,6 +54,7 @@ class DrawerNavigationApp(
             val footerFont = fonts(titleFont) { size = 10 }!!
             val config = DongxiConfig(
                 listFont = listFont,
+                menuButtonFont = menuButtonFont,
                 menuLinkFont = menuLinkFont,
                 titleFont = titleFont,
                 tabPanelFont = tabPanelFont,

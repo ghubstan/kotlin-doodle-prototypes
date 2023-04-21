@@ -7,6 +7,7 @@ import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.*
+import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.event.PointerListener.Companion.clicked
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
@@ -35,7 +36,7 @@ class Menu(
     private val focusManager: FocusManager,
     private val popups: PopupManager,
     private val modals: ModalManager,
-    private val eventBus: MenuEventBus
+    private val menuEventBus: MenuEventBus
 ) : View() {
 
     private val mainScope = MainScope() // the scope of Menu class, uses Dispatchers.Main.
@@ -43,7 +44,7 @@ class Menu(
     @OptIn(ExperimentalCoroutinesApi::class)
     private val menuIcon = LazyPhoto(mainScope.async { images.load("drawer-menu.svg")!! })
 
-    private val menuPopup = MenuPopup(
+    private val menuPopupLinks = MenuPopupButtons(
         config,
         uiDispatcher,
         animator,
@@ -57,10 +58,11 @@ class Menu(
         focusManager,
         popups,
         modals,
-        eventBus
+        menuEventBus
     ).apply {
         pointerChanged += clicked { popups.hide(this) }
     }
+
 
     init {
         size = Size(100, 100)
@@ -68,7 +70,7 @@ class Menu(
         layout = constrain(menuIcon, fill)
 
         pointerChanged += clicked {
-            popups.show(menuPopup, relativeTo = this) { menuPopupBounds, mainViewBounds ->
+            popups.show(menuPopupLinks, relativeTo = this) { menuPopupBounds, mainViewBounds ->
                 // Size and position popup.
                 (menuPopupBounds.top eq mainViewBounds.y)..Strength.Strong
                 (menuPopupBounds.left eq mainViewBounds.right + 10)..Strength.Strong
@@ -83,15 +85,17 @@ class Menu(
                  */
 
                 menuPopupBounds.top eq 5
-                menuPopupBounds.left eq parent.right - parent.right * 0.45
-                menuPopupBounds.right eq parent.right - parent.right * 0.08
+                menuPopupBounds.left eq 60
+                menuPopupBounds.right eq parent.right
+                // menuPopupBounds.left eq parent.right - parent.right * 0.45
+                // menuPopupBounds.right eq parent.right - parent.right * 0.08
                 menuPopupBounds.height eq 290 // Do not allow menu links to be hidden during vertical resize.
             }
         }
     }
 
     override fun render(canvas: Canvas) {
-        canvas.rect(bounds.atOrigin, Color.Transparent)
+        canvas.rect(bounds.atOrigin, Transparent)
     }
 
     fun destroy() {

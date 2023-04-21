@@ -22,7 +22,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class MenuPopup(
+class MenuPopupLinks(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
     private val animator: Animator,
@@ -36,10 +36,10 @@ class MenuPopup(
     private val focusManager: FocusManager,
     private val popups: PopupManager,
     private val modals: ModalManager,
-    private val eventBus: MenuEventBus
+    private val menuEventBus: MenuEventBus
 ) : View() {
 
-    private val mainScope = MainScope() // the scope of Menu class, uses Dispatchers.Main.
+    private val mainScope = MainScope()
 
     private val homeLink: HyperLink = createMenuLink("casa?", "Casa", GO_HOME)
     private val ringsLink: HyperLink = createMenuLink("rings?", "Aneis", GO_RINGS)
@@ -57,7 +57,7 @@ class MenuPopup(
             font = config.menuLinkFont
             fired += {
                 mainScope.launch {
-                    eventBus.produceEvent(menuEvent)
+                    menuEventBus.produceEvent(menuEvent)
                 }
             }
         }
