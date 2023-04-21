@@ -117,7 +117,7 @@ class MenuPopupButtons(
     )
 
     private val buttonOffset = 0 // No space between bottoms & tops of buttons
-    private val buttonHeight = 24
+    private val buttonHeight = 26
 
     init {
         size = Size(160, 600)
@@ -147,37 +147,37 @@ class MenuPopupButtons(
                 aboutButtonBounds) ->
 
             homeButtonBounds.top eq 2
-            homeButtonBounds.left eq 0
+            homeButtonBounds.left eq buttonOffset
             homeButtonBounds.right eq parent.right
             homeButtonBounds.height eq buttonHeight
 
             ringsButtonBounds.top eq homeButtonBounds.bottom + buttonOffset
-            ringsButtonBounds.left eq 0
+            ringsButtonBounds.left eq buttonOffset
             ringsButtonBounds.right eq parent.right
             ringsButtonBounds.height eq buttonHeight
 
             earringsButtonBounds.top eq ringsButtonBounds.bottom + buttonOffset
-            earringsButtonBounds.left eq 0
+            earringsButtonBounds.left eq buttonOffset
             earringsButtonBounds.right eq parent.right
             earringsButtonBounds.height eq buttonHeight
 
             necklacesButtonBounds.top eq earringsButtonBounds.bottom + buttonOffset
-            necklacesButtonBounds.left eq 0
+            necklacesButtonBounds.left eq buttonOffset
             necklacesButtonBounds.right eq parent.right
             necklacesButtonBounds.height eq buttonHeight
 
             scapularsButtonBounds.top eq necklacesButtonBounds.bottom + buttonOffset
-            scapularsButtonBounds.left eq 0
+            scapularsButtonBounds.left eq buttonOffset
             scapularsButtonBounds.right eq parent.right
             scapularsButtonBounds.height eq buttonHeight
 
             braceletsButtonBounds.top eq scapularsButtonBounds.bottom + buttonOffset
-            braceletsButtonBounds.left eq 0
+            braceletsButtonBounds.left eq buttonOffset
             braceletsButtonBounds.right eq parent.right
             braceletsButtonBounds.height eq buttonHeight
 
             aboutButtonBounds.top eq braceletsButtonBounds.bottom + buttonOffset
-            aboutButtonBounds.left eq 0
+            aboutButtonBounds.left eq buttonOffset
             aboutButtonBounds.right eq parent.right
             aboutButtonBounds.height eq buttonHeight
 

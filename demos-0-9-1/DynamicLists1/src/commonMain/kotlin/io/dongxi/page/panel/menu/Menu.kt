@@ -21,20 +21,20 @@ import kotlinx.coroutines.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class Menu(
-    private val config: DongxiConfig,
-    private val uiDispatcher: CoroutineDispatcher,
-    private val animator: Animator,
-    private val pathMetrics: PathMetrics,
-    private val fonts: FontLoader,
-    private val theme: DynamicTheme,
-    private val themes: ThemeManager,
-    private val images: ImageLoader,
-    private val textMetrics: TextMetrics,
-    private val linkStyler: NativeHyperLinkStyler,
-    private val focusManager: FocusManager,
-    private val popups: PopupManager,
-    private val modals: ModalManager,
-    private val menuEventBus: MenuEventBus
+    val config: DongxiConfig,
+    val uiDispatcher: CoroutineDispatcher,
+    val animator: Animator,
+    val pathMetrics: PathMetrics,
+    val fonts: FontLoader,
+    val theme: DynamicTheme,
+    val themes: ThemeManager,
+    val images: ImageLoader,
+    val textMetrics: TextMetrics,
+    val linkStyler: NativeHyperLinkStyler,
+    val focusManager: FocusManager,
+    val popups: PopupManager,
+    val modals: ModalManager,
+    val menuEventBus: MenuEventBus
 ) : View() {
 
     private val mainScope = MainScope() // the scope of Menu class, uses Dispatchers.Main.
@@ -71,10 +71,10 @@ class Menu(
         }
 
         pointerChanged += clicked {
-            popups.show(menuPopupLinks, relativeTo = this) { menuPopupBounds, mainViewBounds ->
+            popups.show(menuPopupLinks, relativeTo = this) { menuPopupBounds, _ ->
                 menuPopupBounds.top eq 5
-                menuPopupBounds.left eq parent.right - parent.right * 0.40
-                menuPopupBounds.right eq parent.right - parent.right * 0.08
+                menuPopupBounds.left eq parent.width / 2        // Buttons extend left to cover 1/2 of screen.
+                menuPopupBounds.right eq parent.right - 5
                 menuPopupBounds.height eq 290 // Do not allow menu links to be hidden during vertical resize.
             }
         }
