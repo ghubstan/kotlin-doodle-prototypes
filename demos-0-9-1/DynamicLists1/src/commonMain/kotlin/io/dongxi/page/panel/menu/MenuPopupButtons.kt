@@ -146,40 +146,39 @@ class MenuPopupButtons(
                 braceletsButtonBounds,
                 aboutButtonBounds) ->
 
-            // homeButtonBounds.top eq 40 // Avoid overlapping page name label.
             homeButtonBounds.top eq 2
-            homeButtonBounds.left eq 25
-            homeButtonBounds.right eq parent.right - 5
+            homeButtonBounds.left eq 0
+            homeButtonBounds.right eq parent.right
             homeButtonBounds.height eq buttonHeight
 
             ringsButtonBounds.top eq homeButtonBounds.bottom + buttonOffset
-            ringsButtonBounds.left eq 25
-            ringsButtonBounds.right eq parent.right - 5
+            ringsButtonBounds.left eq 0
+            ringsButtonBounds.right eq parent.right
             ringsButtonBounds.height eq buttonHeight
 
             earringsButtonBounds.top eq ringsButtonBounds.bottom + buttonOffset
-            earringsButtonBounds.left eq 25
-            earringsButtonBounds.right eq parent.right - 5
+            earringsButtonBounds.left eq 0
+            earringsButtonBounds.right eq parent.right
             earringsButtonBounds.height eq buttonHeight
 
             necklacesButtonBounds.top eq earringsButtonBounds.bottom + buttonOffset
-            necklacesButtonBounds.left eq 25
-            necklacesButtonBounds.right eq parent.right - 5
+            necklacesButtonBounds.left eq 0
+            necklacesButtonBounds.right eq parent.right
             necklacesButtonBounds.height eq buttonHeight
 
             scapularsButtonBounds.top eq necklacesButtonBounds.bottom + buttonOffset
-            scapularsButtonBounds.left eq 25
-            scapularsButtonBounds.right eq parent.right - 5
+            scapularsButtonBounds.left eq 0
+            scapularsButtonBounds.right eq parent.right
             scapularsButtonBounds.height eq buttonHeight
 
             braceletsButtonBounds.top eq scapularsButtonBounds.bottom + buttonOffset
-            braceletsButtonBounds.left eq 25
-            braceletsButtonBounds.right eq parent.right - 5
+            braceletsButtonBounds.left eq 0
+            braceletsButtonBounds.right eq parent.right
             braceletsButtonBounds.height eq buttonHeight
 
             aboutButtonBounds.top eq braceletsButtonBounds.bottom + buttonOffset
-            aboutButtonBounds.left eq 25
-            aboutButtonBounds.right eq parent.right - 5
+            aboutButtonBounds.left eq 0
+            aboutButtonBounds.right eq parent.right
             aboutButtonBounds.height eq buttonHeight
 
         }
