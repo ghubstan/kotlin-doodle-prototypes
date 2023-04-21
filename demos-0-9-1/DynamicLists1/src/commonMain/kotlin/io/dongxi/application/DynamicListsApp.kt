@@ -17,7 +17,6 @@ import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.*
 
 class DynamicListsApp(

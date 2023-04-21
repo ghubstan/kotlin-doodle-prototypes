@@ -8,6 +8,7 @@ import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.*
 import io.nacular.doodle.drawing.Color.Companion.Black
+import io.nacular.doodle.drawing.Color.Companion.White
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.image.ImageLoader
@@ -21,6 +22,7 @@ import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 
 class HomePage(
     override val config: DongxiConfig,
@@ -38,7 +40,7 @@ class HomePage(
     override val modals: ModalManager
 ) : IPage, View() {
 
-    private val mainScope = MainScope() // the scope of HomePage class, uses Dispatchers.Main.
+    private val mainScope = MainScope()
 
     private val pageTitle = Label("Casa", Middle, Center).apply {
         height = 26.0
@@ -56,7 +58,7 @@ class HomePage(
     }
 
     override fun render(canvas: Canvas) {
-        canvas.rect(bounds.atOrigin, Color.White)
+        canvas.rect(bounds.atOrigin, White)
     }
 
     override fun description(): String {
@@ -64,6 +66,6 @@ class HomePage(
     }
 
     override fun shutdown() {
-        TODO("Not implemented")
+        mainScope.cancel()
     }
 }
