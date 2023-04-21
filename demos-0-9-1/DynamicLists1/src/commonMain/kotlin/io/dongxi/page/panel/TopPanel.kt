@@ -8,27 +8,23 @@ import io.dongxi.page.PageType.*
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.page.panel.menu.Menu
-import io.dongxi.util.ColorUtils
+import io.dongxi.util.ColorUtils.antiFlashWhite
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
-import io.nacular.doodle.controls.text.Label
-import io.nacular.doodle.drawing.*
-import io.nacular.doodle.drawing.Color.Companion.Black
+import io.nacular.doodle.drawing.Canvas
+import io.nacular.doodle.drawing.FontLoader
+import io.nacular.doodle.drawing.TextMetrics
+import io.nacular.doodle.drawing.rect
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Rectangle
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
-import io.nacular.doodle.text.StyledText
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.utils.Dimension.Height
-import io.nacular.doodle.utils.Dimension.Width
-import io.nacular.doodle.utils.HorizontalAlignment.Center
-import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 
@@ -69,15 +65,6 @@ class TopPanel(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
-
-    private val labelPageTitle = Label(pageType.pageTitle, Middle, Center).apply {
-        height = 20.0
-        fitText = setOf(Width, Height)
-        styledText = StyledText(text, config.titleFont, Black.paint)
-    }
-
-    private val logo = LazyImage(mainScope.async { images.load("natty-logo.svg")!! }, RECT_SHORT_TITLE)
-
     private val pageTitleImage = getPageTitlePhotoView()
 
     private val menu = Menu(
@@ -101,36 +88,27 @@ class TopPanel(
 
     init {
         size = Size(300, 100)
-
-        children += logo
         children += pageTitleImage
         children += menu
 
-        layout = constrain(logo, pageTitleImage, menu) { logoBounds,
-                                                         pageTitleImageBounds,
-                                                         menuBounds ->
-
-            logoBounds.top eq 5
-            logoBounds.left eq 5
-            logoBounds.width.preserve
-            logoBounds.height.preserve
-
-            pageTitleImageBounds.top eq 5
-            pageTitleImageBounds.centerX eq parent.centerX
+        layout = constrain(pageTitleImage, menu) { pageTitleImageBounds,
+                                                   menuBounds ->
+            pageTitleImageBounds.top eq 2
+            pageTitleImageBounds.left eq 5
             pageTitleImageBounds.centerY eq parent.centerY
             pageTitleImageBounds.width.preserve
             pageTitleImageBounds.height.preserve
 
             menuBounds.top eq 2
             menuBounds.centerY eq parent.centerY
-            menuBounds.left eq parent.width * 0.80
+            menuBounds.left eq pageTitleImageBounds.right + 5
             menuBounds.right eq parent.right - 5
             menuBounds.height eq parent.height - 5
         }
     }
 
     override fun render(canvas: Canvas) {
-        canvas.rect(bounds.atOrigin, ColorUtils.antiFlashWhite())
+        canvas.rect(bounds.atOrigin, antiFlashWhite())
     }
 
     override fun layoutForCurrentProductCategory() {

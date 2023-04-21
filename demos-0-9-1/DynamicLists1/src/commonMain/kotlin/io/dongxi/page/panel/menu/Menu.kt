@@ -14,7 +14,6 @@ import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
-import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
@@ -63,9 +62,13 @@ class Menu(
     }
 
     init {
-        size = Size(100, 100)
+        size = Size(62, 62)
         children += listOf(menuIcon)
-        layout = constrain(menuIcon, fill)
+        layout = constrain(menuIcon) { menuIconBounds ->
+            menuIconBounds.centerX eq parent.right - 60
+            menuIconBounds.centerY eq parent.centerY + 10
+            menuIconBounds.height.preserve
+        }
 
         pointerChanged += clicked {
             popups.show(menuPopupLinks, relativeTo = this) { menuPopupBounds, mainViewBounds ->
@@ -78,7 +81,7 @@ class Menu(
     }
 
     override fun render(canvas: Canvas) {
-        canvas.rect(bounds.atOrigin, Color.Transparent)
+        canvas.rect(bounds.atOrigin, Color.Yellow)
     }
 
     fun destroy() {
