@@ -1,6 +1,7 @@
-package io.dongxi.page
+package io.dongxi.page.panel.menu
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.page.MenuEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.LazyPhoto
 import io.nacular.doodle.controls.PopupManager
@@ -42,7 +43,7 @@ class Menu(
     @OptIn(ExperimentalCoroutinesApi::class)
     private val menuIcon = LazyPhoto(mainScope.async { images.load("drawer-menu.svg")!! })
 
-    private val menuPopup = MenuPopup(
+    private val menuPopupLinks = MenuPopupButtons(
         config,
         uiDispatcher,
         animator,
@@ -67,7 +68,7 @@ class Menu(
         layout = constrain(menuIcon, fill)
 
         pointerChanged += clicked {
-            popups.show(menuPopup, relativeTo = this) { menuPopupBounds, mainViewBounds ->
+            popups.show(menuPopupLinks, relativeTo = this) { menuPopupBounds, mainViewBounds ->
                 menuPopupBounds.top eq 5
                 menuPopupBounds.left eq parent.right - parent.right * 0.40
                 menuPopupBounds.right eq parent.right - parent.right * 0.08

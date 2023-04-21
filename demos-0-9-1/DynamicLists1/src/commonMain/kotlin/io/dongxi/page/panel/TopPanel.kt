@@ -2,12 +2,12 @@ package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.LazyImage
-import io.dongxi.page.Menu
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.PageType.*
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.menu.Menu
 import io.dongxi.util.ColorUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -28,7 +28,6 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension.Height
 import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment.Center
-import io.nacular.doodle.utils.Resizer
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -149,7 +148,6 @@ class TopPanel(
     override fun layoutForCompletedJewel() {
         // noop
     }
-
 
     private fun getPageTitlePhotoView(): LazyImage {
         when (pageType) {

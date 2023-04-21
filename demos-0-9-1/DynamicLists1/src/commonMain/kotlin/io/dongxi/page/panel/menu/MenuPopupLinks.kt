@@ -1,13 +1,16 @@
-package io.dongxi.page
+package io.dongxi.page.panel.menu
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.page.MenuEvent
 import io.dongxi.page.MenuEvent.*
+import io.dongxi.page.MenuEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.buttons.HyperLink
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.*
+import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.event.PointerListener.Companion.clicked
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
@@ -22,7 +25,8 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class MenuPopup(
+@Deprecated("Use MenuPopupButtons")
+class MenuPopupLinks(
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
     private val animator: Animator,
@@ -42,8 +46,8 @@ class MenuPopup(
     private val mainScope = MainScope() // the scope of Menu class, uses Dispatchers.Main.
 
     private val homeLink: HyperLink = createMenuLink("casa?", "Casa", GO_HOME)
-    private val ringsLink: HyperLink = createMenuLink("rings?", "Aneis", GO_RINGS)
-    private val necklacesLink: HyperLink = createMenuLink("necklaces?", "Colares", GO_NECKLACES)
+    private val ringsLink: HyperLink = createMenuLink("rings", "Aneis", GO_RINGS)
+    private val necklacesLink: HyperLink = createMenuLink("necklaces", "Colares", GO_NECKLACES)
     private val scapularsLink: HyperLink = createMenuLink("scapulars?", "Escapulários", GO_SCAPULARS)
     private val braceletsLink: HyperLink = createMenuLink("bracelets?", "Pulseiras", GO_BRACELETS)
     private val earRingsLink: HyperLink = createMenuLink("earrings?", "Brincos", GO_EARRINGS)
@@ -120,7 +124,7 @@ class MenuPopup(
     }
 
     override fun render(canvas: Canvas) {
-        canvas.rect(bounds.atOrigin, Color.Transparent)
+        canvas.rect(bounds.atOrigin, Transparent)
     }
 
     fun destroy() {

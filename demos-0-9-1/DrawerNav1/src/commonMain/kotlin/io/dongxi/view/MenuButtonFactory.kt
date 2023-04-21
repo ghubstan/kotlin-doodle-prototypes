@@ -88,7 +88,6 @@ object MenuButtonFactory {
             behavior = simpleTextButtonRenderer(textMetrics) { button, canvas ->
 
                 when {
-                    /*
                     button.model.pointerOver -> canvas.rect(
                         bounds.atOrigin,
                         stroke = Stroke(color = Black, thickness = 6.0),
@@ -96,10 +95,6 @@ object MenuButtonFactory {
                         color = hsvColor1ToColor,
                         radius = 10.0
                     )
-                     */
-                    button.model.pointerOver -> {
-                        runColorSchemes(canvas, bounds)
-                    }
 
                     else -> canvas.rect(
                         bounds.atOrigin,
