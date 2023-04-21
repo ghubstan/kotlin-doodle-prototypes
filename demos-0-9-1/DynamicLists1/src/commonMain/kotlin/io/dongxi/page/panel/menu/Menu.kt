@@ -8,6 +8,7 @@ import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.*
+import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.event.PointerListener.Companion.clicked
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
@@ -75,13 +76,13 @@ class Menu(
                 menuPopupBounds.top eq 5
                 menuPopupBounds.left eq parent.width / 2        // Buttons extend left to cover 1/2 of screen.
                 menuPopupBounds.right eq parent.right - 5
-                menuPopupBounds.height eq 290 // Do not allow menu links to be hidden during vertical resize.
+                menuPopupBounds.height eq 290
             }
         }
     }
 
     override fun render(canvas: Canvas) {
-        canvas.rect(bounds.atOrigin, Color.Yellow)
+        canvas.rect(bounds.atOrigin, Transparent)
     }
 
     fun destroy() {
