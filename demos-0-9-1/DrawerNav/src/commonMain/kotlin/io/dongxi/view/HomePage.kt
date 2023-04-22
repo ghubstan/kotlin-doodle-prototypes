@@ -82,6 +82,7 @@ class HomePage(
     private val diamondImage: View = LazyPhoto(pendingImage = pendingImage)
 
     init {
+        // The camera and transform are properties you set after creating the view.
         diamondImage.camera = canvasCamera
         diamondImage.transform = canvasTransform
 
@@ -93,8 +94,6 @@ class HomePage(
 
             diamondImageBounds.centerX eq parent.centerX
             diamondImageBounds.centerY eq parent.centerY
-            // diamondImageBounds.width eq parent.width * 0.25
-            // diamondImageBounds.height eq parent.height * 0.25
         }
     }
 
