@@ -8,7 +8,9 @@ import io.dongxi.page.PageType.*
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.page.panel.menu.Menu
+import io.dongxi.util.ColorUtils
 import io.dongxi.util.ColorUtils.antiFlashWhite
+import io.dongxi.util.ColorUtils.floralWhite
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -108,7 +110,7 @@ class TopPanel(
     }
 
     override fun render(canvas: Canvas) {
-        canvas.rect(bounds.atOrigin, antiFlashWhite())
+        canvas.rect(bounds.atOrigin, floralWhite())
     }
 
     override fun layoutForCurrentProductCategory() {
@@ -166,9 +168,9 @@ class TopPanel(
         }
     }
 
+    // TODO Refactor out duplicate constants.
     private companion object {
         private val RECT_LONG_TITLE: Rectangle = Rectangle(0, 0, 120, 30)
         private val RECT_SHORT_TITLE: Rectangle = Rectangle(0, 0, 85, 30)
     }
-
 }
