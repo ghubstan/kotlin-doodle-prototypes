@@ -40,7 +40,7 @@ import kotlinx.coroutines.cancel
 import kotlin.math.PI
 
 /**
- * My first wandering into camer and transform.  I got lost.  Leave it for now.
+ * My first wandering into camera and transform.  I got lost.  Leave it for now.
  */
 class HomePage(
     override val config: DongxiConfig,
