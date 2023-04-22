@@ -1,14 +1,14 @@
 rootProject.name = "demos-0-9-1"
 
 include(
-    "PopupManager3",
-    "Modal1",
-    "DrawerNav1",
-    "DynamicLists1"
+    "PopupManager",
+    "Modal",
+    "DrawerNav",
+    "DynamicLists"
 )
 
-project(":PopupManager3").name = "popupmanager3"
-project(":Modal1").name = "modal1"
-project(":DrawerNav1").name = "drawernav1"
-project(":DynamicLists1").name = "dynamiclists1"
+project(":PopupManager").name = "popupmanager"
+project(":Modal").name = "modal"
+project(":DrawerNav").name = "drawernav"
+project(":DynamicLists").name = "dynamiclists"
 
