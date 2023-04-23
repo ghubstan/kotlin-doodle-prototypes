@@ -99,7 +99,7 @@ class TopPanel(
             pageTitleImageBounds.width eq RECT_TITLE.width + 1
             pageTitleImageBounds.height.preserve
 
-            menuBounds.top eq 2
+            menuBounds.top eq 0
             menuBounds.centerY eq parent.centerY
             menuBounds.left eq pageTitleImageBounds.right + 5
             menuBounds.right eq parent.right - 5
@@ -113,6 +113,8 @@ class TopPanel(
 
     private fun getPageTitlePhotoView(): LazyImage {
         when (pageType) {
+            // Preserve svg dimensions as are;   SVG file controls placement of left
+            // justified text;  each svg file width is the same, regardless of text length.
             HOME -> {
                 return LazyImage(mainScope.async { images.load("page-title-home.svg")!! }, RECT_TITLE)
             }
