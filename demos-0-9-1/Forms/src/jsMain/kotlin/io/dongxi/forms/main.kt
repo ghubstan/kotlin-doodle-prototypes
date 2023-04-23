@@ -47,7 +47,7 @@ fun main() {
         PopupModule,
         ModalModule,
         basicLabelBehavior(),
-        nativeTextFieldBehavior(),
+        nativeTextFieldBehavior(spellCheck = false),
         basicCheckBoxBehavior(
             foregroundColor = Black,
             backgroundColor = Lightgray,
@@ -83,6 +83,7 @@ fun main() {
             themes = instance(),
             images = instance(),
             textMetrics = instance(),
+            textFieldStyler = instance(),
             linkStyler = instance(),
             focusManager = instance(),
             popups = instance(),

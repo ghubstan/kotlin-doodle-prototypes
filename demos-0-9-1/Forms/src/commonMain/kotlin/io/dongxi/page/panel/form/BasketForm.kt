@@ -33,6 +33,7 @@ import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.CoroutineDispatcher
 
 class BasketForm(
@@ -46,6 +47,7 @@ class BasketForm(
     themes: ThemeManager,
     images: ImageLoader,
     textMetrics: TextMetrics,
+    textFieldStyler: NativeTextFieldStyler,
     linkStyler: NativeHyperLinkStyler,
     focusManager: FocusManager,
     popups: PopupManager,
@@ -64,6 +66,7 @@ class BasketForm(
     themes,
     images,
     textMetrics,
+    textFieldStyler,
     linkStyler,
     focusManager,
     popups,

@@ -18,6 +18,7 @@ import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.CoroutineDispatcher
 
 class BaseContainer(
@@ -31,6 +32,7 @@ class BaseContainer(
     themes: ThemeManager,
     images: ImageLoader,
     textMetrics: TextMetrics,
+    textFieldStyler: NativeTextFieldStyler,
     linkStyler: NativeHyperLinkStyler,
     focusManager: FocusManager,
     popups: PopupManager,
@@ -49,6 +51,7 @@ class BaseContainer(
     themes,
     images,
     textMetrics,
+    textFieldStyler,
     linkStyler,
     focusManager,
     popups,
@@ -68,6 +71,7 @@ class BaseContainer(
         themes,
         images,
         textMetrics,
+        textFieldStyler,
         linkStyler,
         focusManager,
         popups,
@@ -88,6 +92,7 @@ class BaseContainer(
         themes,
         images,
         textMetrics,
+        textFieldStyler,
         linkStyler,
         focusManager,
         popups,
@@ -108,6 +113,7 @@ class BaseContainer(
         themes,
         images,
         textMetrics,
+        textFieldStyler,
         linkStyler,
         focusManager,
         popups,
@@ -128,6 +134,7 @@ class BaseContainer(
         themes,
         images,
         textMetrics,
+        textFieldStyler,
         linkStyler,
         focusManager,
         popups,
@@ -148,6 +155,7 @@ class BaseContainer(
         themes,
         images,
         textMetrics,
+        textFieldStyler,
         linkStyler,
         focusManager,
         popups,
