@@ -25,6 +25,7 @@ import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 
@@ -39,6 +40,7 @@ class TopPanel(
     themes: ThemeManager,
     images: ImageLoader,
     textMetrics: TextMetrics,
+    textFieldStyler: NativeTextFieldStyler,
     linkStyler: NativeHyperLinkStyler,
     focusManager: FocusManager,
     popups: PopupManager,
@@ -57,6 +59,7 @@ class TopPanel(
     themes,
     images,
     textMetrics,
+    textFieldStyler,
     linkStyler,
     focusManager,
     popups,
@@ -77,6 +80,7 @@ class TopPanel(
         themes,
         images,
         textMetrics,
+        textFieldStyler,
         linkStyler,
         focusManager,
         popups,

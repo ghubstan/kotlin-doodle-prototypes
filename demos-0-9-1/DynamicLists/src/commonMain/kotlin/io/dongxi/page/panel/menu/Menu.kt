@@ -18,6 +18,7 @@ import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -31,6 +32,7 @@ class Menu(
     val themes: ThemeManager,
     val images: ImageLoader,
     val textMetrics: TextMetrics,
+    val textFieldStyler: NativeTextFieldStyler,
     val linkStyler: NativeHyperLinkStyler,
     val focusManager: FocusManager,
     val popups: PopupManager,
@@ -53,6 +55,7 @@ class Menu(
         themes,
         images,
         textMetrics,
+        textFieldStyler,
         linkStyler,
         focusManager,
         popups,

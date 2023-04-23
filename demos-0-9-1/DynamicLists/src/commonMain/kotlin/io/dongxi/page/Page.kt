@@ -16,6 +16,7 @@ import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.CoroutineDispatcher
 
 class Page(
@@ -29,6 +30,7 @@ class Page(
     themes: ThemeManager,
     images: ImageLoader,
     textMetrics: TextMetrics,
+    textFieldStyler: NativeTextFieldStyler,
     linkStyler: NativeHyperLinkStyler,
     focusManager: FocusManager,
     popups: PopupManager,
@@ -47,6 +49,7 @@ class Page(
     themes,
     images,
     textMetrics,
+    textFieldStyler,
     linkStyler,
     focusManager,
     popups,
@@ -67,6 +70,7 @@ class Page(
         themes,
         images,
         textMetrics,
+        textFieldStyler,
         linkStyler,
         focusManager,
         popups,

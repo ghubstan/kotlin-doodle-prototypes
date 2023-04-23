@@ -14,6 +14,7 @@ import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.CoroutineDispatcher
 
 
@@ -32,6 +33,7 @@ class PageFactory(
     private val themes: ThemeManager,
     private val images: ImageLoader,
     private val textMetrics: TextMetrics,
+    private val textFieldStyler: NativeTextFieldStyler,
     private val linkStyler: NativeHyperLinkStyler,
     private val focusManager: FocusManager,
     private val popups: PopupManager,
@@ -58,6 +60,7 @@ class PageFactory(
                 themes,
                 images,
                 textMetrics,
+                textFieldStyler,
                 linkStyler,
                 focusManager,
                 popups,
