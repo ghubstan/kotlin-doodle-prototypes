@@ -9,23 +9,23 @@ import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.buttons.PushButton
-import io.nacular.doodle.controls.form.*
-import io.nacular.doodle.controls.icons.PathIcon
+import io.nacular.doodle.controls.form.FieldVisualizer
+import io.nacular.doodle.controls.form.LabeledConfig
+import io.nacular.doodle.controls.form.TextFieldConfig
+import io.nacular.doodle.controls.form.textField
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.text.TextField
+import io.nacular.doodle.controls.theme.simpleTextButtonRenderer
 import io.nacular.doodle.core.Container
-import io.nacular.doodle.core.View
-import io.nacular.doodle.core.container
 import io.nacular.doodle.drawing.*
 import io.nacular.doodle.drawing.Color.Companion.Red
+import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Point
 import io.nacular.doodle.geometry.Size
-import io.nacular.doodle.geometry.path
 import io.nacular.doodle.image.ImageLoader
-import io.nacular.doodle.layout.Insets
-import io.nacular.doodle.layout.constraints.constrain
+import io.nacular.doodle.system.Cursor
 import io.nacular.doodle.text.StyledText
 import io.nacular.doodle.text.invoke
 import io.nacular.doodle.theme.ThemeManager
@@ -61,13 +61,28 @@ abstract class AbstractForm(
 
 
     fun submitButton(buttonText: String) = PushButton(buttonText).apply {
-        enabled = false
-        size = Size(100, 32)
+        size = Size(113, 40)
+        cursor = Cursor.Pointer
+        acceptsThemes = false
+        enabled = true
+        behavior = simpleTextButtonRenderer(textMetrics) { button, canvas ->
+            val color = Color.Lightgray.let { if (enabled) it else it.grayScale() }
+
+            canvas.rect(bounds.atOrigin, radius = 4.0, fill = color.paint)
+            canvas.text(
+                button.text,
+                at = textPosition(button, button.text),
+                fill = Color.Black.paint,
+                font = config.menuLinkFont
+            )
+        }
+        fired += {
+            println("FIRED")
+        }
     }
 
     fun <T> LabeledConfig.formTextFieldConfig(
-        placeHolder: String = "",
-        errorText: StyledText? = null
+        placeHolder: String = "", errorText: StyledText? = null
     ): TextFieldConfig<T>.() -> Unit = {
         val initialHelperText = help.styledText
 
@@ -82,23 +97,18 @@ abstract class AbstractForm(
     }
 
     // TODO to DongxiConfig
-    private val placeHolderColor = Color(0x9c999bu)
-    private val outlineColor = Color(0xe5e7ebu)
+    val placeHolderColor = Color(0x9c999bu)
+    val outlineColor = Color(0xe5e7ebu)
 
-    /**
-     * Field used in Contact create/edit forms.
-     */
     fun formTextField(
         dongxiConfig: DongxiConfig,   /* Define placeHolderColor, outlineColor */
         textFieldStyler: NativeTextFieldStyler,
         pathMetrics: PathMetrics,
         placeHolder: String,
-        icon: String,
         regex: Regex,
         config: TextField.() -> Unit = {},
-    ) = iconField(pathMetrics, icon) {
-
-        textField(regex) {
+    ): FieldVisualizer<String> {
+        return textField(regex) {
             textField.placeHolder = placeHolder
             textField.placeHolderColor = placeHolderColor // placeHolderColor: define in DongxiConfig
             textField.acceptsThemes = false
@@ -106,7 +116,7 @@ abstract class AbstractForm(
                 init {
                     textField.acceptsThemes = false
                     textField.borderVisible = false
-                    textField.backgroundColor = Color.Transparent
+                    textField.backgroundColor = Transparent
                 }
 
                 override fun renderBackground(textField: TextField, canvas: Canvas) {
@@ -117,38 +127,7 @@ abstract class AbstractForm(
                     )
                 }
             })
-
             config(textField)
         }
     }
-
-
-    /**
-     * A form field with an icon to its left.
-     */
-    fun <T> iconField(pathMetrics: PathMetrics, path: String, visualizer: () -> FieldVisualizer<T>) = field<T> {
-        container {
-            val icon = PathIcon<View>(path(path)!!, pathMetrics = pathMetrics)
-            val iconSize = icon.size(this)
-            focusable = false
-            foregroundColor = Color.Black
-
-            this += visualizer()(this@field).also {
-                it.sizePreferencesChanged += { _, _, _ ->
-                    relayout()
-                }
-            }
-
-            render = {
-                icon.render(this@container, this, at = Point(0.0, (height - iconSize.height) / 2))
-            }
-
-            layout = constrain(children[0]) {
-                it.edges eq parent.edges + Insets(left = iconSize.width + 24)
-                // fill(Insets(left = iconSize.width + 24))(it)
-            }
-        }
-    }
-
-
 }

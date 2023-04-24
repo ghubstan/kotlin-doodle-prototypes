@@ -8,18 +8,24 @@ import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
+import io.nacular.doodle.controls.form.Form
+import io.nacular.doodle.controls.form.textField
+import io.nacular.doodle.controls.form.verticalLayout
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
+import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
+import io.nacular.doodle.layout.constraints.constrain
+import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.theme.native.NativeTextFieldStyler
+import io.nacular.doodle.utils.ToStringIntEncoder
 import kotlinx.coroutines.CoroutineDispatcher
-
 
 class LoginForm(
     pageType: PageType,
@@ -62,8 +68,28 @@ class LoginForm(
 ) {
     // Submit username & password.   Could be "in" a Modal?
 
-    var username: String? = null
-    var password: String? = null
 
+    private val form = Form {
+        this(
+            "Mary" to textField(),
+            35 to textField(twoDigitNumber, ToStringIntEncoder),
+            onInvalid = {
+                // called whenever any fields is updated with invalid data
+            }) { name: String,
+                 age: Int /*...*/ ->
+            // called each time all fields are updated with valid data
+            println("DATA CHANGED  name: $name  age: $age")
+        }
+    }.apply {
+        font = config.formTextFieldFont
+        // Always use the vertical layout helper for forms.
+        layout = verticalLayout(this, spacing = 32.0, itemHeight = 33.0)
+    }
+
+    init {
+        size = Size(300, 300)
+        children += form
+        layout = constrain(form, fill)
+    }
 
 }
