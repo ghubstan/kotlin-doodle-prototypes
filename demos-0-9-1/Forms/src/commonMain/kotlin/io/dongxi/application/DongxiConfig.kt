@@ -6,6 +6,7 @@ import io.nacular.doodle.drawing.opacity
 import io.nacular.doodle.image.Image
 
 
+// Note the order of parameters.  FormsApp may be messing up the font ordering.
 data class DongxiConfig(
     val listFont: Font,
     val menuLinkFont: Font,
@@ -16,6 +17,7 @@ data class DongxiConfig(
     val footerFont: Font,
     val formTextFieldFont: Font,
     val smallFont: Font,
+    val buttonFont: Font,
     val headerColor: Color = Color(0xAF2F2Fu) opacity 0.15f,
     val deleteColor: Color = Color(0xCC9A9Au),
     val appBackground: Color = Color(0xF5F5F5u),
