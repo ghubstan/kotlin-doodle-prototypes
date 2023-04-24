@@ -67,8 +67,8 @@ class LoginForm(
     accessorySelectEventBus
 ) {
     // Submit username & password.   Could be "in" a Modal?
-    var username: String? = null
-    var password: String? = null
+    private var username: String? = null
+    private var password: String? = null
 
     private val submit = PushButton("Submit").apply {
         size = Size(113, 40)
