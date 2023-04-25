@@ -77,8 +77,8 @@ class BaseView(
     )
 
     // private var currentPage = pageFactory.buildPage(HOME) as View
-    private var currentPage = pageFactory.buildPage(LOGIN) as View
-    // private var currentPage = pageFactory.buildPage(REGISTER) as View
+    // private var currentPage = pageFactory.buildPage(LOGIN) as View
+    private var currentPage = pageFactory.buildPage(REGISTER) as View
 
     init {
 
