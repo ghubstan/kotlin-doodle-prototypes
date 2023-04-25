@@ -10,7 +10,6 @@ import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.form.*
 import io.nacular.doodle.controls.modal.ModalManager
-import io.nacular.doodle.drawing.Color
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
@@ -18,8 +17,6 @@ import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
-import io.nacular.doodle.text.StyledText
-import io.nacular.doodle.text.invoke
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
@@ -72,25 +69,6 @@ class LoginForm(
         fired += {
             println("TODO: Login with $credentials")
             // mainScope.launch { /* eventBus.produceEvent(loginEvent) */ }
-        }
-    }
-
-    /**
-     * Config used for `labeled` controls.
-     */
-    private fun <T> LabeledConfig.textFieldConfig(
-        placeHolder: String = "",
-        errorText: StyledText? = null
-    ): TextFieldConfig<T>.() -> Unit = {
-        val initialHelperText = help.styledText
-
-        help.font = config.smallFont
-        textField.placeHolder = placeHolder
-        onValid = { help.styledText = initialHelperText }
-        onInvalid = {
-            if (!textField.hasFocus) {
-                help.styledText = errorText ?: it.message?.let { Color.Red(it) } ?: help.styledText
-            }
         }
     }
 

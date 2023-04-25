@@ -9,6 +9,8 @@ import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.buttons.PushButton
+import io.nacular.doodle.controls.form.LabeledConfig
+import io.nacular.doodle.controls.form.TextFieldConfig
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.theme.simpleTextButtonRenderer
 import io.nacular.doodle.core.Container
@@ -18,6 +20,8 @@ import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.system.Cursor
+import io.nacular.doodle.text.StyledText
+import io.nacular.doodle.text.invoke
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
@@ -45,7 +49,26 @@ abstract class AbstractForm(
     val accessorySelectEventBus: AccessorySelectEventBus
 ) : Container() {
 
-    fun submitButton(buttonText: String) = PushButton("Submit").apply {
+    /**
+     * TextField Config used for `labeled` controls.
+     */
+    fun <T> LabeledConfig.textFieldConfig(
+        placeHolder: String = "",
+        errorText: StyledText? = null
+    ): TextFieldConfig<T>.() -> Unit = {
+        val initialHelperText = help.styledText
+
+        help.font = config.smallFont
+        textField.placeHolder = placeHolder
+        onValid = { help.styledText = initialHelperText }
+        onInvalid = { it ->
+            if (!textField.hasFocus) {
+                help.styledText = errorText ?: it.message?.let { Color.Red(it) } ?: help.styledText
+            }
+        }
+    }
+
+    fun submitButton(buttonText: String) = PushButton(buttonText).apply {
         size = Size(113, 40)
         cursor = Cursor.Pointer
         acceptsThemes = false
