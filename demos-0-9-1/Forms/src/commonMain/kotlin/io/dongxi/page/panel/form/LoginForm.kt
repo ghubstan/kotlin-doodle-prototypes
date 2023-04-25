@@ -140,6 +140,12 @@ class LoginForm(
      * Forms also have a `Behavior`, `Layout` and some other properties of a Container to allow customization.
      */
     private val form = Form {
+        // Forms are created using the form DSL function.
+        // See https://nacular.github.io/doodle-api/controls/io.nacular.doodle.controls.form/form.html
+        //      fun <T> form(builder: FormControlBuildContext<T>.() -> FieldVisualizer<T>): FieldVisualizer<T>
+        // Creates a Form component that is bound to a Field. This control allows nesting of forms using a DSL like that
+        // used for top-level forms.  Parameters:  builder -> used to construct the form.
+        // This function ensures strong typing for fields and the form's "output".
         this(
             // labeled():  Creates a component with a name [Label], the result of [visualizer] and a helper [Label] that is bound to a [Field].
             // This control simply wraps an existing one with configurable text labels.
