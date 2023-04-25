@@ -146,6 +146,7 @@ class LoginForm(
             }) { username: String, password: String ->
             submit.enabled = true
             // Called only after ALL fields -- not just one --  are updated with valid data.
+            println("[Form valid] username: $username, password: $password") // <---- check console for output
             // Form builder DSL allows constructs as follows:
             credentials = UsernamePasswordCredentials(username, password)
         }
