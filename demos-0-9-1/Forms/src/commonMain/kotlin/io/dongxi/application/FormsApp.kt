@@ -54,7 +54,7 @@ class FormsApp(
             val panelDebugFont = fonts(titleFont) { size = 8; weight = 100 }!!
             val footerFont = fonts(titleFont) { size = 10 }!!
             val formTextFieldFont = fonts(titleFont) { size = 12 }!!
-            val smallFont = fonts(titleFont) { size = 12 }!!
+            val smallFont = fonts(titleFont) { size = 12; weight = 100; }!!
             val config = DongxiConfig(
                 listFont = listFont,
                 menuLinkFont = menuLinkFont,

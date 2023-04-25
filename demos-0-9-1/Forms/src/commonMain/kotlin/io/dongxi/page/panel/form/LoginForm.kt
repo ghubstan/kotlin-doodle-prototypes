@@ -13,6 +13,8 @@ import io.nacular.doodle.controls.form.*
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.theme.simpleTextButtonRenderer
 import io.nacular.doodle.drawing.*
+import io.nacular.doodle.drawing.Color.Companion.Black
+import io.nacular.doodle.drawing.Color.Companion.Lightgray
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
@@ -66,65 +68,33 @@ class LoginForm(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
-    // Submit username & password.   Could be "in" a Modal?
-    private var username: String? = null
-    private var password: String? = null
+
+    private var credentials: UsernamePasswordCredentials? = null
 
     private val submit = PushButton("Submit").apply {
         size = Size(113, 40)
         cursor = Cursor.Pointer
         acceptsThemes = false
-        enabled = true
+        enabled = false // Do not allow null inputs;  only enable after valid data has been entered.
         behavior = simpleTextButtonRenderer(textMetrics) { button, canvas ->
-            val color = Color.Lightgray.let { if (enabled) it else it.grayScale() }
-
-            canvas.rect(bounds.atOrigin, radius = 4.0, fill = color.paint)
+            val color = Lightgray.let { if (enabled) it else it.lighter(0.33f) }
+            canvas.rect(bounds.atOrigin, radius = 5.0, fill = color.paint)
             canvas.text(
                 button.text,
                 at = textPosition(button, button.text),
-                fill = Color.Black.paint,
+                fill = Black.paint,
                 font = config.buttonFont
             )
         }
         fired += {
-            println("Submit username: $username password: $password")
+            println("TODO: submit $credentials")
+            // mainScope.launch { /* eventBus.produceEvent(loginEvent) */ }
         }
     }
 
-
-    private val form = Form {
-        this(
-            +labeled("Username", help = "3+ letters") {
-                textField(
-                    Regex(".{3,}"),
-                    config = textFieldConfig("Enter your username")
-                )
-            },
-            +labeled("Password", help = "6+ letters") {
-                textField(
-                    Regex(".{6,}"),
-                    config = textFieldConfig("Enter your password")
-                )
-            },
-            onInvalid = {
-                // Called when any field is updated with invalid data.
-                submit.enabled = false
-            }) { usernameInput: String,
-                 passwordInput: String ->
-            // Called each time ALL fields -- not just a single field --  are updated with valid data.
-            submit.enabled = true
-            println("Valid Input  usernameInput: $usernameInput  passwordInput: $passwordInput")
-            username = usernameInput
-            password = passwordInput
-        }
-    }.apply {
-        // configure the Form view itself
-        size = Size(300, 100)
-        font = config.formTextFieldFont
-        // Always use the vertical layout helper for forms.
-        layout = verticalLayout(this, spacing = 32.0, itemHeight = 33.0)
-    }
-
+    /**
+     * Config used for `labeled` controls.
+     */
     private fun <T> LabeledConfig.textFieldConfig(
         placeHolder: String = "",
         errorText: StyledText? = null
@@ -141,6 +111,84 @@ class LoginForm(
         }
     }
 
+    // Doodle forms make data collection simple, while still preserving flexibility to build just the right experience.
+    // They hide a lot of the complexity associated with mapping visual components to fields, state management, and
+    // validation. The result is an intuitive metaphor modeled around the idea of a constructor.
+    //
+    // Doodle also has a set of helpful forms controls that cover a reasonable range of data-types. These make its easy
+    // to create forms without much hassle. But there are bound to be cases where more customization is needed. This is
+    // why Doodle forms are also extensible, allowing you to fully customize the data they bind to and how each fields
+    // is visualized.
+    //
+    // Forms are "very similar" to constructors in that they have typed parameter lists (fields), and can only "create"
+    // instances when all their inputs are valid. Like any constructor, a Form can have optional fields, default values,
+    // and arbitrary types for its fields.
+    //
+    // FORMS ARE NOT TYPED
+    // While Forms behave "like" constructors in most ways, they do not actually create instances (only sub-forms do).
+    // This means they are not typed. Instead, they take fields and output a corresponding lists of strongly-typed
+    // data when all their fields are valid. This notification is intentionally general to allow forms to be used in
+    // a wide range of used cases.
+
+
+    /**
+     * Form:  A visual component that serves as a strongly-typed constructor of some arbitrary type. Forms are very
+     * similar to constructors in that they have typed parameter lists (fields), and can only "create" instances when all
+     * their inputs are valid. Like any constructor, a Form can have optional fields, default values, and arbitrary
+     * types for its fields.
+     *
+     * Forms also have a `Behavior`, `Layout` and some other properties of a Container to allow customization.
+     */
+    private val form = Form {
+        this(
+            // labeled():  Creates a component with a name [Label], the result of [visualizer] and a helper [Label] that is bound to a [Field].
+            // This control simply wraps an existing one with configurable text labels.
+            //      @param name used in the label
+            //      @param help used as helper text
+            //      @param showRequired used to indicate whether the field is required
+            //      @param visualizer being decorated
+            +labeled(
+                name = "Username",
+                help = "3+ alpha-numeric characters",
+                showRequired = Always("*")
+            ) {
+                // textField(): FieldVisualizer<String> = textField(pattern, PassThroughEncoder(), validator, config)
+                // Creates a [TextField] control that is bounded to a [Field] (of type [String]).
+                // The associated field will only be valid if the text field's input matches  [pattern].
+                //      @param pattern used to validate input to the field :: pattern  : Regex = Regex(".*"),
+                //      @param validator used to validate value after [pattern] :: validator: (String) -> Boolean = { true }
+                //      @param config used to control the resulting component :: config   : TextFieldConfig<String>.() -> Unit = {}
+                textField(
+                    pattern = Regex(pattern = ".{3,}"),
+                    config = textFieldConfig("Enter your username")
+                )
+            },
+            +labeled(
+                name = "Password",
+                help = "6+ alpha-numeric characters",
+                showRequired = Always("*")
+            ) {
+                textField(
+                    pattern = Regex(pattern = ".{6,}"),
+                    config = textFieldConfig("Enter your password")
+                )
+            },
+            onInvalid = {
+                // Called when any field is updated with invalid data.
+                submit.enabled = false
+            }) { username: String, password: String ->
+            submit.enabled = true
+            // Called only after ALL fields -- not just one --  are updated with valid data.
+            // Form builder DSL allows constructs as follows:
+            credentials = UsernamePasswordCredentials(username, password)
+        }
+    }.apply {
+        // configure the Form view itself
+        size = Size(300, 100)
+        font = config.formTextFieldFont
+        // Always use the vertical layout helper for forms.
+        layout = verticalLayout(this, spacing = 32.0, itemHeight = 33.0)
+    }
 
     init {
         size = Size(300, 300)
@@ -148,8 +196,8 @@ class LoginForm(
         children += submit
         layout = constrain(form, submit) { (formBounds, buttonBounds) ->
             formBounds.top eq 10
-
             buttonBounds.top eq formBounds.bottom + 32
         }
     }
 }
+
