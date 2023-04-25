@@ -8,19 +8,16 @@ import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
-import io.nacular.doodle.controls.buttons.PushButton
 import io.nacular.doodle.controls.form.*
 import io.nacular.doodle.controls.modal.ModalManager
-import io.nacular.doodle.controls.theme.simpleTextButtonRenderer
-import io.nacular.doodle.drawing.*
-import io.nacular.doodle.drawing.Color.Companion.Black
-import io.nacular.doodle.drawing.Color.Companion.Lightgray
+import io.nacular.doodle.drawing.Color
+import io.nacular.doodle.drawing.FontLoader
+import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
-import io.nacular.doodle.system.Cursor
 import io.nacular.doodle.text.StyledText
 import io.nacular.doodle.text.invoke
 import io.nacular.doodle.theme.ThemeManager
@@ -71,23 +68,9 @@ class LoginForm(
 
     private var credentials: UsernamePasswordCredentials? = null
 
-    private val submit = PushButton("Submit").apply {
-        size = Size(113, 40)
-        cursor = Cursor.Pointer
-        acceptsThemes = false
-        enabled = false // Do not allow null inputs;  only enable after valid data has been entered.
-        behavior = simpleTextButtonRenderer(textMetrics) { button, canvas ->
-            val color = Lightgray.let { if (enabled) it else it.lighter(0.33f) }
-            canvas.rect(bounds.atOrigin, radius = 5.0, fill = color.paint)
-            canvas.text(
-                button.text,
-                at = textPosition(button, button.text),
-                fill = Black.paint,
-                font = config.buttonFont
-            )
-        }
+    private val submit = submitButton("Login").apply {
         fired += {
-            println("TODO: submit $credentials")
+            println("TODO: Login with $credentials")
             // mainScope.launch { /* eventBus.produceEvent(loginEvent) */ }
         }
     }
