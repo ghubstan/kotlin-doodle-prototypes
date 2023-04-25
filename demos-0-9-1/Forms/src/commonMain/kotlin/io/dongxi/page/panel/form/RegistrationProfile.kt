@@ -3,12 +3,10 @@ package io.dongxi.page.panel.form
 import kotlinx.serialization.Serializable
 
 /**
- * Data representing a persisted user profile.
- *
- * TODO This is not to be used until registration functions are implemented, and registrations are persisted.
+ * Data representing an account registration profile to be submitted and saved as a user profile.
  */
 @Serializable
-data class UserProfile(
+data class RegistrationProfile(
 
     // Field label: Nome Completo*
     // Error Msg: É necessário informar seu nome completo.

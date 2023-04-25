@@ -61,4 +61,7 @@ class RegistrationForm(
 ) {
     // Submit account details;  sign up.
 
+    private var registrationProfile: RegistrationProfile? = null
+
+    
 }
