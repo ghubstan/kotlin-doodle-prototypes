@@ -19,7 +19,7 @@ object ColorUtils {
     }
 
     fun nattyFontColor(): Color {
-        return Color(0xc97376u)
+        return Color(0x854a46u)
     }
 
     // Shades of Red

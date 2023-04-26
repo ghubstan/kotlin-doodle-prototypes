@@ -21,7 +21,6 @@ import io.nacular.doodle.controls.panels.ScrollPanel
 import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.core.Container
 import io.nacular.doodle.core.View
-import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
@@ -183,11 +182,12 @@ class BaseProductListView(
     val config: DongxiConfig
 ) : View() {
 
-    private val label = Label(baseProduct.name, Middle, Center).apply {
+    private val label = Label(
+        styledText = styledLabelText(baseProduct.name),
+        verticalAlignment = Middle,
+        horizontalAlignment = Center
+    ).apply {
         fitText = setOf(Width, Height)
-        // TODO define nattyFontColor() in app config, reference app config here.
-        styledText = StyledText(text = text, font = config.listFont, foreground = nattyFontColor().paint)
-        // TODO Why is the wrong font color showing?
     }
 
     private val photo = LazyImage(
@@ -226,8 +226,17 @@ class BaseProductListView(
         this.baseProduct = baseProduct
         this.index = index
         this.selected = selected
-
-        label.text = baseProduct.name
+        
+        label.styledText = styledLabelText(baseProduct.name)
         photo.pendingImage = baseProduct.image
+    }
+
+    private fun styledLabelText(text: String): StyledText {
+        // TODO define nattyFontColor() in app config, reference app config here.
+        return StyledText(
+            text = text,
+            font = config.listFont,
+            foreground = nattyFontColor().paint
+        )
     }
 }
