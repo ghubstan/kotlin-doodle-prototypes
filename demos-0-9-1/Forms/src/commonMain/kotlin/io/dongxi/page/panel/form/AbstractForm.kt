@@ -15,6 +15,7 @@ import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.theme.simpleTextButtonRenderer
 import io.nacular.doodle.core.Container
 import io.nacular.doodle.drawing.*
+import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
@@ -69,17 +70,17 @@ abstract class AbstractForm(
     }
 
     fun submitButton(buttonText: String) = PushButton(buttonText).apply {
-        size = Size(113, 40)
+        size = Size(108, 40)
         cursor = Cursor.Pointer
         acceptsThemes = false
         enabled = false // Do not allow null inputs;  only enable after valid data has been entered.
         behavior = simpleTextButtonRenderer(textMetrics) { button, canvas ->
-            val color = Color.Lightgray.let { if (enabled) it else it.lighter(0.33f) }
+            val color = Color.Lightgray.let { if (enabled) it.darker(0.20f) else it }
             canvas.rect(bounds.atOrigin, radius = 5.0, fill = color.paint)
             canvas.text(
                 button.text,
-                at = textPosition(button, button.text),
-                fill = Color.Black.paint,
+                at = textPosition(button = button, text = button.text), // TODO How do I center the text int he button?
+                fill = Black.paint,
                 font = config.buttonFont
             )
         }
