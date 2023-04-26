@@ -12,6 +12,16 @@ import io.nacular.measured.units.times
  */
 object ColorUtils {
 
+    // Natty's Color Preferences
+
+    fun nattyBackgroundColor(): Color {
+        return Color(0xfcd5dau)
+    }
+
+    fun nattyFontColor(): Color {
+        return Color(0xc97376u)
+    }
+
     // Shades of Red
 
     fun palePlum(): Color {

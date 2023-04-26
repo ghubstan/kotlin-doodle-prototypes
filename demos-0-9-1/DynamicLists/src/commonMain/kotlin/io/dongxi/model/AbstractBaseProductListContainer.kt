@@ -11,6 +11,7 @@ import io.dongxi.page.panel.event.BaseProductSelectEvent.*
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.NecklaceStoreMetadata.allSmallNecklaces
 import io.dongxi.storage.RingStoreMetadata.allSmallRings
+import io.dongxi.util.ColorUtils.nattyFontColor
 import io.dongxi.util.StringUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.*
@@ -184,7 +185,8 @@ class BaseProductListView(
 
     private val label = Label(baseProduct.name, Middle, Center).apply {
         fitText = setOf(Width, Height)
-        styledText = StyledText(text, config.listFont, Black.paint)
+        // TODO define nattyFontColor() in app config, reference app config here.
+        styledText = StyledText(text, config.listFont, nattyFontColor().paint)
     }
 
     private val photo = LazyImage(

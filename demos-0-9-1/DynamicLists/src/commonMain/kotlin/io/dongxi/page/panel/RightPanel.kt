@@ -9,7 +9,7 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
-import io.dongxi.util.ColorUtils.floralWhite
+import io.dongxi.util.ColorUtils.nattyBackgroundColor
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -82,7 +82,8 @@ class RightPanel(
     }
 
     override fun render(canvas: Canvas) {
-        canvas.rect(bounds.atOrigin, floralWhite())
+        // TODO define in app config, reference app config here.
+        canvas.rect(bounds.atOrigin, nattyBackgroundColor())
     }
 
     override fun layoutForCurrentProductCategory() {

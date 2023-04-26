@@ -79,9 +79,7 @@ class BaseRingsContainer(
     private val scrollableList = scrollPanel(list)
 
     private val debugLabel = Label(
-        "NADA",
-        Middle,
-        Center
+        "NADA", Middle, Center
     ).apply {
         font = config.panelDebugFont
         height = 24.0
