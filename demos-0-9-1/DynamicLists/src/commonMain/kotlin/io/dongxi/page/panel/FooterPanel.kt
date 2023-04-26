@@ -66,8 +66,8 @@ class FooterPanel(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
-
-    private val logo = LazyImage(mainScope.async { images.load("natty-logo.svg")!! }, RECT_SHORT_TITLE)
+    
+    private val logo = LazyImage(mainScope.async { images.load("natty-logo-100x100.png")!! }, LOGO_RECT)
 
     init {
         size = Size(100, 600)
@@ -99,9 +99,7 @@ class FooterPanel(
         // noop
     }
 
-    // TODO Refactor out duplicate constants.
     private companion object {
-        private val RECT_LONG_TITLE: Rectangle = Rectangle(0, 0, 120, 30)
-        private val RECT_SHORT_TITLE: Rectangle = Rectangle(0, 0, 85, 30)
+        private val LOGO_RECT: Rectangle = Rectangle(0, 0, 100, 100)
     }
 }
