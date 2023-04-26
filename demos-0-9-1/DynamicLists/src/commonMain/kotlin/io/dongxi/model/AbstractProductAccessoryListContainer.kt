@@ -13,6 +13,7 @@ import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.PendantStoreMetadata
 import io.dongxi.storage.RingStoneStoreMetadata
+import io.dongxi.util.StringUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.*
 import io.nacular.doodle.controls.list.DynamicList
@@ -147,7 +148,7 @@ abstract class AbstractProductAccessoryListContainer(
     }
 
     private fun updateDebugLabelText(accessory: IProductAccessory) {
-        debugLabel.text = "Name:  ${accessory.name}  File:  ${accessory.file}"
+        debugLabel.text = "${StringUtils.capitalizeWord(accessory.accessoryCategory.name)}:  ${accessory.name}"
     }
 }
 

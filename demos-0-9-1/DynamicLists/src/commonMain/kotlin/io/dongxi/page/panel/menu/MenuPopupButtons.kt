@@ -26,6 +26,7 @@ import io.nacular.doodle.system.Cursor
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
@@ -43,6 +44,7 @@ class MenuPopupButtons(
     private val themes: ThemeManager,
     private val images: ImageLoader,
     private val textMetrics: TextMetrics,
+    private val textFieldStyler: NativeTextFieldStyler,
     private val linkStyler: NativeHyperLinkStyler,
     private val focusManager: FocusManager,
     private val popups: PopupManager,

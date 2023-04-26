@@ -24,6 +24,7 @@ import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.CoroutineDispatcher
 
 class LeftPanel(
@@ -37,6 +38,7 @@ class LeftPanel(
     themes: ThemeManager,
     images: ImageLoader,
     textMetrics: TextMetrics,
+    textFieldStyler: NativeTextFieldStyler,
     linkStyler: NativeHyperLinkStyler,
     focusManager: FocusManager,
     popups: PopupManager,
@@ -55,6 +57,7 @@ class LeftPanel(
     themes,
     images,
     textMetrics,
+    textFieldStyler,
     linkStyler,
     focusManager,
     popups,

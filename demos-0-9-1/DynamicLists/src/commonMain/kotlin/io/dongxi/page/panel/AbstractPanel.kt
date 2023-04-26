@@ -29,6 +29,7 @@ import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
+import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
@@ -44,6 +45,7 @@ abstract class AbstractPanel(
     val themes: ThemeManager,
     val images: ImageLoader,
     val textMetrics: TextMetrics,
+    val textFieldStyler: NativeTextFieldStyler,
     val linkStyler: NativeHyperLinkStyler,
     val focusManager: FocusManager,
     val popups: PopupManager,

@@ -9,8 +9,9 @@ import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.BaseProductSelectEvent
 import io.dongxi.page.panel.event.BaseProductSelectEvent.*
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
-import io.dongxi.storage.NecklaceStoreMetadata
-import io.dongxi.storage.RingStoreMetadata
+import io.dongxi.storage.NecklaceStoreMetadata.allSmallNecklaces
+import io.dongxi.storage.RingStoreMetadata.allSmallRings
+import io.dongxi.util.StringUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.*
 import io.nacular.doodle.controls.list.DynamicList
@@ -38,6 +39,7 @@ import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.*
+
 
 @Suppress("unused")
 abstract class AbstractBaseProductListContainer(
@@ -119,7 +121,7 @@ abstract class AbstractBaseProductListContainer(
     }
 
     private fun loadNecklaces() {
-        val necklaces = NecklaceStoreMetadata.allSmallNecklaces.sortedBy { it.first }.map { (name, path) ->
+        val necklaces = allSmallNecklaces.sortedBy { it.first }.map { (name, path) ->
             Necklace(name, path, mainScope.async { images.load(path)!! })
         }
         necklaces.forEach { model.add(it) }
@@ -127,7 +129,7 @@ abstract class AbstractBaseProductListContainer(
     }
 
     private fun loadRings() {
-        val rings = RingStoreMetadata.allSmallRings.sortedBy { it.first }.map { (name, path) ->
+        val rings = allSmallRings.sortedBy { it.first }.map { (name, path) ->
             Ring(name, path, mainScope.async { images.load(path)!! })
         }
         rings.forEach { model.add(it) }
@@ -145,7 +147,7 @@ abstract class AbstractBaseProductListContainer(
     }
 
     private fun updateDebugLabelText(baseProduct: IProduct) {
-        debugLabel.text = "Name:  ${baseProduct.name}  File:  ${baseProduct.file}"
+        debugLabel.text = "${StringUtils.capitalizeWord(baseProduct.productCategory.name)}:  ${baseProduct.name}"
     }
 }
 
