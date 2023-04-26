@@ -186,7 +186,8 @@ class BaseProductListView(
     private val label = Label(baseProduct.name, Middle, Center).apply {
         fitText = setOf(Width, Height)
         // TODO define nattyFontColor() in app config, reference app config here.
-        styledText = StyledText(text, config.listFont, nattyFontColor().paint)
+        styledText = StyledText(text = text, font = config.listFont, foreground = nattyFontColor().paint)
+        // TODO Why is the wrong font color showing?
     }
 
     private val photo = LazyImage(
