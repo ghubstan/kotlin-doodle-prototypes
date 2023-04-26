@@ -4,9 +4,11 @@ import io.dongxi.application.DongxiConfig
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.PageType.LOGIN
+import io.dongxi.page.PageType.REGISTER
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.page.panel.form.LoginForm
+import io.dongxi.page.panel.form.RegistrationForm
 import io.dongxi.util.ColorUtils.floralWhite
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -92,9 +94,29 @@ class CenterPanel(
                 accessorySelectEventBus
             )
             layout = constrain(children[0], fill)
+        } else if (pageType == REGISTER) {
+            children += RegistrationForm(  // RegistrationFormLong(
+                pageType,
+                config,
+                uiDispatcher,
+                animator,
+                pathMetrics,
+                fonts,
+                theme,
+                themes,
+                images,
+                textMetrics,
+                textFieldStyler,
+                linkStyler,
+                focusManager,
+                popups,
+                modals,
+                menuEventBus,
+                baseProductSelectEventBus,
+                accessorySelectEventBus
+            )
+            layout = constrain(children[0], fill)
         }
-
-
     }
 
     override fun render(canvas: Canvas) {

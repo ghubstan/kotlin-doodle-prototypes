@@ -21,7 +21,7 @@ data class RegistrationProfile(
     val birthDate: String,      // __/__/____       -> DD/MM/AAAA
 
     // Field label: Telefone Celular*
-    // Error Msg: É necessário informar o número completo no formato (DDD) 99999-9999.
+    // Error Msg: É necessário informar o número completo no formato (DD) 99999-9999.
     val cellPhone: String,      // (__) _ ____-____
 
     // Field label: E-mail*
