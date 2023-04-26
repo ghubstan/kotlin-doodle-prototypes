@@ -163,7 +163,7 @@ class RegistrationForm(
     }.apply {
         size = Size(300, 100)
         font = config.formTextFieldFont
-        layout = verticalLayout(this, spacing = 22.0, itemHeight = 33.0)
+        layout = verticalLayout(this, spacing = 12.0, itemHeight = 30.0)
     }
 
     init {
@@ -171,8 +171,12 @@ class RegistrationForm(
         children += form
         children += submit
         layout = constrain(form, submit) { (formBounds, buttonBounds) ->
-            formBounds.top eq 10
-            buttonBounds.top eq formBounds.bottom + 32
+            formBounds.top eq 2
+            formBounds.left eq parent.width * 0.10
+            formBounds.right eq parent.width * 0.90
+
+            buttonBounds.top eq formBounds.bottom + 10
+            buttonBounds.centerX eq parent.centerX
         }
     }
 
