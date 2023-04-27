@@ -44,16 +44,12 @@ class NattyApp(
             val titleFont = fonts {
                 size = 24; weight = 400; families = listOf("Helvetica Neue", "Helvetica", "Arial", "sans-serif")
             }!!
-            val menuLinkFont = fonts {
-                size = 20; weight = 250; families = listOf("Helvetica Neue", "Helvetica", "Arial", "sans-serif")
-            }!!
             val listFont = fonts(titleFont) { size = 10 }!!
             val panelDebugFont = fonts(titleFont) { size = 8; weight = 100 }!!
             val footerFont = fonts(titleFont) { size = 10 }!!
             val formTextFieldFont = fonts(titleFont) { size = 10 }!!
             val config = DongxiConfig(
                 listFont = listFont,
-                menuLinkFont = menuLinkFont,
                 titleFont = titleFont,
                 panelDebugFont = panelDebugFont,
                 footerFont = footerFont,

@@ -30,7 +30,7 @@ fun HTML.index() {
 }
 
 fun main() {
-    val port = System.getenv("PORT")?.toInt() ?: 8080
+    val port = System.getenv("PORT")?.toInt() ?: 8090
     embeddedServer(factory = Netty, port = port, module = Application::applicationModule).start(wait = true)
 }
 

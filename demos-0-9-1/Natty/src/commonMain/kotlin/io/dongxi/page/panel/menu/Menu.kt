@@ -66,18 +66,19 @@ class Menu(
     }
 
     init {
-        size = Size(52, 52)
+        size = Size(55, 55)
         children += listOf(menuIcon)
         layout = constrain(menuIcon) { menuIconBounds ->
-            menuIconBounds.top eq 5
-            menuIconBounds.centerX eq parent.right - 60
+            menuIconBounds.top eq 0
+            menuIconBounds.left eq parent.right - 55
+            menuIconBounds.width.preserve
             menuIconBounds.height.preserve
         }
 
         pointerChanged += clicked {
             popups.show(menuPopupLinks, relativeTo = this) { menuPopupBounds, _ ->
                 menuPopupBounds.top eq 5
-                menuPopupBounds.left eq parent.width / 2        // Buttons extend left to cover 1/2 of screen.
+                menuPopupBounds.left eq parent.width / 2  // Buttons extend left to cover 1/2 of screen.
                 menuPopupBounds.right eq parent.right - 5
                 menuPopupBounds.height eq 290
             }
