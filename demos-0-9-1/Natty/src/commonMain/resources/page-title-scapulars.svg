@@ -4,8 +4,8 @@
      xmlns="http://www.w3.org/2000/svg">
     <rect width="100%" height="100%" fill="transparent"/>
     <text x="5" y="22"
-          font-family="Helvetica, sans-serif" font-size="20" text-anchor="start"
-          fill="#854a46">
+          font-family="Helvetica, sans-serif" font-size="20" font-weight="300"
+          text-anchor="start" fill="#854a46">
         Escapulários
     </text>
 </svg>
