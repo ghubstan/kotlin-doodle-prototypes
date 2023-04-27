@@ -71,7 +71,6 @@ class Menu(
         layout = constrain(menuIcon) { menuIconBounds ->
             menuIconBounds.top eq 5
             menuIconBounds.centerX eq parent.right - 60
-            // menuIconBounds.centerY eq parent.centerY // + 10
             menuIconBounds.height.preserve
         }
 
