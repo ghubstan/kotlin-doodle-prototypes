@@ -8,7 +8,6 @@ import io.dongxi.page.PageType.*
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.page.panel.menu.Menu
-import io.dongxi.util.ColorUtils.nattyPageBackgroundColor
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -95,19 +94,16 @@ class TopPanel(
         children += pageTitleImage
         children += menu
 
-        layout = constrain(pageTitleImage, menu) { pageTitleImageBounds,
-                                                   menuBounds ->
+        layout = constrain(pageTitleImage, menu) { pageTitleImageBounds, menuBounds ->
             pageTitleImageBounds.top eq 0
             pageTitleImageBounds.left eq 5
-            pageTitleImageBounds.centerY eq parent.centerY
             pageTitleImageBounds.width.preserve
             pageTitleImageBounds.height.preserve
 
-            menuBounds.top eq 2
-            menuBounds.centerY eq parent.centerY
-            menuBounds.left eq pageTitleImageBounds.right + 5
-            menuBounds.right eq parent.right - 5
-            menuBounds.height eq parent.height - 5
+            menuBounds.top eq 0
+            menuBounds.left eq parent.right - 60
+            menuBounds.width eq 55
+            menuBounds.height eq 55
         }
     }
 
