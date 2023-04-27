@@ -24,7 +24,7 @@ import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.CoroutineDispatcher
 
 
-class RegistrationForm(
+class RegistrationFormWorking(
     pageType: PageType,
     config: DongxiConfig,
     uiDispatcher: CoroutineDispatcher,
@@ -65,7 +65,7 @@ class RegistrationForm(
 ) {
     // Submit account registration details;  cadastrar.
 
-    private var registrationProfile: RegistrationProfile? = null
+    private var registrationProfile: RegistrationProfileWorking? = null
 
     private val submit = submitButton("Cadastrar").apply {
         fired += {
@@ -73,28 +73,6 @@ class RegistrationForm(
             // mainScope.launch { /* eventBus.produceEvent(loginEvent) */ }
         }
     }
-
-    // TODO How do I nest this in the form below?
-    private val confPwdForm = SetPasswordForm(
-        pageType,
-        config,
-        uiDispatcher,
-        animator,
-        pathMetrics,
-        fonts,
-        theme,
-        themes,
-        images,
-        textMetrics,
-        textFieldStyler,
-        linkStyler,
-        focusManager,
-        popups,
-        modals,
-        menuEventBus,
-        baseProductSelectEventBus,
-        accessorySelectEventBus
-    )
 
     private val form = Form {
         this(
@@ -173,7 +151,7 @@ class RegistrationForm(
             onInvalid = { submit.enabled = false }
         ) { (fullName, cpf, birthDate, cellPhone, email, password, passwordConfirm) -> // destructure given list
             submit.enabled = true
-            registrationProfile = RegistrationProfile(
+            registrationProfile = RegistrationProfileWorking(
                 fullName as String,
                 cpf as String,
                 birthDate as String,
