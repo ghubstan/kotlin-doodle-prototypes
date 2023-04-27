@@ -91,7 +91,7 @@ class NattyApp(
                 mainViewBounds.edges eq parent.edges
             }
 
-            display.fill(config.appBackground.paint)
+            display.fill(config.appBackgroundColor.paint)
         }
     }
 

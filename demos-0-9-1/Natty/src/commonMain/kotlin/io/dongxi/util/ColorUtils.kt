@@ -14,13 +14,18 @@ object ColorUtils {
 
     // Natty's Color Preferences
 
-    fun nattyBackgroundColor(): Color {
+    fun nattyAppBackgroundColor(): Color {
+        return Color(0xfbfaebu)
+    }
+
+    fun nattyPageBackgroundColor(): Color {
         return Color(0xfcd5dau)
     }
 
     fun nattyFontColor(): Color {
         return Color(0x854a46u)
     }
+
 
     // Shades of Red
 

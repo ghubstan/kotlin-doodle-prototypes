@@ -66,11 +66,12 @@ class Menu(
     }
 
     init {
-        size = Size(62, 62)
+        size = Size(52, 52)
         children += listOf(menuIcon)
         layout = constrain(menuIcon) { menuIconBounds ->
+            menuIconBounds.top eq 5
             menuIconBounds.centerX eq parent.right - 60
-            menuIconBounds.centerY eq parent.centerY + 10
+            // menuIconBounds.centerY eq parent.centerY // + 10
             menuIconBounds.height.preserve
         }
 
