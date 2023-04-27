@@ -4,13 +4,13 @@ include(
     "PopupManager",
     "Modal",
     "DrawerNav",
-    "DynamicLists",
+    "Natty",
     "Forms"
 )
 
 project(":PopupManager").name = "popupmanager"
 project(":Modal").name = "modal"
 project(":DrawerNav").name = "drawernav"
-project(":DynamicLists").name = "dynamiclists"
+project(":Natty").name = "natty"
 project(":Forms").name = "forms"
 

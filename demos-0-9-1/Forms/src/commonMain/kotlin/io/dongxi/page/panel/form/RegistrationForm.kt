@@ -126,6 +126,8 @@ class RegistrationForm(
                     config = textFieldConfig("Informar um E-mail válido")
                 )
             },
+            // You might consider creating a custom field for password/verify-password that returns a String,
+            // but has 2 text fields that do validation to make sure they are the same.
             +labeled(
                 name = "Crie Sua Senha",
                 help = "6+ alpha-numeric characters",
