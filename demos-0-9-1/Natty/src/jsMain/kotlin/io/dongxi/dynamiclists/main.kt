@@ -3,7 +3,7 @@
 package io.dongxi.dynamiclists
 
 
-import io.dongxi.application.DynamicListsApp
+import io.dongxi.application.NattyApp
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.animation.AnimatorImpl
 import io.nacular.doodle.application.Modules.Companion.FontModule
@@ -73,7 +73,7 @@ fun main() {
             bindSingleton<PathMetrics> { PathMetricsImpl(svgFactory = instance()) }
         }
     )) {
-        DynamicListsApp(
+        NattyApp(
             display = instance(),
             uiDispatcher = Dispatchers.UI,
             animator = instance(),

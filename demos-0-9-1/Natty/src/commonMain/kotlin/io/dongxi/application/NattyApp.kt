@@ -20,7 +20,7 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.*
 
-class DynamicListsApp(
+class NattyApp(
     display: Display,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
