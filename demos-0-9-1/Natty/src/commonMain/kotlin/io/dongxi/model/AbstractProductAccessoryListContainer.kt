@@ -13,7 +13,6 @@ import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.PendantStoreMetadata
 import io.dongxi.storage.RingStoneStoreMetadata
-import io.dongxi.util.ColorUtils.nattyFontColor
 import io.dongxi.util.StringUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.*
@@ -188,7 +187,7 @@ class ProductAccessoryListView(
     private val label = Label(accessory.name, Middle, Center).apply {
         fitText = setOf(Width, Height)
         // TODO define nattyFontColor() in app config, reference app config here.
-        styledText = StyledText(text, config.listFont, nattyFontColor().paint)
+        styledText = StyledText(text, config.listFont, config.listFontColor.paint)
     }
 
     private val photo = LazyImage(

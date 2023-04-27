@@ -22,7 +22,7 @@ object ColorUtils {
         return Color(0xfcd5dau)
     }
 
-    fun nattyFontColor(): Color {
+    fun nattyListLabelFontColor(): Color {
         return Color(0x854a46u)
     }
 

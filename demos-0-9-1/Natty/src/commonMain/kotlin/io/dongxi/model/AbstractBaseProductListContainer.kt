@@ -11,7 +11,6 @@ import io.dongxi.page.panel.event.BaseProductSelectEvent.*
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.storage.NecklaceStoreMetadata.allSmallNecklaces
 import io.dongxi.storage.RingStoreMetadata.allSmallRings
-import io.dongxi.util.ColorUtils.nattyFontColor
 import io.dongxi.util.StringUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.*
@@ -226,17 +225,16 @@ class BaseProductListView(
         this.baseProduct = baseProduct
         this.index = index
         this.selected = selected
-        
+
         label.styledText = styledLabelText(baseProduct.name)
         photo.pendingImage = baseProduct.image
     }
 
     private fun styledLabelText(text: String): StyledText {
-        // TODO define nattyFontColor() in app config, reference app config here.
         return StyledText(
             text = text,
             font = config.listFont,
-            foreground = nattyFontColor().paint
+            foreground = config.listFontColor.paint
         )
     }
 }

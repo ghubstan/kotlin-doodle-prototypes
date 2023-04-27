@@ -1,6 +1,7 @@
 package io.dongxi.application
 
 import io.dongxi.util.ColorUtils.nattyAppBackgroundColor
+import io.dongxi.util.ColorUtils.nattyListLabelFontColor
 import io.dongxi.util.ColorUtils.nattyPageBackgroundColor
 import io.nacular.doodle.drawing.Color
 import io.nacular.doodle.drawing.Font
@@ -31,6 +32,7 @@ data class DongxiConfig(
     val labelForeground: Color = Color(0x4D4D4Du),
     val lineColor: Color = Color(0xEDEDEDu),
     val listFont: Font,
+    val listFontColor: Color = nattyListLabelFontColor(),
 
     val menuLinkFont: Font,
 
