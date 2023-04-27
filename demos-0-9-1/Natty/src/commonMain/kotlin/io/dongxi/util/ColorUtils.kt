@@ -26,6 +26,9 @@ object ColorUtils {
         return Color(0x854a46u)
     }
 
+    fun nattyMenuSelectColor(): Color {
+        return Color(0x9c7c82u)
+    }
 
     // Shades of Red
 

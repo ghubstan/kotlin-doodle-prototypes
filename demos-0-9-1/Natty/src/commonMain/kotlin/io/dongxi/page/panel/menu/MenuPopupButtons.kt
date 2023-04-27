@@ -4,8 +4,8 @@ import io.dongxi.application.DongxiConfig
 import io.dongxi.page.MenuEvent
 import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.MenuEventBus
-import io.dongxi.util.ColorUtils.colorPaleSilver
-import io.dongxi.util.ColorUtils.colorSilver
+import io.dongxi.util.ColorUtils.nattyAppBackgroundColor
+import io.dongxi.util.ColorUtils.nattyMenuSelectColor
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.buttons.PushButton
@@ -219,20 +219,23 @@ class MenuPopupButtons(
                 when {
                     button.model.pointerOver -> canvas.rect(
                         bounds.atOrigin,
-                        stroke = Stroke(color = Black, thickness = 6.0),
-                        color = colorPaleSilver(),
+                        stroke = Stroke(color = Black, thickness = 5.0),
+                        // color = colorPaleSilver(),
+                        color = nattyMenuSelectColor(),
                         radius = 10.0
                     )
 
                     else -> canvas.rect(
                         bounds.atOrigin,
-                        stroke = Stroke(color = Darkgray, thickness = 3.0),
-                        color = colorSilver(),
+                        stroke = Stroke(color = Darkgray, thickness = 2.5),
+                        // color = colorSilver(),
+                        color = nattyAppBackgroundColor(),
                         radius = 10.0
                     )
                 }
 
                 canvas.text(
+                    // TODO Styled Text?
                     text = button.text,
                     at = textPosition(button, button.text),
                     fill = Black.paint,
