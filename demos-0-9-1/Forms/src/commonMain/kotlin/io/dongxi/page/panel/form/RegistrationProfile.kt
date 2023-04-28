@@ -35,7 +35,7 @@ data class RegistrationProfile(
 
     // Field label: Confirme Sua Senha*
     // Error Msg: Password confirmation does not match original. (TODO translate to BR_pt)
-    val passwordConfirm: String
+    // val passwordConfirm: String
 ) {
     fun isValid(): Boolean {
         return true

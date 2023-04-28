@@ -101,7 +101,7 @@ class TopPanel(
             pageTitleImageBounds.height.preserve
 
             menuBounds.top eq 0
-            menuBounds.left eq parent.right - 60
+            menuBounds.left eq parent.right - 55
             menuBounds.width eq 55
             menuBounds.height eq 55
         }
