@@ -75,28 +75,29 @@ class RegistrationForm(
     }
 
     // TODO How do I nest this in the form below?
-    private val confPwdForm = SetPasswordForm(
-        pageType,
-        config,
-        uiDispatcher,
-        animator,
-        pathMetrics,
-        fonts,
-        theme,
-        themes,
-        images,
-        textMetrics,
-        textFieldStyler,
-        linkStyler,
-        focusManager,
-        popups,
-        modals,
-        menuEventBus,
-        baseProductSelectEventBus,
-        accessorySelectEventBus
+    private val setPasswordForm = SetPasswordForm(
+        submit = submit,
+        pageType = pageType,
+        config = config,
+        uiDispatcher = uiDispatcher,
+        animator = animator,
+        pathMetrics = pathMetrics,
+        fonts = fonts,
+        theme = theme,
+        themes = themes,
+        images = images,
+        textMetrics = textMetrics,
+        textFieldStyler = textFieldStyler,
+        linkStyler = linkStyler,
+        focusManager = focusManager,
+        popups = popups,
+        modals = modals,
+        menuEventBus = menuEventBus,
+        baseProductSelectEventBus = baseProductSelectEventBus,
+        accessorySelectEventBus = accessorySelectEventBus
     )
 
-    private val form = Form {
+    private val mainForm = Form {
         this(
             +labeled(
                 name = "Nome Completo",
@@ -148,6 +149,11 @@ class RegistrationForm(
                     config = textFieldConfig("Informar um E-mail válido")
                 )
             },
+            // Use a custom field for password/verify-password that returns a String (password).
+            // It has 2 text fields that do validation to make sure they are the same.
+            PasswordConfirmation("", "") to setPasswordForm.subForm,
+
+            /*
             // You might consider creating a custom field for password/verify-password that returns a String,
             // but has 2 text fields that do validation to make sure they are the same.
             +labeled(
@@ -170,8 +176,11 @@ class RegistrationForm(
                     config = textFieldConfig("Confirmar a senha")
                 )
             },
+             */
+
+
             onInvalid = { submit.enabled = false }
-        ) { (fullName, cpf, birthDate, cellPhone, email, password, passwordConfirm) -> // destructure given list
+        ) { (fullName, cpf, birthDate, cellPhone, email, passwordConfirm) -> // destructure given list
             submit.enabled = true
             registrationProfile = RegistrationProfile(
                 fullName as String,
@@ -179,8 +188,7 @@ class RegistrationForm(
                 birthDate as String,
                 cellPhone as String,
                 email as String,
-                password as String,
-                passwordConfirm as String
+                (passwordConfirm as PasswordConfirmation).password
             )
 
         }
@@ -192,14 +200,14 @@ class RegistrationForm(
 
     init {
         size = Size(300, 300)
-        children += form
+        children += mainForm
         children += submit
-        layout = constrain(form, submit) { (formBounds, buttonBounds) ->
-            formBounds.top eq 2
-            formBounds.left eq parent.width * 0.10
-            formBounds.right eq parent.width * 0.90
+        layout = constrain(mainForm, submit) { (mainFormBounds, buttonBounds) ->
+            mainFormBounds.top eq 2
+            mainFormBounds.left eq parent.width * 0.10
+            mainFormBounds.right eq parent.width * 0.90
 
-            buttonBounds.top eq formBounds.bottom + 10
+            buttonBounds.top eq mainFormBounds.bottom + 10
             buttonBounds.centerX eq parent.centerX
         }
     }

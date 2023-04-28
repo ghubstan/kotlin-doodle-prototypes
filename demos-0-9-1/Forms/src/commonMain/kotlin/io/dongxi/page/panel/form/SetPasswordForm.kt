@@ -8,7 +8,11 @@ import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
-import io.nacular.doodle.controls.form.*
+import io.nacular.doodle.controls.buttons.PushButton
+import io.nacular.doodle.controls.form.form
+import io.nacular.doodle.controls.form.labeled
+import io.nacular.doodle.controls.form.map
+import io.nacular.doodle.controls.form.textField
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
@@ -22,6 +26,7 @@ import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.CoroutineDispatcher
 
 class SetPasswordForm(
+    submit: PushButton,
     pageType: PageType,
     config: DongxiConfig,
     uiDispatcher: CoroutineDispatcher,
@@ -60,25 +65,16 @@ class SetPasswordForm(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
-    fun <T> setPasswordFields() {
-        val form = Form {
+    var subForm = form<PasswordConfirmation> {
+        form {
             this(
-                PasswordConfirmation(password = "", confirmPassword = "") to form {
-                    this(
-                        initial.map { it.password } to labeled("Password") { textField() },
-                        initial.map { it.confirmPassword } to labeled("Confirm Password") { textField() },
-                        onInvalid = {
-                            // ???
-                        }
-                    ) { password, confirmPassword ->
-                        // Construct when pwd + confirm pwd are supplied.
-                        PasswordConfirmation(password, confirmPassword)
-                    }
-                },
-                // ...
-                onInvalid = {}
-            ) { passwordConfirmation: PasswordConfirmation ->
-                passwordConfirmation.password
+                initial.map { it.password } to labeled("Password") { textField() },
+                initial.map { it.confirmPassword } to labeled("ConfirmPassword") { textField() },
+                onInvalid = {
+                    submit.enabled = false
+                }
+            ) { password, confirmPassword ->
+                PasswordConfirmation(password, confirmPassword)
             }
         }
     }
