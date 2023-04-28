@@ -9,10 +9,7 @@ import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.buttons.PushButton
-import io.nacular.doodle.controls.form.form
-import io.nacular.doodle.controls.form.labeled
-import io.nacular.doodle.controls.form.map
-import io.nacular.doodle.controls.form.textField
+import io.nacular.doodle.controls.form.*
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
@@ -68,8 +65,26 @@ class SetPasswordForm(
     var subForm = form<PasswordConfirmation> {
         form {
             this(
-                initial.map { it.password } to labeled("Password") { textField() },
-                initial.map { it.confirmPassword } to labeled("ConfirmPassword") { textField() },
+                initial.map { it.password } to labeled(
+                    name = "Crie Sua Senha",
+                    help = "6+ alpha-numeric characters",
+                    showRequired = Always("*")
+                ) {
+                    textField(
+                        pattern = Regex(pattern = ".{6,}"),
+                        config = textFieldConfig("Informar uma senha (one capital letter, a digit, a ^ char")
+                    )
+                },
+                initial.map { it.confirmPassword } to labeled(
+                    name = "Confirme Sua Senha",
+                    help = "6+ alpha-numeric characters",
+                    showRequired = Always("*")
+                ) {
+                    textField(
+                        pattern = Regex(pattern = ".{6,}"),
+                        config = textFieldConfig("Confirmar a senha")
+                    )
+                },
                 onInvalid = {
                     submit.enabled = false
                 }

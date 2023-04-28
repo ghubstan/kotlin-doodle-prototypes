@@ -152,33 +152,6 @@ class RegistrationForm(
             // Use a custom field for password/verify-password that returns a String (password).
             // It has 2 text fields that do validation to make sure they are the same.
             PasswordConfirmation("", "") to setPasswordForm.subForm,
-
-            /*
-            // You might consider creating a custom field for password/verify-password that returns a String,
-            // but has 2 text fields that do validation to make sure they are the same.
-            +labeled(
-                name = "Crie Sua Senha",
-                help = "6+ alpha-numeric characters",
-                showRequired = Always("*")
-            ) {
-                textField(
-                    pattern = Regex(pattern = ".{6,}"),
-                    config = textFieldConfig("Informar uma senha (one capital letter, a digit, a ^ char")
-                )
-            },
-            +labeled(
-                name = "Confirme Sua Senha",
-                help = "6+ alpha-numeric characters",
-                showRequired = Always("*")
-            ) {
-                textField(
-                    pattern = Regex(pattern = ".{6,}"),
-                    config = textFieldConfig("Confirmar a senha")
-                )
-            },
-             */
-
-
             onInvalid = { submit.enabled = false }
         ) { (fullName, cpf, birthDate, cellPhone, email, passwordConfirm) -> // destructure given list
             submit.enabled = true
