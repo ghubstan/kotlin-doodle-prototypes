@@ -71,6 +71,8 @@ class SetPasswordForm(
                     showRequired = Always("*")
                 ) {
                     textField(
+                        // TODO Do not try to create complex regex for "one capital letter, a digit, a ^ char".
+                        //  Do the checks inside the PasswordConfirmation class.
                         pattern = Regex(pattern = ".{6,}"),
                         config = textFieldConfig("Informar uma senha (one capital letter, a digit, a ^ char")
                     )
@@ -81,6 +83,8 @@ class SetPasswordForm(
                     showRequired = Always("*")
                 ) {
                     textField(
+                        // TODO Do not try to create complex regex for "one capital letter, a digit, a ^ char".
+                        //  Do the checks inside the PasswordConfirmation class.
                         pattern = Regex(pattern = ".{6,}"),
                         config = textFieldConfig("Confirmar a senha")
                     )
