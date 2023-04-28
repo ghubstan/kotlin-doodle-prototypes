@@ -154,15 +154,27 @@ class RegistrationForm(
             PasswordConfirmation("", "") to setPasswordForm.subForm,
             onInvalid = { submit.enabled = false }
         ) { (fullName, cpf, birthDate, cellPhone, email, passwordConfirm) -> // destructure given list
-            submit.enabled = true
-            registrationProfile = RegistrationProfile(
-                fullName as String,
-                cpf as String,
-                birthDate as String,
-                cellPhone as String,
-                email as String,
-                (passwordConfirm as PasswordConfirmation).password
-            )
+
+            val passwordConfirm = passwordConfirm as PasswordConfirmation
+            if (!passwordConfirm.isMatch()) {
+                // TODO Set Error Msg TextField defined in View, outside of Form.
+                println("Passwords do not match.")
+                submit.enabled = false
+            } else if (!passwordConfirm.isValid()) {
+                // TODO Set Error Msg TextField defined in View, outside of Form.
+                println("Password is missing required mix of characters.")
+                submit.enabled = false
+            } else {
+                submit.enabled = true
+                registrationProfile = RegistrationProfile(
+                    fullName as String,
+                    cpf as String,
+                    birthDate as String,
+                    cellPhone as String,
+                    email as String,
+                    passwordConfirm.password
+                )
+            }
 
         }
     }.apply {
