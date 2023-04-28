@@ -156,6 +156,7 @@ class RegistrationForm(
         ) { (fullName, cpf, birthDate, cellPhone, email, passwordConfirm) -> // destructure given list
 
             val passwordConfirm = passwordConfirm as PasswordConfirmation
+
             if (!passwordConfirm.isMatch()) {
                 // TODO Set Error Msg TextField defined in View, outside of Form.
                 println("Passwords do not match.")
@@ -175,7 +176,6 @@ class RegistrationForm(
                     passwordConfirm.password
                 )
             }
-
         }
     }.apply {
         size = Size(300, 100)
