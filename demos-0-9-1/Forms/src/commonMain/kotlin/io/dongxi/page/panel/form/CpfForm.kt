@@ -2,7 +2,7 @@ package io.dongxi.page.panel.form
 
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.model.PasswordConfirmation
+import io.dongxi.model.CPF
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
@@ -10,20 +10,24 @@ import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.buttons.PushButton
-import io.nacular.doodle.controls.form.*
+import io.nacular.doodle.controls.form.form
+import io.nacular.doodle.controls.form.map
+import io.nacular.doodle.controls.form.textField
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
+import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.theme.native.NativeTextFieldStyler
+import io.nacular.doodle.utils.ToStringIntEncoder
 import kotlinx.coroutines.CoroutineDispatcher
 
-class SetPasswordForm(
+class CpfForm(
     submit: PushButton,
     pageType: PageType,
     config: DongxiConfig,
@@ -63,38 +67,22 @@ class SetPasswordForm(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
-    var subForm = form<PasswordConfirmation> {
+
+    var subForm = form<CPF> {
         form {
             this(
-                initial.map { it.password } to labeled(
-                    name = "Crie Sua Senha",
-                    help = "6+ alpha-numeric characters",
-                    showRequired = Always("*")
-                ) {
-                    textField(
-                        // TODO Do not try to create complex regex for "one capital letter, a digit, a ^ char".
-                        //  Do the checks inside the PasswordConfirmation class.
-                        pattern = Regex(pattern = ".{6,}"),
-                        config = textFieldConfig("Informar uma senha (one capital letter, a digit, a ^ char")
-                    )
-                },
-                initial.map { it.confirmPassword } to labeled(
-                    name = "Confirme Sua Senha",
-                    help = "6+ alpha-numeric characters",
-                    showRequired = Always("*")
-                ) {
-                    textField(
-                        // TODO Do not try to create complex regex for "one capital letter, a digit, a ^ char".
-                        //  Do the checks inside the PasswordConfirmation class.
-                        pattern = Regex(pattern = ".{6,}"),
-                        config = textFieldConfig("Confirmar a senha")
-                    )
-                },
+                initial.map { it.first3Digits } to textField(encoder = ToStringIntEncoder),
+                initial.map { it.second3Digits } to textField(encoder = ToStringIntEncoder),
+                initial.map { it.third3Digits } to textField(encoder = ToStringIntEncoder),
+                initial.map { it.checkDigits } to textField(encoder = ToStringIntEncoder),
                 onInvalid = {
                     submit.enabled = false
                 }
-            ) { password, confirmPassword ->
-                PasswordConfirmation(password, confirmPassword)
+            ) { a, b, c, d ->
+                CPF(a, b, c, d)
+            }.apply {
+                size = Size(300, 100)
+                focusable = false
             }
         }
     }

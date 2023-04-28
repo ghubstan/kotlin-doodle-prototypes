@@ -2,6 +2,7 @@ package io.dongxi.page.panel.form
 
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.PasswordConfirmation
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
