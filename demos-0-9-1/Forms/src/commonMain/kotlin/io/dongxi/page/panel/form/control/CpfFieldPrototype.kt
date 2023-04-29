@@ -44,7 +44,7 @@ private class CPF() {
                 // no op
             }
         }
-        println("Current full CPF $cpf is valid? ${cpf.isValid()}")
+        println("Current full CPF $this is valid? ${this.isValid()}")
     }
 
     fun isValid(): Boolean {
