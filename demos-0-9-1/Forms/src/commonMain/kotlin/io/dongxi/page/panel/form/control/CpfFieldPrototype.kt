@@ -78,8 +78,6 @@ fun cpfFieldPrototype() = field<String> {
 
                     if (isBaseDigitsSubField) {
                         if (validBaseDigits(new)) {
-                            println("Valid CPF base digits: $new")
-
                             state = if (cpf.isValid()) {
                                 Form.Valid(cpf.toString())
                             } else {
@@ -91,8 +89,6 @@ fun cpfFieldPrototype() = field<String> {
 
                     } else {
                         if (validChecksumDigits(new)) {
-                            println("Valid CPF checksum digits: $new")
-
                             state = if (cpf.isValid()) {
                                 Form.Valid(cpf.toString())
                             } else {
@@ -110,8 +106,6 @@ fun cpfFieldPrototype() = field<String> {
 
                         if (isBaseDigitsSubField) {
                             if (validBaseDigits(text)) {
-                                println("Valid CPF base digits: $text")
-
                                 state = if (cpf.isValid()) {
                                     Form.Valid(cpf.toString())
                                 } else {
@@ -123,8 +117,6 @@ fun cpfFieldPrototype() = field<String> {
 
                         } else {
                             if (validChecksumDigits(text)) {
-                                println("Valid CPF checksum digits: $text")
-
                                 state = if (cpf.isValid()) {
                                     Form.Valid(cpf.toString())
                                 } else {
@@ -145,29 +137,29 @@ fun cpfFieldPrototype() = field<String> {
             children[1],
             children[2],
             children[3]
-        ) { (base1,
-                base2,
-                base3,
-                checksum) ->
-            base1.top eq 0
-            base1.left eq 0
-            base1.width eq 35
-            base1.height eq 30
+        ) { (part0,
+                part1,
+                part2,
+                part3) ->
+            part0.top eq 0
+            part0.left eq 0
+            part0.width eq 35
+            part0.height eq 30
 
-            base2.top eq 0
-            base2.left eq base1.right + 5
-            base2.width eq 35
-            base2.height eq 30
+            part1.top eq 0
+            part1.left eq part0.right + 5
+            part1.width eq 35
+            part1.height eq 30
 
-            base3.top eq 0
-            base3.left eq base2.right + 5
-            base3.width eq 35
-            base3.height eq 30
+            part2.top eq 0
+            part2.left eq part1.right + 5
+            part2.width eq 35
+            part2.height eq 30
 
-            checksum.top eq 0
-            checksum.left eq base3.right + 5
-            checksum.width eq 30
-            checksum.height eq 30
+            part3.top eq 0
+            part3.left eq part2.right + 5
+            part3.width eq 30
+            part3.height eq 30
         }
     }
 }
