@@ -10,7 +10,6 @@ import io.nacular.doodle.controls.text.TextField
 import io.nacular.doodle.core.container
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.layout.constraints.constrain
-import io.nacular.doodle.layout.constraints.fill
 
 /**
  * Represents a CPF in format "DDD.DDD.DDD-DD".
@@ -48,6 +47,8 @@ fun cpfFieldPrototype() = field<String> {
                 }
 
                 textChanged += { _, _, new ->
+                    editCpfDigits(cpfPartIndex, new)
+
                     if (isBaseDigitsSubField) {
                         state = if (validBaseDigits(new)) {
                             println("Valid CPF base digits: $new")
@@ -63,12 +64,12 @@ fun cpfFieldPrototype() = field<String> {
                             Form.Invalid()
                         }
                     }
-
-                    editCpfDigits(cpfPartIndex, new)
                 }
 
                 focusChanged += { _, _, hasFocus ->
                     if (!hasFocus) {
+                        editCpfDigits(cpfPartIndex, text)
+
                         if (isBaseDigitsSubField) {
                             state = if (validBaseDigits(text)) {
                                 println("Valid CPF base digits: $text")
@@ -84,8 +85,6 @@ fun cpfFieldPrototype() = field<String> {
                                 Form.Invalid()
                             }
                         }
-
-                        editCpfDigits(cpfPartIndex, text)
                     }
                 }
                 size = Size(100, 30)
@@ -124,7 +123,6 @@ fun cpfFieldPrototype() = field<String> {
     }
 }
 
-
 private fun editCpfDigits(cpfPartIndex: Int, cpfPart: String) {
     when (cpfPartIndex) {
 
@@ -148,53 +146,8 @@ private fun editCpfDigits(cpfPartIndex: Int, cpfPart: String) {
             // no op
         }
     }
-
     println("Current full CPF $cpf is valid? ${cpf.isValid()}")
 }
-
-
-///
-///
-///
-
-fun cpfSubFieldPrototype() = field<String> {
-    container {
-        focusable = false // Ensure this wrapping container isn't focusable.
-
-        this += TextField().apply {
-            initial.ifValid {
-                text = it
-            }
-
-            textChanged += { _, _, new ->
-                state = if (validBaseDigits(new)) {
-                    println("Valid CPF base digits: $new")
-                    Form.Valid(new) // update field as text changes
-                } else {
-                    Form.Invalid()
-                }
-            }
-
-            focusChanged += { _, _, hasFocus ->
-                if (!hasFocus) {
-
-                    state = if (validBaseDigits(text)) {
-                        println("Valid CPF digits: $text")
-                        Form.Valid(text) // update field as text changes
-                    } else {
-                        Form.Invalid()
-                    }
-                }
-            }
-            size = Size(35, 30)
-            layout = constrain(children[0], fill)
-        }
-    }
-}
-
-///
-///
-///
 
 private fun validBaseDigits(cpfPart: String): Boolean {
     return isMatch(cpfPart, RegexUtils.threeDigitNumber)
