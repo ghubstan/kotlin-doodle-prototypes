@@ -7,13 +7,11 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
-import io.dongxi.util.RegexUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.buttons.PushButton
-import io.nacular.doodle.controls.form.Always
 import io.nacular.doodle.controls.form.form
-import io.nacular.doodle.controls.form.labeled
+import io.nacular.doodle.controls.form.map
 import io.nacular.doodle.controls.form.textField
 import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.drawing.FontLoader
@@ -22,14 +20,14 @@ import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
-import io.nacular.doodle.layout.HorizontalFlowLayout
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.theme.native.NativeTextFieldStyler
+import io.nacular.doodle.utils.ToStringIntEncoder
 import kotlinx.coroutines.CoroutineDispatcher
 
-class CpfForm(
+class CpfFormSimple(
     submit: PushButton,
     pageType: PageType,
     config: DongxiConfig,
@@ -69,62 +67,23 @@ class CpfForm(
     baseProductSelectEventBus,
     accessorySelectEventBus
 ) {
+
     var subForm = form<CPF> {
         form {
             this(
-
-                +labeled(
-                    name = "CPF",
-                    help = "3 digits",
-                    showRequired = Always("")
-                ) {
-                    textField(
-                        pattern = RegexUtils.threeDigitNumber,
-                        config = textFieldConfig("DDD")
-                    )
-                },
-                +labeled(
-                    name = ".",
-                    help = "3 digits",
-                    showRequired = Always("")
-                ) {
-                    textField(
-                        pattern = RegexUtils.threeDigitNumber,
-                        config = textFieldConfig("DDD")
-                    )
-                },
-
-                +labeled(
-                    name = ".",
-                    help = "3 digits",
-                    showRequired = Always("")
-                ) {
-                    textField(
-                        pattern = RegexUtils.threeDigitNumber,
-                        config = textFieldConfig("DDD")
-                    )
-                },
-
-                +labeled(
-                    name = "-",
-                    help = "2 digits",
-                    showRequired = Always("")
-                ) {
-                    textField(
-                        pattern = RegexUtils.twoDigitNumber,
-                        config = textFieldConfig("DD")
-                    )
-                },
-
-                onInvalid = { submit.enabled = false },
-            ) { (a, b, c, d) -> // destructure given list
-                CPF(a as Int, b as Int, c as Int, d as Int)
+                initial.map { it.first3Digits } to textField(encoder = ToStringIntEncoder),
+                initial.map { it.second3Digits } to textField(encoder = ToStringIntEncoder),
+                initial.map { it.third3Digits } to textField(encoder = ToStringIntEncoder),
+                initial.map { it.checkDigits } to textField(encoder = ToStringIntEncoder),
+                onInvalid = {
+                    submit.enabled = false
+                }
+            ) { a, b, c, d ->
+                CPF(a, b, c, d)
+            }.apply {
+                size = Size(300, 100)
+                focusable = false
             }
         }
-    }.apply {
-        size = Size(300, 30)
-        font = config.formTextFieldFont
-        layout = HorizontalFlowLayout()
     }
-
 }

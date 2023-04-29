@@ -1,4 +1,4 @@
-package io.dongxi.page.panel.form.field
+package io.dongxi.page.panel.form.control
 
 import io.nacular.doodle.controls.buttons.Switch
 import io.nacular.doodle.controls.form.Form

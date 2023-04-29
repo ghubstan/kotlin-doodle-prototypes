@@ -7,6 +7,7 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.cpfFieldPrototype
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.form.*
@@ -98,8 +99,6 @@ class RegistrationForm(
         accessorySelectEventBus = accessorySelectEventBus
     )
 
-    // private val cpfField = CpfField(config)
-
     private val mainForm = Form {
         this(
             +labeled(
@@ -112,17 +111,17 @@ class RegistrationForm(
                     config = textFieldConfig("Informar seu nome completo")
                 )
             },
-            /*
+
             +labeled(
-                name = "Custom CPF",
+                name = "CPF",
                 help = "Informar seu CPF, no formato DDD.DDD.DDD-DD",
                 showRequired = Always("*")
             ) {
-                cpfFieldPrototypeFunc()
-                // cpfField.cpfPart()
+                cpfFieldPrototype()
             },
-             */
 
+
+            /*
             +labeled(
                 name = "Dummy CPF",
                 help = "14 characters",
@@ -133,17 +132,8 @@ class RegistrationForm(
                     config = textFieldConfig("Informar seu CPF, no formato DDD.DDD.DDD-DD")
                 )
             },
+             */
 
-            +labeled(
-                name = "Data de Nascimento",
-                help = "10 characters",
-                showRequired = Always("*")
-            ) {
-                textField(
-                    pattern = Regex(pattern = ".{10,}"),
-                    config = textFieldConfig("Informar sua data de nascimento completa, no formato DD/MM/AAAA")
-                )
-            },
             +labeled(
                 name = "Telefone Celular",
                 help = "15 characters",
@@ -168,7 +158,7 @@ class RegistrationForm(
             // It has 2 text fields that do validation to make sure they are the same.
             PasswordConfirmation("", "") to setPasswordForm.subForm,
             onInvalid = { submit.enabled = false }
-        ) { (fullName, cpf, birthDate, cellPhone, email, passwordConfirm) -> // destructure given list
+        ) { (fullName, cpf, cellPhone, email, passwordConfirm) -> // destructure given list
 
             val passwordConfirm = passwordConfirm as PasswordConfirmation
 
@@ -185,7 +175,6 @@ class RegistrationForm(
                 registrationProfile = RegistrationProfile(
                     fullName as String,
                     cpf as String,
-                    birthDate as String,
                     cellPhone as String,
                     email as String,
                     passwordConfirm.password

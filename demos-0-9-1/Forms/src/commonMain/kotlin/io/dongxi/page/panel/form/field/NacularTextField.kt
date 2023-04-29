@@ -54,7 +54,7 @@ public fun <T> textField(
 
     fun invalidateField(field: Field<T>, error: Throwable, notify: Boolean = true) {
         // Cannot assign to 'state': the setter is internal in 'Field'
-       // field.state = Invalid()
+        // field.state = Invalid()
 
         if (notify) configObject.onInvalid(error)
     }
