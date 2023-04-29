@@ -4,6 +4,7 @@ import io.dongxi.application.DongxiConfig
 import io.dongxi.util.RegexUtils
 import io.dongxi.util.RegexUtils.cpfPattern
 import io.dongxi.util.RegexUtils.isMatch
+import io.nacular.doodle.controls.form.FieldInfo
 import io.nacular.doodle.controls.form.Form
 import io.nacular.doodle.controls.form.field
 import io.nacular.doodle.controls.form.ifValid
@@ -21,35 +22,20 @@ import io.nacular.doodle.utils.VerticalAlignment.Middle
 /**
  * Represents a CPF in format "DDD.DDD.DDD-DD".
  */
-private class CPF() {
-    var first3Digits: String = ""
-    var second3Digits: String = ""
-    var third3Digits: String = ""
-    var checkDigits: String = ""
+class CPF() {
+    private var first3Digits: String = ""
+    private var second3Digits: String = ""
+    private var third3Digits: String = ""
+    private var checkDigits: String = ""
 
-    fun edit(fieldIndex: Int, value: String) {
-        // Field index starts at 0, like a list element.
-        when (fieldIndex) {
-
-            0 -> {
-                this.first3Digits = value
-            }
-
-            1 -> {
-                this.second3Digits = value
-            }
-
-            2 -> {
-                this.third3Digits = value
-            }
-
-            3 -> {
-                this.checkDigits = value
-            }
-
-            else -> {
-                // no op
-            }
+    fun edit(subFieldIndex: Int, value: String) {
+        // Field indexing starts at 0, like a list or array.
+        when (subFieldIndex) {
+            0 -> this.first3Digits = value
+            1 -> this.second3Digits = value
+            2 -> this.third3Digits = value
+            3 -> this.checkDigits = value
+            else -> {}
         }
         println("Current full CPF $this is valid? ${this.isValid()}")
     }
@@ -71,73 +57,24 @@ fun cpfFieldPrototype(appConfig: DongxiConfig) = field<String> {
         focusable = false // Ensure this wrapping container isn't focusable.
 
         // Generate 3 base digit fields (3 digits each), and a final checksum digits field (2 digits).
-        for (cpfPartIndex in 0..3) {
+        for (subFieldIndex in 0..3) {
 
             // CPF format "DDD.DDD.DDD-DD" requires some inserted sub-field delimiter labels.
-            maybeInsertDelimiterLabel(cpfPartIndex, this, appConfig)
+            maybeInsertDelimiterLabel(subFieldIndex, this, appConfig)
 
-            val isBaseDigitsSubField: Boolean = cpfPartIndex < 3
-
+            // Append sub-field of 3 or 2 digits.
             this += TextField().apply {
                 initial.ifValid {
                     text = it
                 }
 
                 textChanged += { _, _, new ->
-                    cpf.edit(cpfPartIndex, new)
-
-                    if (isBaseDigitsSubField) {
-                        if (validBaseDigits(new)) {
-                            state = if (cpf.isValid()) {
-                                Form.Valid(cpf.toString())
-                            } else {
-                                Form.Invalid()
-                            }
-                        } else {
-                            state = Form.Invalid()
-                        }
-
-                    } else {
-                        if (validChecksumDigits(new)) {
-                            state = if (cpf.isValid()) {
-                                Form.Valid(cpf.toString())
-                            } else {
-                                Form.Invalid()
-                            }
-                        } else {
-                            state = Form.Invalid()
-                        }
-                    }
+                    validateCpf(cpf, this@field, subFieldIndex, new)
                 }
 
                 focusChanged += { _, _, hasFocus ->
                     if (!hasFocus) {
-                        cpf.edit(cpfPartIndex, text)
-
-                        todoRefactorSomeFormValidationHere(/*  Can I? */)
-
-                        if (isBaseDigitsSubField) {
-                            if (validBaseDigits(text)) {
-                                state = if (cpf.isValid()) {
-                                    Form.Valid(cpf.toString())
-                                } else {
-                                    Form.Invalid()
-                                }
-                            } else {
-                                state = Form.Invalid()
-                            }
-
-                        } else {
-                            if (validChecksumDigits(text)) {
-                                state = if (cpf.isValid()) {
-                                    Form.Valid(cpf.toString())
-                                } else {
-                                    Form.Invalid()
-                                }
-                            } else {
-                                state = Form.Invalid()
-                            }
-                        }
+                        validateCpf(cpf, this@field, subFieldIndex, text)
                     }
                 }
                 size = Size(100, 30)
@@ -225,11 +162,32 @@ private fun delimiterLabel(text: String, appConfig: DongxiConfig): Label {
     }
 }
 
-fun todoRefactorSomeFormValidationHere() {
-    /*  Can I do this? */
+fun validateCpf(cpf: CPF, subField: FieldInfo<String>, subFieldIndex: Int, text: String) {
+    cpf.edit(subFieldIndex, text)
 
-    // The line below compiles, but think first...
-    // Form.Valid("")
+    val isBaseDigitsSubField: Boolean = subFieldIndex < 3
+    if (isBaseDigitsSubField) {
+        if (validBaseDigits(text)) {
+            subField.state = if (cpf.isValid()) {
+                Form.Valid(cpf.toString())
+            } else {
+                Form.Invalid()
+            }
+        } else {
+            subField.state = Form.Invalid()
+        }
+
+    } else {
+        if (validChecksumDigits(text)) {
+            subField.state = if (cpf.isValid()) {
+                Form.Valid(cpf.toString())
+            } else {
+                Form.Invalid()
+            }
+        } else {
+            subField.state = Form.Invalid()
+        }
+    }
 }
 
 
