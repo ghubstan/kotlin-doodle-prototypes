@@ -117,7 +117,7 @@ class RegistrationForm(
                 help = "Informar seu CPF, no formato DDD.DDD.DDD-DD",
                 showRequired = Always("*")
             ) {
-                cpfFieldPrototype(dongxiConfig = config)
+                cpfFieldPrototype(appConfig = config)
             },
 
 

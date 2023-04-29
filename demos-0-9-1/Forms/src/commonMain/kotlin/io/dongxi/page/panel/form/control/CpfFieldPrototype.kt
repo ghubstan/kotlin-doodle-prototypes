@@ -7,7 +7,9 @@ import io.dongxi.util.RegexUtils.isMatch
 import io.nacular.doodle.controls.form.Form
 import io.nacular.doodle.controls.form.field
 import io.nacular.doodle.controls.form.ifValid
+import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.controls.text.TextField
+import io.nacular.doodle.core.ContainerBuilder
 import io.nacular.doodle.core.container
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.layout.constraints.constrain
@@ -61,7 +63,7 @@ private class CPF() {
     }
 }
 
-fun cpfFieldPrototype(dongxiConfig: DongxiConfig) = field<String> {
+fun cpfFieldPrototype(appConfig: DongxiConfig) = field<String> {
     val cpf = CPF()
 
     container {
@@ -72,22 +74,7 @@ fun cpfFieldPrototype(dongxiConfig: DongxiConfig) = field<String> {
         for (cpfPartIndex in 0..3) {
 
             // CPF format "DDD.DDD.DDD-DD" requires some inserted sub-field delimiter labels.
-            if (cpfPartIndex == 1 || cpfPartIndex == 2) {
-                // Insert dot "." label.
-                this += io.nacular.doodle.controls.text.Label(".", Middle, Center).apply {
-                    size = Size(5, 5)
-                    fitText = setOf(Width, Height)
-                    font = dongxiConfig.formTextFieldDelimiterFont
-                }
-            } else if (cpfPartIndex == 3) {
-                // Insert hyphen "-" label.
-                this += io.nacular.doodle.controls.text.Label("-", Middle, Center).apply {
-                    size = Size(5, 5)
-                    fitText = setOf(Width, Height)
-                    font = dongxiConfig.formTextFieldDelimiterFont
-                }
-            }
-
+            maybeInsertDelimiterLabel(cpfPartIndex, this, appConfig)
 
             val isBaseDigitsSubField: Boolean = cpfPartIndex < 3
 
@@ -126,6 +113,8 @@ fun cpfFieldPrototype(dongxiConfig: DongxiConfig) = field<String> {
                 focusChanged += { _, _, hasFocus ->
                     if (!hasFocus) {
                         cpf.edit(cpfPartIndex, text)
+
+                        todoRefactorSomeFormValidationHere(/*  Can I? */)
 
                         if (isBaseDigitsSubField) {
                             if (validBaseDigits(text)) {
@@ -208,13 +197,47 @@ fun cpfFieldPrototype(dongxiConfig: DongxiConfig) = field<String> {
     }
 }
 
+private fun maybeInsertDelimiterLabel(
+    cpfPartIndex: Int,
+    containerBuilder: ContainerBuilder,
+    appConfig: DongxiConfig
+) {
+    if (shouldInsertDotDelimiter(cpfPartIndex)) {
+        containerBuilder += delimiterLabel(".", appConfig)
+    } else if (shouldInsertHyphenDelimiter(cpfPartIndex)) {
+        containerBuilder += delimiterLabel("-", appConfig)
+    }
+}
+
+private fun shouldInsertDotDelimiter(cpfPartIndex: Int): Boolean {
+    return cpfPartIndex == 1 || cpfPartIndex == 2
+}
+
+private fun shouldInsertHyphenDelimiter(cpfPartIndex: Int): Boolean {
+    return cpfPartIndex == 3
+}
+
+private fun delimiterLabel(text: String, appConfig: DongxiConfig): Label {
+    return Label(text, Middle, Center).apply {
+        size = Size(5, 5)
+        fitText = setOf(Width, Height)
+        font = appConfig.formTextFieldDelimiterFont
+    }
+}
+
+fun todoRefactorSomeFormValidationHere() {
+    /*  Can I do this? */
+
+    // The line below compiles, but think first...
+    // Form.Valid("")
+}
+
 
 // Helper to build form with 6 fields
 operator fun <T> List<T>.component6() = this[5]
 
 // Helper to build form with 7 fields
 operator fun <T> List<T>.component7() = this[6]
-
 
 private fun validBaseDigits(cpfPart: String): Boolean {
     return isMatch(cpfPart, RegexUtils.threeDigitNumber)
