@@ -27,6 +27,7 @@ import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import io.nacular.doodle.utils.ToStringIntEncoder
 import kotlinx.coroutines.CoroutineDispatcher
 
+@Deprecated("Does not horizontally align.")
 class CpfFormSimple(
     submit: PushButton,
     pageType: PageType,
