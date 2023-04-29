@@ -56,9 +56,9 @@ private class CPF() {
     }
 }
 
-private val cpf = CPF()
-
 fun cpfFieldPrototype() = field<String> {
+    val cpf = CPF()
+
     container {
 
         focusable = false // Ensure this wrapping container isn't focusable.
