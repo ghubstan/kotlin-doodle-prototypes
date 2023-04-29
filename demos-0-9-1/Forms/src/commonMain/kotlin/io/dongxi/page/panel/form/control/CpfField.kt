@@ -53,7 +53,6 @@ fun cpfFieldPrototype(appConfig: DongxiConfig) = field<String> {
     val cpf = CPF()
 
     container {
-
         focusable = false // Ensure this wrapping container isn't focusable.
 
         // Generate 3 base digit fields (3 digits each), and a final checksum digits field (2 digits).
@@ -134,24 +133,52 @@ fun cpfFieldPrototype(appConfig: DongxiConfig) = field<String> {
     }
 }
 
+
+fun validateCpf(
+    cpf: CPF,
+    subField: FieldInfo<String>,
+    subFieldIndex: Int,
+    text: String
+) {
+    cpf.edit(subFieldIndex, text)
+
+    if (isValidSubField(subFieldIndex, text)) {
+        subField.state = if (cpf.isValid()) {
+            Form.Valid(cpf.toString())
+        } else {
+            Form.Invalid()
+        }
+    } else {
+        subField.state = Form.Invalid()
+    }
+}
+
+private fun isValidSubField(subFieldIndex: Int, subFieldValue: String): Boolean {
+    val subFieldPattern = when (subFieldIndex < 3) {
+        true -> RegexUtils.threeDigitNumber
+        false -> RegexUtils.twoDigitNumber
+    }
+    return isMatch(subFieldValue, subFieldPattern)
+}
+
 private fun maybeInsertDelimiterLabel(
-    cpfPartIndex: Int,
+    subFieldIndex: Int,
     containerBuilder: ContainerBuilder,
     appConfig: DongxiConfig
 ) {
-    if (shouldInsertDotDelimiter(cpfPartIndex)) {
+    if (shouldInsertDotDelimiter(subFieldIndex)) {
         containerBuilder += delimiterLabel(".", appConfig)
-    } else if (shouldInsertHyphenDelimiter(cpfPartIndex)) {
+    } else if (shouldInsertHyphenDelimiter(subFieldIndex)) {
         containerBuilder += delimiterLabel("-", appConfig)
     }
 }
 
-private fun shouldInsertDotDelimiter(cpfPartIndex: Int): Boolean {
-    return cpfPartIndex == 1 || cpfPartIndex == 2
+private fun shouldInsertDotDelimiter(subFieldIndex: Int): Boolean {
+    return subFieldIndex == 1 || subFieldIndex == 2
 }
 
-private fun shouldInsertHyphenDelimiter(cpfPartIndex: Int): Boolean {
-    return cpfPartIndex == 3
+private fun shouldInsertHyphenDelimiter(subFieldIndex: Int): Boolean {
+    return subFieldIndex == 3
 }
 
 private fun delimiterLabel(text: String, appConfig: DongxiConfig): Label {
@@ -162,32 +189,13 @@ private fun delimiterLabel(text: String, appConfig: DongxiConfig): Label {
     }
 }
 
-fun validateCpf(cpf: CPF, subField: FieldInfo<String>, subFieldIndex: Int, text: String) {
-    cpf.edit(subFieldIndex, text)
 
-    val isBaseDigitsSubField: Boolean = subFieldIndex < 3
-    if (isBaseDigitsSubField) {
-        if (validBaseDigits(text)) {
-            subField.state = if (cpf.isValid()) {
-                Form.Valid(cpf.toString())
-            } else {
-                Form.Invalid()
-            }
-        } else {
-            subField.state = Form.Invalid()
-        }
+private fun validBaseDigits(cpfPart: String): Boolean {
+    return isMatch(cpfPart, RegexUtils.threeDigitNumber)
+}
 
-    } else {
-        if (validChecksumDigits(text)) {
-            subField.state = if (cpf.isValid()) {
-                Form.Valid(cpf.toString())
-            } else {
-                Form.Invalid()
-            }
-        } else {
-            subField.state = Form.Invalid()
-        }
-    }
+private fun validChecksumDigits(cpfPart: String): Boolean {
+    return isMatch(cpfPart, RegexUtils.twoDigitNumber)
 }
 
 
@@ -197,10 +205,6 @@ operator fun <T> List<T>.component6() = this[5]
 // Helper to build form with 7 fields
 operator fun <T> List<T>.component7() = this[6]
 
-private fun validBaseDigits(cpfPart: String): Boolean {
-    return isMatch(cpfPart, RegexUtils.threeDigitNumber)
-}
+// Helper to build form with 8 fields
+operator fun <T> List<T>.component8() = this[7]
 
-private fun validChecksumDigits(cpfPart: String): Boolean {
-    return isMatch(cpfPart, RegexUtils.twoDigitNumber)
-}
