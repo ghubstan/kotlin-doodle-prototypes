@@ -20,6 +20,33 @@ private class CPF() {
     var third3Digits: String = ""
     var checkDigits: String = ""
 
+    fun edit(fieldIndex: Int, value: String) {
+        // Field index starts at 0, like a list element.
+        when (fieldIndex) {
+
+            0 -> {
+                this.first3Digits = value
+            }
+
+            1 -> {
+                this.second3Digits = value
+            }
+
+            2 -> {
+                this.third3Digits = value
+            }
+
+            3 -> {
+                this.checkDigits = value
+            }
+
+            else -> {
+                // no op
+            }
+        }
+        println("Current full CPF $cpf is valid? ${cpf.isValid()}")
+    }
+
     fun isValid(): Boolean {
         return isMatch(this.toString(), cpfPattern)
     }
@@ -47,7 +74,7 @@ fun cpfFieldPrototype() = field<String> {
                 }
 
                 textChanged += { _, _, new ->
-                    editCpfDigits(cpfPartIndex, new)
+                    cpf.edit(cpfPartIndex, new)
 
                     if (isBaseDigitsSubField) {
                         if (validBaseDigits(new)) {
@@ -79,7 +106,7 @@ fun cpfFieldPrototype() = field<String> {
 
                 focusChanged += { _, _, hasFocus ->
                     if (!hasFocus) {
-                        editCpfDigits(cpfPartIndex, text)
+                        cpf.edit(cpfPartIndex, text)
 
                         if (isBaseDigitsSubField) {
                             if (validBaseDigits(text)) {
@@ -143,32 +170,6 @@ fun cpfFieldPrototype() = field<String> {
             checksum.height eq 30
         }
     }
-}
-
-private fun editCpfDigits(cpfPartIndex: Int, cpfPart: String) {
-    when (cpfPartIndex) {
-
-        0 -> {
-            cpf.first3Digits = cpfPart
-        }
-
-        1 -> {
-            cpf.second3Digits = cpfPart
-        }
-
-        2 -> {
-            cpf.third3Digits = cpfPart
-        }
-
-        3 -> {
-            cpf.checkDigits = cpfPart
-        }
-
-        else -> {
-            // no op
-        }
-    }
-    println("Current full CPF $cpf is valid? ${cpf.isValid()}")
 }
 
 private fun validBaseDigits(cpfPart: String): Boolean {
