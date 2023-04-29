@@ -7,7 +7,7 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
-import io.dongxi.page.panel.form.control.cpfFieldPrototype
+import io.dongxi.page.panel.form.control.cpfField
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.form.*
@@ -117,7 +117,7 @@ class RegistrationForm(
                 help = "Informar seu CPF, no formato DDD.DDD.DDD-DD",
                 showRequired = Always("*")
             ) {
-                cpfFieldPrototype(appConfig = config)
+                cpfField(appConfig = config)
             },
 
 

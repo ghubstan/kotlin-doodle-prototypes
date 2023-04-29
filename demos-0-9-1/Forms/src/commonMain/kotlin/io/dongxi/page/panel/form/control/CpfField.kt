@@ -12,8 +12,11 @@ import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.controls.text.TextField
 import io.nacular.doodle.core.ContainerBuilder
 import io.nacular.doodle.core.container
+import io.nacular.doodle.drawing.Color.Companion.Red
+import io.nacular.doodle.drawing.paint
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.layout.constraints.constrain
+import io.nacular.doodle.text.StyledText
 import io.nacular.doodle.utils.Dimension.Height
 import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment.Center
@@ -49,8 +52,12 @@ class CPF() {
     }
 }
 
-fun cpfFieldPrototype(appConfig: DongxiConfig) = field<String> {
+private var validationErrorLabel: Label? = null
+
+fun cpfField(appConfig: DongxiConfig) = field {
     val cpf = CPF()
+
+    validationErrorLabel = errorMessageLabel("", appConfig)
 
     container {
         focusable = false // Ensure this wrapping container isn't focusable.
@@ -68,17 +75,19 @@ fun cpfFieldPrototype(appConfig: DongxiConfig) = field<String> {
                 }
 
                 textChanged += { _, _, new ->
-                    validateCpf(cpf, this@field, subFieldIndex, new)
+                    validateCpf(cpf, this@field, subFieldIndex, new, appConfig)
                 }
 
                 focusChanged += { _, _, hasFocus ->
                     if (!hasFocus) {
-                        validateCpf(cpf, this@field, subFieldIndex, text)
+                        validateCpf(cpf, this@field, subFieldIndex, text, appConfig)
                     }
                 }
                 size = Size(100, 30)
             }
         }
+
+        this += validationErrorLabel!!
 
         layout = constrain(
             children[0],
@@ -87,14 +96,16 @@ fun cpfFieldPrototype(appConfig: DongxiConfig) = field<String> {
             children[3],
             children[4],
             children[5],
-            children[6]
+            children[6],
+            children[7]
         ) { (firstDigits,
                 firstDot,
                 secondDigits,
                 secondDot,
                 thirdDigits,
                 hyphen,
-                checksumDigits) ->
+                checksumDigits,
+                errorMessage) ->
             firstDigits.top eq 0
             firstDigits.left eq 0
             firstDigits.width eq 35
@@ -129,6 +140,11 @@ fun cpfFieldPrototype(appConfig: DongxiConfig) = field<String> {
             checksumDigits.left eq hyphen.right + 5
             checksumDigits.width eq 30
             checksumDigits.height eq 30
+
+            errorMessage.top eq firstDigits.bottom + 5
+            errorMessage.left eq 0
+            errorMessage.width eq 60
+            errorMessage.height eq 30
         }
     }
 }
@@ -138,7 +154,8 @@ fun validateCpf(
     cpf: CPF,
     subField: FieldInfo<String>,
     subFieldIndex: Int,
-    text: String
+    text: String,
+    appConfig: DongxiConfig
 ) {
     cpf.edit(subFieldIndex, text)
 
@@ -150,6 +167,7 @@ fun validateCpf(
         }
     } else {
         subField.state = Form.Invalid()
+        updateErrorMessageLabel(subFieldIndex, appConfig)
     }
 }
 
@@ -189,13 +207,36 @@ private fun delimiterLabel(text: String, appConfig: DongxiConfig): Label {
     }
 }
 
-
-private fun validBaseDigits(cpfPart: String): Boolean {
-    return isMatch(cpfPart, RegexUtils.threeDigitNumber)
+private fun errorMessageLabel(text: String, appConfig: DongxiConfig): Label {
+    val styledText = StyledText(text, appConfig.smallFont, Red.paint)
+    return Label(styledText, Middle, Center).apply {
+        size = Size(5, 5)
+        fitText = setOf(Width, Height)
+        font = appConfig.smallFont
+    }
 }
 
-private fun validChecksumDigits(cpfPart: String): Boolean {
-    return isMatch(cpfPart, RegexUtils.twoDigitNumber)
+private fun clearErrorMessageLabel(appConfig: DongxiConfig) {
+    validationErrorLabel!!.styledText = StyledText(
+        text = "",
+        font = appConfig.smallFont,
+        foreground = Red.paint
+    )
+}
+
+private fun updateErrorMessageLabel(subFieldIndex: Int, appConfig: DongxiConfig) {
+    val errorMsg: String = when (subFieldIndex) {
+        0 -> "1st field must be 3 digits"
+        1 -> "2nd field must be 3 digits"
+        2 -> "3rd field must be 3 digits"
+        3 -> "4th field must be 2 digits"
+        else -> ""
+    }
+    validationErrorLabel!!.styledText = StyledText(
+        text = errorMsg,
+        font = appConfig.smallFont,
+        foreground = Red.paint
+    )
 }
 
 
