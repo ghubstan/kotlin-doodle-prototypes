@@ -87,9 +87,4 @@ abstract class AbstractForm(
         // The fired: ChangeObserver must be defined in the using subclass.
         // fired += { mainScope.launch {eventBus.produceEvent(event)} }
     }
-
-    companion object {
-        val twoDigitNumber = Regex("^1[0-5]\\d|^[1-9]\\d|^[1-9]")
-        val threeDigitNumber = Regex("^1[0-5]\\d|^[1-9]\\d|^[1-9]\\d|^[1-9]") // TODO Verify is correct regex.
-    }
 }

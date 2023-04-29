@@ -98,6 +98,8 @@ class RegistrationForm(
         accessorySelectEventBus = accessorySelectEventBus
     )
 
+    // private val cpfField = CpfField(config)
+
     private val mainForm = Form {
         this(
             +labeled(
@@ -110,8 +112,19 @@ class RegistrationForm(
                     config = textFieldConfig("Informar seu nome completo")
                 )
             },
+            /*
             +labeled(
-                name = "CPF",
+                name = "Custom CPF",
+                help = "Informar seu CPF, no formato DDD.DDD.DDD-DD",
+                showRequired = Always("*")
+            ) {
+                cpfFieldPrototypeFunc()
+                // cpfField.cpfPart()
+            },
+             */
+
+            +labeled(
+                name = "Dummy CPF",
                 help = "14 characters",
                 showRequired = Always("*")
             ) {
@@ -120,6 +133,7 @@ class RegistrationForm(
                     config = textFieldConfig("Informar seu CPF, no formato DDD.DDD.DDD-DD")
                 )
             },
+
             +labeled(
                 name = "Data de Nascimento",
                 help = "10 characters",
