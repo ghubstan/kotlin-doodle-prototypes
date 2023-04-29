@@ -50,18 +50,29 @@ fun cpfFieldPrototype() = field<String> {
                     editCpfDigits(cpfPartIndex, new)
 
                     if (isBaseDigitsSubField) {
-                        state = if (validBaseDigits(new)) {
+                        if (validBaseDigits(new)) {
                             println("Valid CPF base digits: $new")
-                            Form.Valid(new) // update field as text changes
+
+                            state = if (cpf.isValid()) {
+                                Form.Valid(cpf.toString())
+                            } else {
+                                Form.Invalid()
+                            }
                         } else {
-                            Form.Invalid()
+                            state = Form.Invalid()
                         }
+
                     } else {
-                        state = if (validChecksumDigits(new)) {
+                        if (validChecksumDigits(new)) {
                             println("Valid CPF checksum digits: $new")
-                            Form.Valid(new) // update field as text changes
+
+                            state = if (cpf.isValid()) {
+                                Form.Valid(cpf.toString())
+                            } else {
+                                Form.Invalid()
+                            }
                         } else {
-                            Form.Invalid()
+                            state = Form.Invalid()
                         }
                     }
                 }
@@ -71,18 +82,29 @@ fun cpfFieldPrototype() = field<String> {
                         editCpfDigits(cpfPartIndex, text)
 
                         if (isBaseDigitsSubField) {
-                            state = if (validBaseDigits(text)) {
+                            if (validBaseDigits(text)) {
                                 println("Valid CPF base digits: $text")
-                                Form.Valid(text) // update field as text changes
+
+                                state = if (cpf.isValid()) {
+                                    Form.Valid(cpf.toString())
+                                } else {
+                                    Form.Invalid()
+                                }
                             } else {
-                                Form.Invalid()
+                                state = Form.Invalid()
                             }
+
                         } else {
-                            state = if (validChecksumDigits(text)) {
+                            if (validChecksumDigits(text)) {
                                 println("Valid CPF checksum digits: $text")
-                                Form.Valid(text) // update field as text changes
+
+                                state = if (cpf.isValid()) {
+                                    Form.Valid(cpf.toString())
+                                } else {
+                                    Form.Invalid()
+                                }
                             } else {
-                                Form.Invalid()
+                                state = Form.Invalid()
                             }
                         }
                     }
