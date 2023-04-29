@@ -12,6 +12,7 @@ import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.controls.text.TextField
 import io.nacular.doodle.core.ContainerBuilder
 import io.nacular.doodle.core.container
+import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.drawing.Color.Companion.Red
 import io.nacular.doodle.drawing.paint
 import io.nacular.doodle.geometry.Size
@@ -167,7 +168,6 @@ fun validateCpf(
         }
     } else {
         subField.state = Form.Invalid()
-        updateErrorMessageLabel(subFieldIndex, appConfig)
     }
 }
 
@@ -210,7 +210,7 @@ private fun delimiterLabel(text: String, appConfig: DongxiConfig): Label {
 private fun errorMessageLabel(text: String, appConfig: DongxiConfig): Label {
     val styledText = StyledText(text, appConfig.smallFont, Red.paint)
     return Label(styledText, Middle, Center).apply {
-        size = Size(5, 5)
+        size = Size(60, 30)
         fitText = setOf(Width, Height)
         font = appConfig.smallFont
     }
@@ -220,7 +220,7 @@ private fun clearErrorMessageLabel(appConfig: DongxiConfig) {
     validationErrorLabel!!.styledText = StyledText(
         text = "",
         font = appConfig.smallFont,
-        foreground = Red.paint
+        foreground = Black.paint
     )
 }
 
@@ -232,6 +232,7 @@ private fun updateErrorMessageLabel(subFieldIndex: Int, appConfig: DongxiConfig)
         3 -> "4th field must be 2 digits"
         else -> ""
     }
+    println(errorMsg)
     validationErrorLabel!!.styledText = StyledText(
         text = errorMsg,
         font = appConfig.smallFont,
