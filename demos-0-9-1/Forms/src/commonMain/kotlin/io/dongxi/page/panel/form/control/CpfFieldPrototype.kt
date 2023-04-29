@@ -1,5 +1,6 @@
 package io.dongxi.page.panel.form.control
 
+import io.dongxi.application.DongxiConfig
 import io.dongxi.util.RegexUtils
 import io.dongxi.util.RegexUtils.cpfPattern
 import io.dongxi.util.RegexUtils.isMatch
@@ -10,6 +11,10 @@ import io.nacular.doodle.controls.text.TextField
 import io.nacular.doodle.core.container
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.layout.constraints.constrain
+import io.nacular.doodle.utils.Dimension.Height
+import io.nacular.doodle.utils.Dimension.Width
+import io.nacular.doodle.utils.HorizontalAlignment.Center
+import io.nacular.doodle.utils.VerticalAlignment.Middle
 
 /**
  * Represents a CPF in format "DDD.DDD.DDD-DD".
@@ -56,7 +61,7 @@ private class CPF() {
     }
 }
 
-fun cpfFieldPrototype() = field<String> {
+fun cpfFieldPrototype(dongxiConfig: DongxiConfig) = field<String> {
     val cpf = CPF()
 
     container {
@@ -64,8 +69,26 @@ fun cpfFieldPrototype() = field<String> {
         focusable = false // Ensure this wrapping container isn't focusable.
 
         // Generate 3 base digit fields (3 digits each), and a final checksum digits field (2 digits).
-
         for (cpfPartIndex in 0..3) {
+
+            // CPF format "DDD.DDD.DDD-DD" requires some inserted sub-field delimiter labels.
+            if (cpfPartIndex == 1 || cpfPartIndex == 2) {
+                // Insert dot "." label.
+                this += io.nacular.doodle.controls.text.Label(".", Middle, Center).apply {
+                    size = Size(5, 5)
+                    fitText = setOf(Width, Height)
+                    font = dongxiConfig.formTextFieldDelimiterFont
+                }
+            } else if (cpfPartIndex == 3) {
+                // Insert hyphen "-" label.
+                this += io.nacular.doodle.controls.text.Label("-", Middle, Center).apply {
+                    size = Size(5, 5)
+                    fitText = setOf(Width, Height)
+                    font = dongxiConfig.formTextFieldDelimiterFont
+                }
+            }
+
+
             val isBaseDigitsSubField: Boolean = cpfPartIndex < 3
 
             this += TextField().apply {
@@ -136,33 +159,62 @@ fun cpfFieldPrototype() = field<String> {
             children[0],
             children[1],
             children[2],
-            children[3]
-        ) { (part0,
-                part1,
-                part2,
-                part3) ->
-            part0.top eq 0
-            part0.left eq 0
-            part0.width eq 35
-            part0.height eq 30
+            children[3],
+            children[4],
+            children[5],
+            children[6]
+        ) { (firstDigits,
+                firstDot,
+                secondDigits,
+                secondDot,
+                thirdDigits,
+                hyphen,
+                checksumDigits) ->
+            firstDigits.top eq 0
+            firstDigits.left eq 0
+            firstDigits.width eq 35
+            firstDigits.height eq 30
 
-            part1.top eq 0
-            part1.left eq part0.right + 5
-            part1.width eq 35
-            part1.height eq 30
+            firstDot.top eq 10
+            firstDot.left eq firstDigits.right + 5
+            firstDot.width.preserve
+            firstDot.height.preserve
 
-            part2.top eq 0
-            part2.left eq part1.right + 5
-            part2.width eq 35
-            part2.height eq 30
+            secondDigits.top eq 0
+            secondDigits.left eq firstDot.right + 5
+            secondDigits.width eq 35
+            secondDigits.height eq 30
 
-            part3.top eq 0
-            part3.left eq part2.right + 5
-            part3.width eq 30
-            part3.height eq 30
+            secondDot.top eq 10
+            secondDot.left eq secondDigits.right + 5
+            secondDot.width.preserve
+            secondDot.height.preserve
+
+            thirdDigits.top eq 0
+            thirdDigits.left eq secondDot.right + 5
+            thirdDigits.width eq 35
+            thirdDigits.height eq 30
+
+            hyphen.top eq 6
+            hyphen.left eq thirdDigits.right + 5
+            hyphen.width.preserve
+            hyphen.height.preserve
+
+            checksumDigits.top eq 0
+            checksumDigits.left eq hyphen.right + 5
+            checksumDigits.width eq 30
+            checksumDigits.height eq 30
         }
     }
 }
+
+
+// Helper to build form with 6 fields
+operator fun <T> List<T>.component6() = this[5]
+
+// Helper to build form with 7 fields
+operator fun <T> List<T>.component7() = this[6]
+
 
 private fun validBaseDigits(cpfPart: String): Boolean {
     return isMatch(cpfPart, RegexUtils.threeDigitNumber)

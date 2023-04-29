@@ -16,6 +16,7 @@ data class DongxiConfig(
     val panelDebugFont: Font,
     val footerFont: Font,
     val formTextFieldFont: Font,
+    val formTextFieldDelimiterFont: Font,
     val smallFont: Font,
     val buttonFont: Font,
     val headerColor: Color = Color(0xAF2F2Fu) opacity 0.15f,

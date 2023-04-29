@@ -54,6 +54,7 @@ class FormsApp(
             val panelDebugFont = fonts(titleFont) { size = 8; weight = 100 }!!
             val footerFont = fonts(titleFont) { size = 10 }!!
             val formTextFieldFont = fonts(titleFont) { size = 12 }!!
+            val formTextFieldDelimiterFont = fonts(titleFont) { size = 18; weight = 300; }!!
             val smallFont = fonts(titleFont) { size = 12; weight = 100; }!!
             val config = DongxiConfig(
                 listFont = listFont,
@@ -63,6 +64,7 @@ class FormsApp(
                 footerFont = footerFont,
                 filterFont = fonts(titleFont) { size = 14 }!!,
                 formTextFieldFont = formTextFieldFont,
+                formTextFieldDelimiterFont = formTextFieldDelimiterFont,
                 boldFooterFont = fonts(footerFont) { weight = 400 }!!,
                 placeHolderFont = fonts(listFont) { style = Font.Style.Italic }!!,
                 smallFont = smallFont,
