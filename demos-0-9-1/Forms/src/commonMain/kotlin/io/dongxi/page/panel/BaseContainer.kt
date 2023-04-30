@@ -5,6 +5,7 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -24,6 +25,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 class BaseContainer(
     pageType: PageType,
     config: DongxiConfig,
+    formControlFactory: FormControlFactory,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
     pathMetrics: PathMetrics,
@@ -43,6 +45,7 @@ class BaseContainer(
 ) : AbstractPanel(
     pageType,
     config,
+    formControlFactory,
     uiDispatcher,
     animator,
     pathMetrics,
@@ -63,6 +66,7 @@ class BaseContainer(
     private val topPanel = TopPanel(
         pageType,
         config,
+        formControlFactory,
         uiDispatcher,
         animator,
         pathMetrics,
@@ -84,6 +88,7 @@ class BaseContainer(
     private val leftPanel = LeftPanel(
         pageType,
         config,
+        formControlFactory,
         uiDispatcher,
         animator,
         pathMetrics,
@@ -105,6 +110,7 @@ class BaseContainer(
     private val centerPanel = CenterPanel(
         pageType,
         config,
+        formControlFactory,
         uiDispatcher,
         animator,
         pathMetrics,
@@ -126,6 +132,7 @@ class BaseContainer(
     private val rightPanel = RightPanel(
         pageType,
         config,
+        formControlFactory,
         uiDispatcher,
         animator,
         pathMetrics,
@@ -147,6 +154,7 @@ class BaseContainer(
     private val footerPanel = FooterPanel(
         pageType,
         config,
+        formControlFactory,
         uiDispatcher,
         animator,
         pathMetrics,

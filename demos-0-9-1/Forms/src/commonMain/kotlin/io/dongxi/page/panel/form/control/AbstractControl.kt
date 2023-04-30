@@ -8,15 +8,24 @@ import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
+import io.nacular.doodle.controls.text.Label
+import io.nacular.doodle.drawing.Color.Companion.Red
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
+import io.nacular.doodle.drawing.paint
 import io.nacular.doodle.focus.FocusManager
 import io.nacular.doodle.geometry.PathMetrics
+import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
+import io.nacular.doodle.text.StyledText
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.theme.native.NativeTextFieldStyler
+import io.nacular.doodle.utils.Dimension.Height
+import io.nacular.doodle.utils.Dimension.Width
+import io.nacular.doodle.utils.HorizontalAlignment.Center
+import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
 
 abstract class AbstractControl(
@@ -39,5 +48,36 @@ abstract class AbstractControl(
     val baseProductSelectEventBus: BaseProductSelectEventBus,
     val accessorySelectEventBus: AccessorySelectEventBus
 ) {
+
+    fun fieldDelimiterLabel(text: String): Label {
+        return Label(text, Middle, Center).apply {
+            size = Size(5, 5)
+            fitText = setOf(Width, Height)
+            font = config.formTextFieldDelimiterFont
+        }
+    }
+
+    fun clearedErrorMessage(): StyledText {
+        return StyledText("", config.smallFont, foreground = Red.paint)
+    }
+
+    fun styledErrorMessage(errorMessage: String): StyledText {
+        return StyledText(errorMessage, config.smallFont, foreground = Red.paint)
+    }
+    
+    // Helper to build form with 6 fields.
+    operator fun <T> List<T>.component6() = this[5]
+
+    // Helper to build form with 7 fields.
+    operator fun <T> List<T>.component7() = this[6]
+
+    // Helper to build form with 8 fields.
+    operator fun <T> List<T>.component8() = this[7]
+
+    // Helper to build form with 9 fields.
+    operator fun <T> List<T>.component9() = this[8]
+
+    // Helper to build form with 10 fields.
+    operator fun <T> List<T>.component10() = this[9]
 
 }

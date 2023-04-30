@@ -2,8 +2,11 @@ package io.dongxi.page.panel.form.control
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.page.MenuEventBus
+import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.ControlType.*
+import io.dongxi.page.panel.form.control.ControlType.CPF
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -24,6 +27,7 @@ interface IFormControlFactory {
 }
 
 class FormControlFactory(
+    private val pageType: PageType,
     private val config: DongxiConfig,
     private val uiDispatcher: CoroutineDispatcher,
     private val animator: Animator,
@@ -49,7 +53,36 @@ class FormControlFactory(
         if (controlCache.containsKey(controlType)) {
             return controlCache[controlType]!!
         } else {
-            TODO("Not yet implemented")
+            val control = when (controlType) {
+                CPF -> cpfControl()
+                CHANGE_PASSWORD -> TODO()
+                SET_PASSWORD -> TODO()
+            }
+            controlCache[controlType] = control
+            return control
         }
+    }
+
+    private fun cpfControl(): CpfControl {
+        return CpfControl(
+            pageType,
+            config,
+            uiDispatcher,
+            animator,
+            pathMetrics,
+            fonts,
+            theme,
+            themes,
+            images,
+            textMetrics,
+            textFieldStyler,
+            linkStyler,
+            focusManager,
+            popups,
+            modals,
+            menuEventBus,
+            baseProductSelectEventBus,
+            accessorySelectEventBus
+        )
     }
 }

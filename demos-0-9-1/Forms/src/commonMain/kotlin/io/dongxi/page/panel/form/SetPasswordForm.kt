@@ -7,6 +7,7 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.buttons.PushButton
@@ -26,6 +27,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 class SetPasswordForm(
     submit: PushButton,
     pageType: PageType,
+    formControlFactory: FormControlFactory,
     config: DongxiConfig,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
@@ -46,6 +48,7 @@ class SetPasswordForm(
 ) : AbstractForm(
     pageType,
     config,
+    formControlFactory,
     uiDispatcher,
     animator,
     pathMetrics,

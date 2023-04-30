@@ -22,6 +22,7 @@ import io.nacular.doodle.utils.VerticalAlignment.Middle
 /**
  * Represents a CPF in format "DDD.DDD.DDD-DD".
  */
+@Deprecated("Use class CpfControl")
 class CPF() {
     private var first3Digits: String = ""
     private var second3Digits: String = ""
@@ -49,6 +50,7 @@ class CPF() {
     }
 }
 
+@Deprecated("Use class CpfControl")
 fun cpfField(
     labelConfig: LabeledConfig,
     appConfig: DongxiConfig

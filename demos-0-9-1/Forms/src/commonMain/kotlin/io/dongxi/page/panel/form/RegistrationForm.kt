@@ -7,7 +7,9 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
-import io.dongxi.page.panel.form.control.cpfField
+import io.dongxi.page.panel.form.control.ControlType.CPF
+import io.dongxi.page.panel.form.control.CpfControl
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.form.*
@@ -28,6 +30,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 class RegistrationForm(
     pageType: PageType,
     config: DongxiConfig,
+    formControlFactory: FormControlFactory,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
     pathMetrics: PathMetrics,
@@ -47,6 +50,7 @@ class RegistrationForm(
 ) : AbstractForm(
     pageType,
     config,
+    formControlFactory,
     uiDispatcher,
     animator,
     pathMetrics,
@@ -75,11 +79,14 @@ class RegistrationForm(
         }
     }
 
+    private val cpfControl = formControlFactory.buildControl(CPF) as CpfControl
+
     // TODO How do I nest this in the form below?
     private val setPasswordForm = SetPasswordForm(
         submit = submit,
         pageType = pageType,
         config = config,
+        formControlFactory = formControlFactory,
         uiDispatcher = uiDispatcher,
         animator = animator,
         pathMetrics = pathMetrics,
@@ -110,32 +117,21 @@ class RegistrationForm(
                     config = textFieldConfig("Informar seu nome completo")
                 )
             },
-
             +labeled(
                 name = "CPF",
                 help = "Informar seu CPF, no formato DDD.DDD.DDD-DD",
                 showRequired = Always("*")
             ) {
-                cpfField(
-                    labelConfig = this,
-                    appConfig = config
+                /*
+                 cpfField(
+                     labelConfig = this,
+                     appConfig = config
+                 )
+                 */
+                cpfControl.cpfField(
+                    labelConfig = this
                 )
             },
-
-
-            /*
-            +labeled(
-                name = "Dummy CPF",
-                help = "14 characters",
-                showRequired = Always("*")
-            ) {
-                textField(
-                    pattern = Regex(pattern = ".{14,}"),
-                    config = textFieldConfig("Informar seu CPF, no formato DDD.DDD.DDD-DD")
-                )
-            },
-             */
-
             +labeled(
                 name = "Telefone Celular",
                 help = "15 characters",

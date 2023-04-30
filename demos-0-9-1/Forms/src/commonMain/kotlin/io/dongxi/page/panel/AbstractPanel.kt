@@ -5,6 +5,7 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.dongxi.util.ColorUtils.ghostWhite
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -28,6 +29,7 @@ import kotlinx.coroutines.cancel
 abstract class AbstractPanel(
     override val pageType: PageType,
     val config: DongxiConfig,
+    val formControlFactory: FormControlFactory,
     val uiDispatcher: CoroutineDispatcher,
     val animator: Animator,
     val pathMetrics: PathMetrics,

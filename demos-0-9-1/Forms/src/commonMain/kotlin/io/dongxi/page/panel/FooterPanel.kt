@@ -6,6 +6,7 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.dongxi.util.ColorUtils.floralWhite
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -30,6 +31,7 @@ import kotlinx.coroutines.async
 class FooterPanel(
     pageType: PageType,
     config: DongxiConfig,
+    formControlFactory: FormControlFactory,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
     pathMetrics: PathMetrics,
@@ -43,12 +45,13 @@ class FooterPanel(
     focusManager: FocusManager,
     popups: PopupManager,
     modals: ModalManager,
-    menuEventBus: MenuEventBus,
-    baseProductSelectEventBus: BaseProductSelectEventBus,  // Probably should not pass this param.
+    menuEventBus: MenuEventBus,  // Probably should not pass this param.
+    baseProductSelectEventBus: BaseProductSelectEventBus,
     accessorySelectEventBus: AccessorySelectEventBus
 ) : AbstractPanel(
     pageType,
     config,
+    formControlFactory,
     uiDispatcher,
     animator,
     pathMetrics,
