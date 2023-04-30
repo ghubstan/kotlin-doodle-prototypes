@@ -71,12 +71,30 @@ fun cpfField(
                 }
 
                 textChanged += { _, _, new ->
-                    validateCpf(cpf, this@field, subFieldIndex, new, labelConfig, appConfig)
+                    labelConfig.help.styledText = clearedErrorMessage(appConfig)
+
+                    validateCpf(
+                        cpf = cpf,
+                        subField = this@field,
+                        subFieldIndex = subFieldIndex,
+                        text = new,
+                        labelConfig = labelConfig,
+                        notify = !hasFocus,
+                        appConfig = appConfig
+                    )
                 }
 
                 focusChanged += { _, _, hasFocus ->
                     if (!hasFocus) {
-                        validateCpf(cpf, this@field, subFieldIndex, text, labelConfig, appConfig)
+                        validateCpf(
+                            cpf = cpf,
+                            subField = this@field,
+                            subFieldIndex = subFieldIndex,
+                            text = text,
+                            labelConfig = labelConfig,
+                            notify = true,
+                            appConfig = appConfig
+                        )
                     }
                 }
                 size = Size(100, 30)
@@ -142,6 +160,7 @@ fun validateCpf(
     subFieldIndex: Int,
     text: String,
     labelConfig: LabeledConfig,
+    notify: Boolean = true,
     appConfig: DongxiConfig
 ) {
     cpf.edit(subFieldIndex, text)
@@ -151,11 +170,12 @@ fun validateCpf(
             labelConfig.help.styledText = clearedErrorMessage(appConfig)
             Form.Valid(cpf.toString())
         } else {
-            // labelConfig.help.styledText = invalidCpfErrorMessage(appConfig)
             Form.Invalid()
         }
     } else {
-        labelConfig.help.styledText = subFieldErrorMessage(subFieldIndex, appConfig)
+        if (notify) {
+            labelConfig.help.styledText = subFieldErrorMessage(subFieldIndex, appConfig)
+        }
         subField.state = Form.Invalid()
     }
 }
