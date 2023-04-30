@@ -92,7 +92,6 @@ class CpfControl(
                         labelConfig.help.styledText = defaultHelpMessage()
 
                         validateCpf(
-                            cpf = cpf,
                             subField = this@field,
                             subFieldIndex = subFieldIndex,
                             text = new,
@@ -104,7 +103,6 @@ class CpfControl(
                     focusChanged += { _, _, hasFocus ->
                         if (!hasFocus) {
                             validateCpf(
-                                cpf = cpf,
                                 subField = this@field,
                                 subFieldIndex = subFieldIndex,
                                 text = text,
@@ -171,7 +169,6 @@ class CpfControl(
     }
 
     private fun validateCpf(
-        cpf: CPF,
         subField: FieldInfo<String>,
         subFieldIndex: Int,
         text: String,
