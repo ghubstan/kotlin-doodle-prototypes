@@ -12,7 +12,6 @@ import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.form.*
 import io.nacular.doodle.controls.modal.ModalManager
-import io.nacular.doodle.drawing.Color
 import io.nacular.doodle.drawing.FontLoader
 import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.focus.FocusManager
@@ -20,8 +19,6 @@ import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
-import io.nacular.doodle.text.StyledText
-import io.nacular.doodle.text.invoke
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
@@ -101,25 +98,6 @@ class RegistrationForm(
         accessorySelectEventBus = accessorySelectEventBus
     )
 
-
-    /**
-     * TextField Config used for CPF field.
-     */
-    private fun <T> LabeledConfig.cpfFieldConfig(
-        placeHolder: String = "",
-        errorText: StyledText? = null
-    ): TextFieldConfig<T>.() -> Unit = {
-        val initialHelperText = help.styledText
-        help.font = config.smallFont
-        textField.placeHolder = placeHolder
-        onValid = { help.styledText = initialHelperText }
-        onInvalid = { it ->
-            if (!textField.hasFocus) {
-                help.styledText = errorText ?: it.message?.let { Color.Red(it) } ?: help.styledText
-            }
-        }
-    }
-
     private val mainForm = Form {
         this(
             +labeled(
@@ -139,7 +117,7 @@ class RegistrationForm(
                 showRequired = Always("*")
             ) {
                 cpfField(
-                    labeledConfig = cpfFieldConfig("place-holder"),
+                    labelConfig = this,
                     appConfig = config
                 )
             },

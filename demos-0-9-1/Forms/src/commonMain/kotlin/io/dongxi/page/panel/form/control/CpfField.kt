@@ -9,7 +9,6 @@ import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.controls.text.TextField
 import io.nacular.doodle.core.ContainerBuilder
 import io.nacular.doodle.core.container
-import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.drawing.Color.Companion.Red
 import io.nacular.doodle.drawing.paint
 import io.nacular.doodle.geometry.Size
@@ -50,16 +49,11 @@ class CPF() {
     }
 }
 
-private var validationErrorLabel: Label? = null
-
 fun cpfField(
-    labeledConfig: TextFieldConfig<Any>.() -> Unit,
+    labelConfig: LabeledConfig,
     appConfig: DongxiConfig
 ) = field {
     val cpf = CPF()
-
-
-    validationErrorLabel = errorMessageLabel("", appConfig)
 
     container {
         focusable = false // Ensure this wrapping container isn't focusable.
@@ -77,19 +71,17 @@ fun cpfField(
                 }
 
                 textChanged += { _, _, new ->
-                    validateCpf(cpf, this@field, subFieldIndex, new, labeledConfig, appConfig)
+                    validateCpf(cpf, this@field, subFieldIndex, new, labelConfig, appConfig)
                 }
 
                 focusChanged += { _, _, hasFocus ->
                     if (!hasFocus) {
-                        validateCpf(cpf, this@field, subFieldIndex, text, labeledConfig, appConfig)
+                        validateCpf(cpf, this@field, subFieldIndex, text, labelConfig, appConfig)
                     }
                 }
                 size = Size(100, 30)
             }
         }
-
-        this += validationErrorLabel!!
 
         layout = constrain(
             children[0],
@@ -98,16 +90,14 @@ fun cpfField(
             children[3],
             children[4],
             children[5],
-            children[6],
-            children[7]
+            children[6]
         ) { (firstDigits,
                 firstDot,
                 secondDigits,
                 secondDot,
                 thirdDigits,
                 hyphen,
-                checksumDigits,
-                errorMessage) ->
+                checksumDigits) ->
             firstDigits.top eq 0
             firstDigits.left eq 0
             firstDigits.width eq 35
@@ -142,34 +132,30 @@ fun cpfField(
             checksumDigits.left eq hyphen.right + 5
             checksumDigits.width eq 30
             checksumDigits.height eq 30
-
-            errorMessage.top eq firstDigits.bottom + 5
-            errorMessage.left eq 0
-            errorMessage.width eq 60
-            errorMessage.height eq 30
         }
     }
 }
-
 
 fun validateCpf(
     cpf: CPF,
     subField: FieldInfo<String>,
     subFieldIndex: Int,
     text: String,
-    labeledConfig: TextFieldConfig<Any>.() -> Unit,
+    labelConfig: LabeledConfig,
     appConfig: DongxiConfig
 ) {
     cpf.edit(subFieldIndex, text)
 
     if (isValidSubField(subFieldIndex, text)) {
         subField.state = if (cpf.isValid()) {
+            labelConfig.help.styledText = clearedErrorMessage(appConfig)
             Form.Valid(cpf.toString())
         } else {
-            // How do I set help text in `labeledConfig` ?
+            // labelConfig.help.styledText = invalidCpfErrorMessage(appConfig)
             Form.Invalid()
         }
     } else {
+        labelConfig.help.styledText = subFieldErrorMessage(subFieldIndex, appConfig)
         subField.state = Form.Invalid()
     }
 }
@@ -210,24 +196,7 @@ private fun delimiterLabel(text: String, appConfig: DongxiConfig): Label {
     }
 }
 
-private fun errorMessageLabel(text: String, appConfig: DongxiConfig): Label {
-    val styledText = StyledText(text, appConfig.smallFont, Red.paint)
-    return Label(styledText, Middle, Center).apply {
-        size = Size(60, 30)
-        fitText = setOf(Width, Height)
-        font = appConfig.smallFont
-    }
-}
-
-private fun clearErrorMessageLabel(appConfig: DongxiConfig) {
-    validationErrorLabel!!.styledText = StyledText(
-        text = "",
-        font = appConfig.smallFont,
-        foreground = Black.paint
-    )
-}
-
-private fun updateErrorMessageLabel(subFieldIndex: Int, appConfig: DongxiConfig) {
+private fun subFieldErrorMessage(subFieldIndex: Int, appConfig: DongxiConfig): StyledText {
     val errorMsg: String = when (subFieldIndex) {
         0 -> "1st field must be 3 digits"
         1 -> "2nd field must be 3 digits"
@@ -235,21 +204,19 @@ private fun updateErrorMessageLabel(subFieldIndex: Int, appConfig: DongxiConfig)
         3 -> "4th field must be 2 digits"
         else -> ""
     }
-    println(errorMsg)
-    validationErrorLabel!!.styledText = StyledText(
-        text = errorMsg,
-        font = appConfig.smallFont,
-        foreground = Red.paint
-    )
+    return StyledText(errorMsg, appConfig.smallFont, foreground = Red.paint)
 }
 
+private fun invalidCpfErrorMessage(appConfig: DongxiConfig): StyledText {
+    return StyledText("CPF is not valid", appConfig.smallFont, foreground = Red.paint)
+}
+
+private fun clearedErrorMessage(appConfig: DongxiConfig): StyledText {
+    return StyledText("", appConfig.smallFont, foreground = Red.paint)
+}
 
 // Helper to build form with 6 fields
 operator fun <T> List<T>.component6() = this[5]
 
 // Helper to build form with 7 fields
 operator fun <T> List<T>.component7() = this[6]
-
-// Helper to build form with 8 fields
-operator fun <T> List<T>.component8() = this[7]
-
