@@ -4,6 +4,7 @@ import io.dongxi.application.DongxiConfig
 import io.dongxi.page.panel.BaseContainer
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -59,7 +60,8 @@ class Page(
     accessorySelectEventBus
 ) {
 
-    private val baseContainer = BaseContainer(
+    // Every page has it own from control factory, instead of for all pages.
+    private val formControlFactory: FormControlFactory = FormControlFactory(
         pageType,
         config,
         uiDispatcher,
@@ -80,6 +82,27 @@ class Page(
         accessorySelectEventBus
     )
 
+    private val baseContainer = BaseContainer(
+        pageType,
+        config,
+        formControlFactory,
+        uiDispatcher,
+        animator,
+        pathMetrics,
+        fonts,
+        theme,
+        themes,
+        images,
+        textMetrics,
+        textFieldStyler,
+        linkStyler,
+        focusManager,
+        popups,
+        modals,
+        menuEventBus,
+        baseProductSelectEventBus,
+        accessorySelectEventBus
+    )
 
     init {
         children += listOf(baseContainer)

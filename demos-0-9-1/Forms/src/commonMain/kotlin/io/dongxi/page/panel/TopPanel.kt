@@ -7,6 +7,7 @@ import io.dongxi.page.PageType
 import io.dongxi.page.PageType.*
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.dongxi.page.panel.menu.Menu
 import io.dongxi.util.ColorUtils.floralWhite
 import io.nacular.doodle.animation.Animator
@@ -32,6 +33,7 @@ import kotlinx.coroutines.async
 class TopPanel(
     pageType: PageType,
     config: DongxiConfig,
+    formControlFactory: FormControlFactory,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
     pathMetrics: PathMetrics,
@@ -51,6 +53,7 @@ class TopPanel(
 ) : AbstractPanel(
     pageType,
     config,
+    formControlFactory,
     uiDispatcher,
     animator,
     pathMetrics,

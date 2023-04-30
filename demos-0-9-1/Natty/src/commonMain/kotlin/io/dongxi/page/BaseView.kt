@@ -116,7 +116,7 @@ class BaseView(
                         currentPage = pageFactory.buildPage((ABOUT)) as View
                     }
 
-                    LOGOUT -> {
+                    GO_LOGOUT -> {
                         println("Received LOGOUT event.  TODO: logout")
                     }
                 }

@@ -1,28 +1,12 @@
 package io.dongxi.page.panel.form
 
 
-
-import io.nacular.doodle.controls.buttons.PushButton
-import io.nacular.doodle.controls.form.Form
-import io.nacular.doodle.controls.form.LabeledConfig
-import io.nacular.doodle.controls.form.TextFieldConfig
-import io.nacular.doodle.controls.form.form
-import io.nacular.doodle.controls.form.labeled
-import io.nacular.doodle.controls.form.radioList
-import io.nacular.doodle.controls.form.textField
-import io.nacular.doodle.controls.form.verticalLayout
-import io.nacular.doodle.drawing.Color.Companion.Red
-import io.nacular.doodle.drawing.Font
-import io.nacular.doodle.geometry.Size
-import io.nacular.doodle.text.StyledText
-import io.nacular.doodle.text.invoke
-import io.nacular.doodle.utils.ToStringIntEncoder
-
 import io.dongxi.application.DongxiConfig
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -40,6 +24,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 class PaymentForm(
     pageType: PageType,
     config: DongxiConfig,
+    formControlFactory: FormControlFactory,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
     pathMetrics: PathMetrics,
@@ -59,6 +44,7 @@ class PaymentForm(
 ) : AbstractForm(
     pageType,
     config,
+    formControlFactory,
     uiDispatcher,
     animator,
     pathMetrics,

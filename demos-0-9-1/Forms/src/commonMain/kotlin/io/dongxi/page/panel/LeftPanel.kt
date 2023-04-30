@@ -5,6 +5,7 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.dongxi.util.ColorUtils.floralWhite
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -26,6 +27,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 class LeftPanel(
     pageType: PageType,
     config: DongxiConfig,
+    formControlFactory: FormControlFactory,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
     pathMetrics: PathMetrics,
@@ -45,6 +47,7 @@ class LeftPanel(
 ) : AbstractPanel(
     pageType,
     config,
+    formControlFactory,
     uiDispatcher,
     animator,
     pathMetrics,

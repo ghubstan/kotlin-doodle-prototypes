@@ -6,6 +6,7 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.buttons.PushButton
@@ -32,6 +33,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 abstract class AbstractForm(
     val pageType: PageType,
     val config: DongxiConfig,
+    val formControlFactory: FormControlFactory,
     val uiDispatcher: CoroutineDispatcher,
     val animator: Animator,
     val pathMetrics: PathMetrics,
@@ -86,10 +88,5 @@ abstract class AbstractForm(
         }
         // The fired: ChangeObserver must be defined in the using subclass.
         // fired += { mainScope.launch {eventBus.produceEvent(event)} }
-    }
-
-    companion object {
-        val twoDigitNumber = Regex("^1[0-5]\\d|^[1-9]\\d|^[1-9]")
-        val threeDigitNumber = Regex("^1[0-5]\\d|^[1-9]\\d|^[1-9]\\d|^[1-9]") // TODO Verify is correct regex.
     }
 }

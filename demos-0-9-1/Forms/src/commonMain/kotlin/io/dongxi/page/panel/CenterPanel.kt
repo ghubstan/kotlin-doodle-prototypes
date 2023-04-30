@@ -9,6 +9,7 @@ import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.page.panel.form.LoginForm
 import io.dongxi.page.panel.form.RegistrationForm
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.dongxi.util.ColorUtils.floralWhite
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -32,6 +33,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 class CenterPanel(
     pageType: PageType,
     config: DongxiConfig,
+    formControlFactory: FormControlFactory,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
     pathMetrics: PathMetrics,
@@ -51,6 +53,7 @@ class CenterPanel(
 ) : AbstractPanel(
     pageType,
     config,
+    formControlFactory,
     uiDispatcher,
     animator,
     pathMetrics,
@@ -76,6 +79,7 @@ class CenterPanel(
             children += LoginForm(
                 pageType,
                 config,
+                formControlFactory,
                 uiDispatcher,
                 animator,
                 pathMetrics,
@@ -98,6 +102,7 @@ class CenterPanel(
             children += RegistrationForm(  // RegistrationFormLong(
                 pageType,
                 config,
+                formControlFactory,
                 uiDispatcher,
                 animator,
                 pathMetrics,

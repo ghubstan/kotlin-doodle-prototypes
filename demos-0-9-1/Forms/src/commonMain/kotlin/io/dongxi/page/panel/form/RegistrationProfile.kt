@@ -16,10 +16,6 @@ data class RegistrationProfile(
     // Error Msg: É necessário informar um CPF.
     val cpf: String,            // ___.___.___-__   -> DDD.DDD.DDD-DD
 
-    // Field label: Data de Nascimento
-    // Error Msg: É necessário informar sua data de nascimento completa, no formato DD/MM/AAAA.
-    val birthDate: String,      // __/__/____       -> DD/MM/AAAA
-
     // Field label: Telefone Celular*
     // Error Msg: É necessário informar o número completo no formato (DD) 99999-9999.
     val cellPhone: String,      // (__) _ ____-____

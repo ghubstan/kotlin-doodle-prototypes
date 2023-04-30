@@ -1,4 +1,4 @@
-package io.dongxi.page.panel.form
+package io.dongxi.model
 
 import kotlinx.serialization.Serializable
 

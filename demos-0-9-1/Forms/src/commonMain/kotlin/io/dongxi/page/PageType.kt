@@ -1,7 +1,7 @@
 package io.dongxi.page
 
 enum class PageType(val pageTitle: String) {
-    HOME("Casa"),
+    HOME("Home"),
     REGISTER("Crie a Sua Conta"),
     LOGIN("Entre"),
     BASKET("Carrihno de Compras"),

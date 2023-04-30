@@ -2,10 +2,14 @@ package io.dongxi.page.panel.form
 
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.model.PasswordConfirmation
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.ControlType.CPF
+import io.dongxi.page.panel.form.control.CpfControl
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.form.*
@@ -23,10 +27,10 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.CoroutineDispatcher
 
-
 class RegistrationForm(
     pageType: PageType,
     config: DongxiConfig,
+    formControlFactory: FormControlFactory,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,
     pathMetrics: PathMetrics,
@@ -46,6 +50,7 @@ class RegistrationForm(
 ) : AbstractForm(
     pageType,
     config,
+    formControlFactory,
     uiDispatcher,
     animator,
     pathMetrics,
@@ -74,11 +79,14 @@ class RegistrationForm(
         }
     }
 
+    private val cpfControl = formControlFactory.buildControl(CPF) as CpfControl
+
     // TODO How do I nest this in the form below?
     private val setPasswordForm = SetPasswordForm(
         submit = submit,
         pageType = pageType,
         config = config,
+        formControlFactory = formControlFactory,
         uiDispatcher = uiDispatcher,
         animator = animator,
         pathMetrics = pathMetrics,
@@ -111,22 +119,17 @@ class RegistrationForm(
             },
             +labeled(
                 name = "CPF",
-                help = "14 characters",
+                help = "Informar seu CPF, no formato DDD.DDD.DDD-DD",
                 showRequired = Always("*")
             ) {
-                textField(
-                    pattern = Regex(pattern = ".{14,}"),
-                    config = textFieldConfig("Informar seu CPF, no formato DDD.DDD.DDD-DD")
-                )
-            },
-            +labeled(
-                name = "Data de Nascimento",
-                help = "10 characters",
-                showRequired = Always("*")
-            ) {
-                textField(
-                    pattern = Regex(pattern = ".{10,}"),
-                    config = textFieldConfig("Informar sua data de nascimento completa, no formato DD/MM/AAAA")
+                /*
+                 cpfField(
+                     labelConfig = this,
+                     appConfig = config
+                 )
+                 */
+                cpfControl.cpfField(
+                    labelConfig = this
                 )
             },
             +labeled(
@@ -153,7 +156,7 @@ class RegistrationForm(
             // It has 2 text fields that do validation to make sure they are the same.
             PasswordConfirmation("", "") to setPasswordForm.subForm,
             onInvalid = { submit.enabled = false }
-        ) { (fullName, cpf, birthDate, cellPhone, email, passwordConfirm) -> // destructure given list
+        ) { (fullName, cpf, cellPhone, email, passwordConfirm) -> // destructure given list
 
             val passwordConfirm = passwordConfirm as PasswordConfirmation
 
@@ -170,7 +173,6 @@ class RegistrationForm(
                 registrationProfile = RegistrationProfile(
                     fullName as String,
                     cpf as String,
-                    birthDate as String,
                     cellPhone as String,
                     email as String,
                     passwordConfirm.password
