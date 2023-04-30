@@ -203,7 +203,8 @@ class CpfControl(
     private fun defaultHelpMessage(): StyledText {
         return StyledText(
             "Informar seu CPF, no formato DDD.DDD.DDD-DD",
-            config.smallFont, foreground = Black.paint
+            config.smallFont,
+            foreground = Black.paint
         )
     }
 
