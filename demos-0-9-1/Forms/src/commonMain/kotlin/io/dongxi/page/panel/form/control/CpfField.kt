@@ -4,10 +4,7 @@ import io.dongxi.application.DongxiConfig
 import io.dongxi.util.RegexUtils
 import io.dongxi.util.RegexUtils.cpfPattern
 import io.dongxi.util.RegexUtils.isMatch
-import io.nacular.doodle.controls.form.FieldInfo
-import io.nacular.doodle.controls.form.Form
-import io.nacular.doodle.controls.form.field
-import io.nacular.doodle.controls.form.ifValid
+import io.nacular.doodle.controls.form.*
 import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.controls.text.TextField
 import io.nacular.doodle.core.ContainerBuilder
@@ -55,8 +52,12 @@ class CPF() {
 
 private var validationErrorLabel: Label? = null
 
-fun cpfField(appConfig: DongxiConfig) = field {
+fun cpfField(
+    labeledConfig: TextFieldConfig<Any>.() -> Unit,
+    appConfig: DongxiConfig
+) = field {
     val cpf = CPF()
+
 
     validationErrorLabel = errorMessageLabel("", appConfig)
 
@@ -76,12 +77,12 @@ fun cpfField(appConfig: DongxiConfig) = field {
                 }
 
                 textChanged += { _, _, new ->
-                    validateCpf(cpf, this@field, subFieldIndex, new, appConfig)
+                    validateCpf(cpf, this@field, subFieldIndex, new, labeledConfig, appConfig)
                 }
 
                 focusChanged += { _, _, hasFocus ->
                     if (!hasFocus) {
-                        validateCpf(cpf, this@field, subFieldIndex, text, appConfig)
+                        validateCpf(cpf, this@field, subFieldIndex, text, labeledConfig, appConfig)
                     }
                 }
                 size = Size(100, 30)
@@ -156,6 +157,7 @@ fun validateCpf(
     subField: FieldInfo<String>,
     subFieldIndex: Int,
     text: String,
+    labeledConfig: TextFieldConfig<Any>.() -> Unit,
     appConfig: DongxiConfig
 ) {
     cpf.edit(subFieldIndex, text)
@@ -164,6 +166,7 @@ fun validateCpf(
         subField.state = if (cpf.isValid()) {
             Form.Valid(cpf.toString())
         } else {
+            // How do I set help text in `labeledConfig` ?
             Form.Invalid()
         }
     } else {
