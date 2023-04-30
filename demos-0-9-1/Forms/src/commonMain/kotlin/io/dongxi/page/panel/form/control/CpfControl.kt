@@ -203,7 +203,7 @@ class CpfControl(
         return isMatch(subFieldValue, subFieldPattern)
     }
 
-    fun defaultHelpMessage(): StyledText {
+    private fun defaultHelpMessage(): StyledText {
         return StyledText(
             "Informar seu CPF, no formato DDD.DDD.DDD-DD",
             config.smallFont, foreground = Black.paint
