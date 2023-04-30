@@ -122,12 +122,6 @@ class RegistrationForm(
                 help = "Informar seu CPF, no formato DDD.DDD.DDD-DD",
                 showRequired = Always("*")
             ) {
-                /*
-                 cpfField(
-                     labelConfig = this,
-                     appConfig = config
-                 )
-                 */
                 cpfControl.cpfField(
                     labelConfig = this
                 )
