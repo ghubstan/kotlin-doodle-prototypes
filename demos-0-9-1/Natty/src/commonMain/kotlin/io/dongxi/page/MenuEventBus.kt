@@ -12,7 +12,7 @@ enum class MenuEvent {
     GO_BRACELETS,
     GO_EARRINGS,
     GO_ABOUT,
-    LOGOUT
+    GO_LOGOUT
 }
 
 /**

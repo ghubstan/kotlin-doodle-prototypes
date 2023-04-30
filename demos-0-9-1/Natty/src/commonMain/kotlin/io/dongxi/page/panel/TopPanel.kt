@@ -165,6 +165,12 @@ class TopPanel(
             ABOUT -> {
                 return LazyImage(mainScope.async { images.load("page-title-about.svg")!! }, RECT_TITLE)
             }
+
+            BASKET -> TODO()
+            LOGIN -> TODO()
+            LOGOUT -> TODO()
+            PAYMENT -> TODO()
+            REGISTER -> TODO()
         }
     }
 

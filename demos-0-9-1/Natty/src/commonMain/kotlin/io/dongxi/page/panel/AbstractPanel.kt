@@ -84,7 +84,7 @@ abstract class AbstractPanel(
                     GO_RINGS -> RING
                     GO_SCAPULARS -> SCAPULAR
                     GO_ABOUT -> NONE
-                    LOGOUT -> NONE
+                    GO_LOGOUT -> NONE
                 }
 
                 // println("${panelInstanceName()} current ProductCategory: $currentProductCategory")
