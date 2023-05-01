@@ -87,11 +87,11 @@ class RegistrationForm(
         this(
             +labeled(
                 name = "Nome Completo",
-                help = "9+ alpha-numeric characters",
+                help = "3+ alpha-numeric characters",
                 showRequired = Always("*")
             ) {
                 textField(
-                    pattern = Regex(pattern = ".{9,}"),
+                    pattern = Regex(pattern = ".{3,}"),
                     config = textFieldConfig("Informar seu nome completo")
                 )
             },
@@ -106,21 +106,21 @@ class RegistrationForm(
             },
             +labeled(
                 name = "Telefone Celular",
-                help = "15 characters",
+                help = "3 characters",
                 showRequired = Always("*")
             ) {
                 textField(
-                    pattern = Regex(pattern = ".{15,}"),
+                    pattern = Regex(pattern = ".{3,}"),
                     config = textFieldConfig("Informar o número completo no formato (DD) 99999-9999")
                 )
             },
             +labeled(
                 name = "E-mail",
-                help = "11 characters",
+                help = "3 characters",
                 showRequired = Always("*")
             ) {
                 textField(
-                    pattern = Regex(pattern = ".{11,}"),
+                    pattern = Regex(pattern = ".{3,}"),
                     config = textFieldConfig("Informar um E-mail válido")
                 )
             },
