@@ -46,8 +46,8 @@ class PageFactory(
     override val pageCache = mutableMapOf<PageType, IPage>()
 
     override fun buildPage(pageType: PageType): IPage {
-        if (pageCache.containsKey(pageType)) {
-            return pageCache[pageType]!!
+        return if (pageCache.containsKey(pageType)) {
+            pageCache[pageType]!!
         } else {
             val page = Page(
                 pageType,
@@ -68,10 +68,9 @@ class PageFactory(
                 menuEventBus,
                 baseProductSelectEventBus,
                 accessorySelectEventBus
-            ).apply {
-            }
+            )
             pageCache[pageType] = page
-            return page
+            page
         }
     }
 }

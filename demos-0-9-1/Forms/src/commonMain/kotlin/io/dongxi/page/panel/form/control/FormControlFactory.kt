@@ -6,7 +6,6 @@ import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.page.panel.form.control.ControlType.*
-import io.dongxi.page.panel.form.control.ControlType.CPF
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -50,21 +49,43 @@ class FormControlFactory(
     override val controlCache = mutableMapOf<ControlType, IControl>()
 
     override fun buildControl(controlType: ControlType): IControl {
-        if (controlCache.containsKey(controlType)) {
-            return controlCache[controlType]!!
+        return if (controlCache.containsKey(controlType)) {
+            controlCache[controlType]!!
         } else {
             val control = when (controlType) {
                 CPF -> cpfControl()
-                CHANGE_PASSWORD -> TODO()
-                SET_PASSWORD -> TODO()
+                CHANGE_PASSWORD, SET_PASSWORD -> userPasswordControl()
             }
             controlCache[controlType] = control
-            return control
+            control
         }
     }
 
     private fun cpfControl(): CpfControl {
         return CpfControl(
+            pageType,
+            config,
+            uiDispatcher,
+            animator,
+            pathMetrics,
+            fonts,
+            theme,
+            themes,
+            images,
+            textMetrics,
+            textFieldStyler,
+            linkStyler,
+            focusManager,
+            popups,
+            modals,
+            menuEventBus,
+            baseProductSelectEventBus,
+            accessorySelectEventBus
+        )
+    }
+
+    private fun userPasswordControl(): UserPasswordControl {
+        return UserPasswordControl(
             pageType,
             config,
             uiDispatcher,

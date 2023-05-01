@@ -2,14 +2,15 @@ package io.dongxi.page.panel.form
 
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.model.PasswordConfirmation
 import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.ControlType
 import io.dongxi.page.panel.form.control.ControlType.CPF
 import io.dongxi.page.panel.form.control.CpfControl
 import io.dongxi.page.panel.form.control.FormControlFactory
+import io.dongxi.page.panel.form.control.UserPasswordControl
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.form.*
@@ -80,40 +81,17 @@ class RegistrationForm(
     }
 
     private val cpfControl = formControlFactory.buildControl(CPF) as CpfControl
-
-    // TODO How do I nest this in the form below?
-    private val setPasswordForm = SetPasswordForm(
-        submit = submit,
-        pageType = pageType,
-        config = config,
-        formControlFactory = formControlFactory,
-        uiDispatcher = uiDispatcher,
-        animator = animator,
-        pathMetrics = pathMetrics,
-        fonts = fonts,
-        theme = theme,
-        themes = themes,
-        images = images,
-        textMetrics = textMetrics,
-        textFieldStyler = textFieldStyler,
-        linkStyler = linkStyler,
-        focusManager = focusManager,
-        popups = popups,
-        modals = modals,
-        menuEventBus = menuEventBus,
-        baseProductSelectEventBus = baseProductSelectEventBus,
-        accessorySelectEventBus = accessorySelectEventBus
-    )
+    private val userPasswordControl = formControlFactory.buildControl(ControlType.SET_PASSWORD) as UserPasswordControl
 
     private val mainForm = Form {
         this(
             +labeled(
                 name = "Nome Completo",
-                help = "9+ alpha-numeric characters",
+                help = "3+ alpha-numeric characters",
                 showRequired = Always("*")
             ) {
                 textField(
-                    pattern = Regex(pattern = ".{9,}"),
+                    pattern = Regex(pattern = ".{3,}"),
                     config = textFieldConfig("Informar seu nome completo")
                 )
             },
@@ -122,62 +100,50 @@ class RegistrationForm(
                 help = "Informar seu CPF, no formato DDD.DDD.DDD-DD",
                 showRequired = Always("*")
             ) {
-                /*
-                 cpfField(
-                     labelConfig = this,
-                     appConfig = config
-                 )
-                 */
                 cpfControl.cpfField(
                     labelConfig = this
                 )
             },
             +labeled(
                 name = "Telefone Celular",
-                help = "15 characters",
+                help = "3 characters",
                 showRequired = Always("*")
             ) {
                 textField(
-                    pattern = Regex(pattern = ".{15,}"),
+                    pattern = Regex(pattern = ".{3,}"),
                     config = textFieldConfig("Informar o número completo no formato (DD) 99999-9999")
                 )
             },
             +labeled(
                 name = "E-mail",
-                help = "11 characters",
+                help = "3 characters",
                 showRequired = Always("*")
             ) {
                 textField(
-                    pattern = Regex(pattern = ".{11,}"),
+                    pattern = Regex(pattern = ".{3,}"),
                     config = textFieldConfig("Informar um E-mail válido")
                 )
             },
-            // Use a custom field for password/verify-password that returns a String (password).
-            // It has 2 text fields that do validation to make sure they are the same.
-            PasswordConfirmation("", "") to setPasswordForm.subForm,
-            onInvalid = { submit.enabled = false }
-        ) { (fullName, cpf, cellPhone, email, passwordConfirm) -> // destructure given list
-
-            val passwordConfirm = passwordConfirm as PasswordConfirmation
-
-            if (!passwordConfirm.isMatch()) {
-                // TODO Set Error Msg TextField defined in View, outside of Form.
-                println("Passwords do not match.")
-                submit.enabled = false
-            } else if (!passwordConfirm.isValid()) {
-                // TODO Set Error Msg TextField defined in View, outside of Form.
-                println("Password is missing required mix of characters.")
-                submit.enabled = false
-            } else {
-                submit.enabled = true
-                registrationProfile = RegistrationProfile(
-                    fullName as String,
-                    cpf as String,
-                    cellPhone as String,
-                    email as String,
-                    passwordConfirm.password
+            +labeled(
+                name = "Senha",
+                help = "Crie Sua Senha",
+                showRequired = Always("*")
+            ) {
+                userPasswordControl.passwordConfirmationField(
+                    labelConfig = this
                 )
-            }
+            },
+
+            onInvalid = { submit.enabled = false }
+        ) { (fullName, cpf, cellPhone, email, password) -> // destructure given list
+            submit.enabled = true
+            registrationProfile = RegistrationProfile(
+                fullName as String,
+                cpf as String,
+                cellPhone as String,
+                email as String,
+                password as String
+            )
         }
     }.apply {
         size = Size(300, 100)
@@ -191,10 +157,10 @@ class RegistrationForm(
         children += submit
         layout = constrain(mainForm, submit) { (mainFormBounds, buttonBounds) ->
             mainFormBounds.top eq 2
-            mainFormBounds.left eq parent.width * 0.10
-            mainFormBounds.right eq parent.width * 0.90
+            mainFormBounds.left eq parent.width * 0.025
+            mainFormBounds.right eq parent.width * 0.975
 
-            buttonBounds.top eq mainFormBounds.bottom + 10
+            buttonBounds.top eq mainFormBounds.bottom + 25
             buttonBounds.centerX eq parent.centerX
         }
     }

@@ -18,10 +18,6 @@ data class UserProfile(
     // Error Msg: É necessário informar um CPF.
     val cpf: String,            // ___.___.___-__   -> DDD.DDD.DDD-DD
 
-    // Field label: Data de Nascimento
-    // Error Msg: É necessário informar sua data de nascimento completa, no formato DD/MM/AAAA.
-    val birthDate: String,      // __/__/____       -> DD/MM/AAAA
-
     // Field label: Telefone Celular*
     // Error Msg: É necessário informar o número completo no formato (DDD) 99999-9999.
     val cellPhone: String,      // (__) _ ____-____
@@ -34,10 +30,6 @@ data class UserProfile(
     // Field label: Crie Sua Senha*
     // Error Msg: É necessário informar uma senha. (TODO how many chars, a #, a capital letter, a control char)
     val password: String,
-
-    // Field label: Confirme Sua Senha*
-    // Error Msg: Password confirmation does not match original. (TODO translate to BR_pt)
-    val passwordConfirm: String
 ) {
     fun isValid(): Boolean {
         return true
