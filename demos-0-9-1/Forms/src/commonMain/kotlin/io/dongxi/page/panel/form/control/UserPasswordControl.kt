@@ -30,6 +30,7 @@ import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.theme.native.NativeTextFieldStyler
+import io.nacular.doodle.utils.TextAlignment
 import kotlinx.coroutines.CoroutineDispatcher
 
 
@@ -77,6 +78,9 @@ class UserPasswordControl(
     fun passwordConfirmationField(labelConfig: LabeledConfig) = field {
         container {
             focusable = false // Ensure this wrapping container isn't focusable.
+
+            labelConfig.help.textAlignment = TextAlignment.Justify
+            labelConfig.help.wrapsWords = true
 
             for (fieldNum in 0..2) {
                 when (fieldNum) {
@@ -226,8 +230,9 @@ class UserPasswordControl(
         // In Kotlin, use parens () to avoid compiler error when breaking long string into multiple lines.
         // See https://kotlinlang.org/docs/reference/grammar.html
         // TODO How do I insert a new-line into StyledText?
-        val errorMsg = ("Password must be between 8-32 characters, and include an uppercase letter,\n"
-                + "a lowercase letter, and one the following special characters: $SPECIAL_CHARACTERS")
+        val errorMsg =
+            ("Password must be between 8-32 characters, and include an uppercase letter,a lowercase letter,"
+                    + " and one the following special characters: $SPECIAL_CHARACTERS")
         return styledErrorMessage(errorMsg)
     }
 
