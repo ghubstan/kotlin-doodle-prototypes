@@ -231,7 +231,7 @@ class UserPasswordControl(
         // See https://kotlinlang.org/docs/reference/grammar.html
         // TODO How do I insert a new-line into StyledText?
         val errorMsg =
-            ("Password must be between 8-32 characters, and include an uppercase letter,a lowercase letter,"
+            ("Password must be between 8-32 characters, and include an uppercase letter, a lowercase letter,"
                     + " and one the following special characters: $SPECIAL_CHARACTERS")
         return styledErrorMessage(errorMsg)
     }
