@@ -1,9 +1,9 @@
 @file:Suppress("DuplicatedCode")
 
-package io.dongxi.koindi
+package io.dongxi.kodein
 
 
-import io.dongxi.application.KoinApp
+import io.dongxi.application.KodeinApp
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.animation.AnimatorImpl
 import io.nacular.doodle.application.Modules.Companion.FontModule
@@ -70,7 +70,7 @@ fun main() {
             bindSingleton<PathMetrics> { PathMetricsImpl(svgFactory = instance()) }
         }
     )) {
-        KoinApp(
+        KodeinApp(
             display = instance(),
             uiDispatcher = Dispatchers.UI,
             animator = instance(),

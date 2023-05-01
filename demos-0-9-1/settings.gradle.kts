@@ -1,14 +1,14 @@
 rootProject.name = "demos-0-9-1"
 
 include(
-    "KoinDI",
+    "KodeinDI",
     "Modal",
     "DrawerNav",
     "Natty",
     "Forms"
 )
 
-project(":KoinDI").name = "koindi"
+project(":KodeinDI").name = "kodein"
 project(":Modal").name = "modal"
 project(":DrawerNav").name = "drawernav"
 project(":Natty").name = "natty"
