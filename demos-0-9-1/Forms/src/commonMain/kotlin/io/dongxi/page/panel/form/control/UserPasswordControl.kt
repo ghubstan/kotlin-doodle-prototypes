@@ -232,7 +232,7 @@ class UserPasswordControl(
         // TODO How do I insert a new-line into StyledText?
         val errorMsg =
             ("Password must be between 8-32 characters, and include an uppercase letter, a lowercase letter,"
-                    + " and one the following special characters: $SPECIAL_CHARACTERS")
+                    + " and one of: $SPECIAL_CHARACTERS")
         return styledErrorMessage(errorMsg)
     }
 
@@ -242,7 +242,7 @@ class UserPasswordControl(
 
     private fun defaultHelpMessage(): StyledText {
         return StyledText(
-            "8-32 characters, with a capital letter, a small letter, and one of $SPECIAL_CHARACTERS",
+            "8-32 characters, with a capital letter, a small letter, and one of: $SPECIAL_CHARACTERS",
             config.smallFont,
             foreground = Black.paint
         )
