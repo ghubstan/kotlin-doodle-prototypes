@@ -83,6 +83,8 @@ class UserPasswordControl(
             labelConfig.help.wrapsWords = true  // Error msgs may be multi-lined.
 
             // 3 Fields: password, confirm-label, confirm-password.
+            // TODO Figure out why field 1 focus does not work when I iterate the for loop as I do
+            //  in CpfControl, calling "maybeInsertConfirmLabel".
             for (fieldNum in 0..2) {
                 when (fieldNum) {
                     0 -> this += TextField().apply {
