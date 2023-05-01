@@ -30,7 +30,7 @@ import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.theme.native.NativeTextFieldStyler
-import io.nacular.doodle.utils.TextAlignment
+import io.nacular.doodle.utils.TextAlignment.Justify
 import kotlinx.coroutines.CoroutineDispatcher
 
 
@@ -79,9 +79,10 @@ class UserPasswordControl(
         container {
             focusable = false // Ensure this wrapping container isn't focusable.
 
-            labelConfig.help.textAlignment = TextAlignment.Justify
-            labelConfig.help.wrapsWords = true
+            labelConfig.help.textAlignment = Justify
+            labelConfig.help.wrapsWords = true  // Error msgs may be multi-lined.
 
+            // 3 Fields: password, confirm-label, confirm-password.
             for (fieldNum in 0..2) {
                 when (fieldNum) {
                     0 -> this += TextField().apply {
