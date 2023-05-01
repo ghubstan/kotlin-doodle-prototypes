@@ -24,6 +24,7 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.CoroutineDispatcher
 
+@Deprecated("Use class UserPasswordControl")
 class SetPasswordForm(
     submit: PushButton,
     pageType: PageType,

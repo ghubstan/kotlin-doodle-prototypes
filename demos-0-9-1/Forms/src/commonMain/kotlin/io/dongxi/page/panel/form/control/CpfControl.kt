@@ -133,7 +133,7 @@ class CpfControl(
                 firstDigits.top eq 0
                 firstDigits.left eq 0
                 firstDigits.width eq 35
-                firstDigits.height eq 30
+                firstDigits.height eq FIELD_HEIGHT
 
                 firstDot.top eq 10
                 firstDot.left eq firstDigits.right + 5
@@ -143,7 +143,7 @@ class CpfControl(
                 secondDigits.top eq 0
                 secondDigits.left eq firstDot.right + 5
                 secondDigits.width eq 35
-                secondDigits.height eq 30
+                secondDigits.height eq FIELD_HEIGHT
 
                 secondDot.top eq 10
                 secondDot.left eq secondDigits.right + 5
@@ -153,7 +153,7 @@ class CpfControl(
                 thirdDigits.top eq 0
                 thirdDigits.left eq secondDot.right + 5
                 thirdDigits.width eq 35
-                thirdDigits.height eq 30
+                thirdDigits.height eq FIELD_HEIGHT
 
                 hyphen.top eq 6
                 hyphen.left eq thirdDigits.right + 5
@@ -163,7 +163,7 @@ class CpfControl(
                 checksumDigits.top eq 0
                 checksumDigits.left eq hyphen.right + 5
                 checksumDigits.width eq 30
-                checksumDigits.height eq 30
+                checksumDigits.height eq FIELD_HEIGHT
             }
         }
     }
@@ -246,9 +246,6 @@ class CpfControl(
     /**
      * Represents a CPF in format "DDD.DDD.DDD-DD".
      */
-    /**
-     * Represents a CPF in format "DDD.DDD.DDD-DD".
-     */
     internal class CPF {
         private var subField1: String = ""                 // 3 digits ->  Regex("\\d{3}")
         private var subField2: String = ""                 // 3 digits ->  Regex("\\d{3}")
@@ -270,16 +267,10 @@ class CpfControl(
         /**
          * Returns the CPF number in format "DDD.DDD.DDD-DD".
          */
-        /**
-         * Returns the CPF number in format "DDD.DDD.DDD-DD".
-         */
         fun value(): String {
             return toString()
         }
 
-        /**
-         * Returns true if value() returns a string in format "DDD.DDD.DDD-DD".
-         */
         /**
          * Returns true if value() returns a string in format "DDD.DDD.DDD-DD".
          */

@@ -49,9 +49,17 @@ abstract class AbstractControl(
     val accessorySelectEventBus: AccessorySelectEventBus
 ) {
 
+    fun fieldLabel(text: String): Label {
+        return Label(text, Middle, Center).apply {
+            size = Size(60, FIELD_HEIGHT)
+            fitText = setOf(Width, Height)
+            font = config.formTextFieldFont
+        }
+    }
+
     fun fieldDelimiterLabel(text: String): Label {
         return Label(text, Middle, Center).apply {
-            size = Size(5, 5)
+            size = FIELD_DELIMITER_SIZE
             fitText = setOf(Width, Height)
             font = config.formTextFieldDelimiterFont
         }
@@ -64,7 +72,7 @@ abstract class AbstractControl(
     fun styledErrorMessage(errorMessage: String): StyledText {
         return StyledText(errorMessage, config.smallFont, foreground = Red.paint)
     }
-    
+
     // Helper to build form with 6 fields.
     operator fun <T> List<T>.component6() = this[5]
 
@@ -80,4 +88,8 @@ abstract class AbstractControl(
     // Helper to build form with 10 fields.
     operator fun <T> List<T>.component10() = this[9]
 
+    companion object {
+        const val FIELD_HEIGHT = 30
+        val FIELD_DELIMITER_SIZE = Size(5, 5)
+    }
 }
