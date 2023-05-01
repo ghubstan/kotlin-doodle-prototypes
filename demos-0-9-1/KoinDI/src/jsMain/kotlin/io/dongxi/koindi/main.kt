@@ -1,9 +1,9 @@
 @file:Suppress("DuplicatedCode")
 
-package io.dongxi.popupmgr
+package io.dongxi.koindi
 
 
-import io.dongxi.application.PopupManagerApp
+import io.dongxi.application.KoinApp
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.animation.AnimatorImpl
 import io.nacular.doodle.application.Modules.Companion.FontModule
@@ -21,7 +21,6 @@ import io.nacular.doodle.drawing.Color.Companion.Red
 import io.nacular.doodle.drawing.paint
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.impl.PathMetricsImpl
-import io.nacular.doodle.theme.basic.BasicTheme.*
 import io.nacular.doodle.theme.basic.BasicTheme.Companion.basicCheckBoxBehavior
 import io.nacular.doodle.theme.basic.BasicTheme.Companion.basicLabelBehavior
 import io.nacular.doodle.theme.basic.BasicTheme.Companion.basicListBehavior
@@ -71,8 +70,7 @@ fun main() {
             bindSingleton<PathMetrics> { PathMetricsImpl(svgFactory = instance()) }
         }
     )) {
-        // https://nacular.github.io/doodle-api/core/io.nacular.doodle.controls/-popup-manager/index.html
-        PopupManagerApp(
+        KoinApp(
             display = instance(),
             uiDispatcher = Dispatchers.UI,
             animator = instance(),

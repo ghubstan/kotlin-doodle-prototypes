@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 enum class MenuEvent {
-    SHOW_CASA,
+    SHOW_HOME,
     SHOW_ANEIS,
     SHOW_COLARES,
 

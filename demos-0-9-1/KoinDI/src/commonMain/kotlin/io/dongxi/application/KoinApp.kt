@@ -20,7 +20,7 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.*
 
-class PopupManagerApp(
+class KoinApp(
     display: Display,
     uiDispatcher: CoroutineDispatcher,
     animator: Animator,

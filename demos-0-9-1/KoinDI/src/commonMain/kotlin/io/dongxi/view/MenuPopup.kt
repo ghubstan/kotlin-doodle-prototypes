@@ -2,7 +2,7 @@ package io.dongxi.view
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.view.MenuEvent.SHOW_ANEIS
-import io.dongxi.view.MenuEvent.SHOW_CASA
+import io.dongxi.view.MenuEvent.SHOW_HOME
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.buttons.HyperLink
@@ -57,12 +57,12 @@ class MenuPopup(
     }
 
     private val homeLink = HyperLink(
-        url = "casa?",
-        text = "Casa",
+        url = "home?",
+        text = "Home",
     ).apply {
         fired += {
             mainScope.launch {
-                eventBus.produceEvent(SHOW_CASA)
+                eventBus.produceEvent(SHOW_HOME)
             }
         }
     }

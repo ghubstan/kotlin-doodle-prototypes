@@ -2,7 +2,7 @@ package io.dongxi.view
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.view.PageType.ANEIS
-import io.dongxi.view.PageType.CASA
+import io.dongxi.view.PageType.HOME
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -43,7 +43,7 @@ class PageFactory(
 
     override fun buildPage(pageType: PageType): IPage {
         when (pageType) {
-            CASA -> {
+            HOME -> {
                 if (pageCache.containsKey(pageType)) {
                     return pageCache[pageType]!!
                 } else {

@@ -1,6 +1,6 @@
 package io.dongxi.view
 
 enum class PageType {
-    CASA,
+    HOME,
     ANEIS
 }

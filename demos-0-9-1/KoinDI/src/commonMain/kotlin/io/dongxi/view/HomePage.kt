@@ -40,7 +40,7 @@ class HomePage(
 
     private val mainScope = MainScope() // the scope of HomePage class, uses Dispatchers.Main.
 
-    private val pageTitle = Label("Casa", Middle, Center).apply {
+    private val pageTitle = Label("Home", Middle, Center).apply {
         height = 24.0
         fitText = setOf(Dimension.Width)
         styledText = StyledText(text, config.titleFont, Black.paint)

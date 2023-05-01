@@ -2,8 +2,8 @@ package io.dongxi.view
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.view.MenuEvent.SHOW_ANEIS
-import io.dongxi.view.MenuEvent.SHOW_CASA
-import io.dongxi.view.PageType.CASA
+import io.dongxi.view.MenuEvent.SHOW_HOME
+import io.dongxi.view.PageType.HOME
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -78,7 +78,7 @@ class BaseView(
         modals
     )
 
-    private var currentPage = pageFactory.buildPage(CASA) as View
+    private var currentPage = pageFactory.buildPage(HOME) as View
 
     init {
 
@@ -86,8 +86,8 @@ class BaseView(
             eventBus.events.filter { event ->
                 event != null
             }.collectLatest {
-                if (it == SHOW_CASA) {
-                    println("Received SHOW_CASA  event.  TODO: display home page.")
+                if (it == SHOW_HOME) {
+                    println("Received SHOW_HOME  event.  TODO: display home page.")
                 } else if (it == SHOW_ANEIS) {
                     println("Received SHOW_ANEIS event.  TODO: display rings page")
                 }
