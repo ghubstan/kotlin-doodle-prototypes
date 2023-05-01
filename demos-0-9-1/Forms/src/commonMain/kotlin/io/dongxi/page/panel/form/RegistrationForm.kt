@@ -181,10 +181,10 @@ class RegistrationForm(
         children += submit
         layout = constrain(mainForm, submit) { (mainFormBounds, buttonBounds) ->
             mainFormBounds.top eq 2
-            mainFormBounds.left eq parent.width * 0.10
-            mainFormBounds.right eq parent.width * 0.90
+            mainFormBounds.left eq parent.width * 0.025
+            mainFormBounds.right eq parent.width * 0.975
 
-            buttonBounds.top eq mainFormBounds.bottom + 10
+            buttonBounds.top eq mainFormBounds.bottom + 25
             buttonBounds.centerX eq parent.centerX
         }
     }

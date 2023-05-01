@@ -28,6 +28,10 @@ import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
 
+// Note Smallest iPhone display width is 715 mm
+// iPhone 13 Mini:  642 mm
+// See https://size-charts.com/topics/screen-size-charts/apple-iphone-size
+
 abstract class AbstractControl(
     val pageType: PageType,
     val config: DongxiConfig,
@@ -49,9 +53,9 @@ abstract class AbstractControl(
     val accessorySelectEventBus: AccessorySelectEventBus
 ) {
 
-    fun fieldLabel(text: String): Label {
+    fun fieldLabel(text: String, width: Double, height: Double): Label {
         return Label(text, Middle, Center).apply {
-            size = Size(60, FIELD_HEIGHT)
+            size = Size(width, height)
             fitText = setOf(Width, Height)
             font = config.formTextFieldFont
         }
@@ -89,7 +93,8 @@ abstract class AbstractControl(
     operator fun <T> List<T>.component10() = this[9]
 
     companion object {
-        const val FIELD_HEIGHT = 30
+        const val DEFAULT_FIELD_HEIGHT = 30
         val FIELD_DELIMITER_SIZE = Size(5, 5)
+        const val PASSWORD_FIELD_WIDTH = 160
     }
 }
