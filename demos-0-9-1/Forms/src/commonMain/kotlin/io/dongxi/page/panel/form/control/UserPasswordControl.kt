@@ -242,7 +242,7 @@ class UserPasswordControl(
 
     private fun defaultHelpMessage(): StyledText {
         return StyledText(
-            "Crie Sua Senha",
+            "Senha (8-32 characters, with a capital letter, a small letter, and one of $SPECIAL_CHARACTERS)",
             config.smallFont,
             foreground = Black.paint
         )
