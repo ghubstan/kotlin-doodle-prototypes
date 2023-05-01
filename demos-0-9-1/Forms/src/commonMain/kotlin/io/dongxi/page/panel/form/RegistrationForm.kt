@@ -83,30 +83,6 @@ class RegistrationForm(
     private val cpfControl = formControlFactory.buildControl(CPF) as CpfControl
     private val userPasswordControl = formControlFactory.buildControl(ControlType.SET_PASSWORD) as UserPasswordControl
 
-    // TODO How do I nest this in the form below?
-    private val setPasswordForm = SetPasswordForm(
-        submit = submit,
-        pageType = pageType,
-        config = config,
-        formControlFactory = formControlFactory,
-        uiDispatcher = uiDispatcher,
-        animator = animator,
-        pathMetrics = pathMetrics,
-        fonts = fonts,
-        theme = theme,
-        themes = themes,
-        images = images,
-        textMetrics = textMetrics,
-        textFieldStyler = textFieldStyler,
-        linkStyler = linkStyler,
-        focusManager = focusManager,
-        popups = popups,
-        modals = modals,
-        menuEventBus = menuEventBus,
-        baseProductSelectEventBus = baseProductSelectEventBus,
-        accessorySelectEventBus = accessorySelectEventBus
-    )
-
     private val mainForm = Form {
         this(
             +labeled(
