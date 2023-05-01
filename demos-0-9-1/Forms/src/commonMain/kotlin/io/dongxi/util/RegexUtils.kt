@@ -21,7 +21,7 @@ object RegexUtils {
     // Support portuguese diacritics
     const val UPPERCASE_PT_CHARACTERS = "Ã Á À Â Ç É Ê Í Õ Ó Ô Ú Ü"
 
-    const val SPECIAL_CHARACTERS = "# $ % & @ ^ ` ~ * - + ! ? < > = . ; : ,"
+    const val SPECIAL_CHARACTERS = "# % & @ ^ ` ~ * - + ! ? < > = . ; : ,"
 
     val digit = Regex("[0-9]")
 
