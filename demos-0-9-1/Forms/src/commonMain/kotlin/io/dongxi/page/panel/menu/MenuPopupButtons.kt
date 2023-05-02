@@ -54,7 +54,7 @@ class MenuPopupButtons(
 
     private val homeButton = createMenuButton(
         config = config,
-        buttonText = "Casa",
+        buttonText = "Home",
         tooltipText = null,
         textMetrics = textMetrics,
         focusManager = focusManager,

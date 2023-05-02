@@ -28,6 +28,7 @@ import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.ChangeObservers
 import io.nacular.doodle.utils.ChangeObserversImpl
 import io.nacular.doodle.utils.Dimension
+import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import io.nacular.measured.units.Angle.Companion.degrees
@@ -60,9 +61,9 @@ class HomePage(
 
     private val mainScope = MainScope()
 
-    private val pageTitle = Label("Casa", Middle, Center).apply {
+    private val pageTitle = Label("Home", Middle, Center).apply {
         height = 26.0
-        fitText = setOf(Dimension.Width)
+        fitText = setOf(Width)
         styledText = StyledText(text, config.titleFont, Black.paint)
     }
 

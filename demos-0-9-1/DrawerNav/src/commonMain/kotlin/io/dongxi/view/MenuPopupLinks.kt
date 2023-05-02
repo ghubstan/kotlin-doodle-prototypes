@@ -41,7 +41,7 @@ class MenuPopupLinks(
 
     private val mainScope = MainScope()
 
-    private val homeLink: HyperLink = createMenuLink("casa?", "Casa", GO_HOME)
+    private val homeLink: HyperLink = createMenuLink("home?", "Home", GO_HOME)
     private val ringsLink: HyperLink = createMenuLink("rings?", "Aneis", GO_RINGS)
     private val necklacesLink: HyperLink = createMenuLink("necklaces?", "Colares", GO_NECKLACES)
     private val scapularsLink: HyperLink = createMenuLink("scapulars?", "Escapulários", GO_SCAPULARS)
