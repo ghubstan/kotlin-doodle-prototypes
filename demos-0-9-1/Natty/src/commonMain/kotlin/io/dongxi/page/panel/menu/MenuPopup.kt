@@ -4,10 +4,8 @@ import io.dongxi.application.DongxiConfig
 import io.dongxi.page.MenuEvent
 import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.MenuEventBus
-import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.buttons.PushButton
-import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.theme.simpleTextButtonRenderer
 import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.*
@@ -15,40 +13,22 @@ import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.drawing.Color.Companion.Darkgray
 import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.event.PointerListener.Companion.clicked
-import io.nacular.doodle.focus.FocusManager
-import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
-import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.system.Cursor
-import io.nacular.doodle.theme.ThemeManager
-import io.nacular.doodle.theme.adhoc.DynamicTheme
-import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import org.kodein.di.DI
+import org.kodein.di.instance
 
-class MenuPopupButtons(
-    private val config: DongxiConfig,
-    private val uiDispatcher: CoroutineDispatcher,
-    private val animator: Animator,
-    private val pathMetrics: PathMetrics,
-    private val fonts: FontLoader,
-    private val theme: DynamicTheme,
-    private val themes: ThemeManager,
-    private val images: ImageLoader,
-    private val textMetrics: TextMetrics,
-    private val textFieldStyler: NativeTextFieldStyler,
-    private val linkStyler: NativeHyperLinkStyler,
-    private val focusManager: FocusManager,
-    private val popups: PopupManager,
-    private val modals: ModalManager,
-    private val menuEventBus: MenuEventBus
-) : View() {
+class MenuPopup(config: DongxiConfig, val commonDI: DI) : View() {
+
+    private val menuEventBus: MenuEventBus by commonDI.instance<MenuEventBus>()
+    private val popups: PopupManager by commonDI.instance<PopupManager>()
+    private val textMetrics: TextMetrics by commonDI.instance<TextMetrics>()
 
     private val mainScope = MainScope()
 
@@ -56,64 +36,43 @@ class MenuPopupButtons(
         config = config,
         buttonText = "Home",
         tooltipText = null,
-        textMetrics = textMetrics,
-        focusManager = focusManager,
-        GO_HOME,
-        menuEventBus = menuEventBus,
+        GO_HOME
     )
     private val ringsButton = createMenuButton(
         config = config,
         buttonText = "Aneis",
         tooltipText = null,
-        textMetrics = textMetrics,
-        focusManager = focusManager,
-        GO_RINGS,
-        menuEventBus = menuEventBus,
+        GO_RINGS
     )
     private val earringsButton = createMenuButton(
         config = config,
         buttonText = "Brincos",
         tooltipText = null,
-        textMetrics = textMetrics,
-        focusManager = focusManager,
-        GO_EARRINGS,
-        menuEventBus = menuEventBus,
+        GO_EARRINGS
     )
     private val necklacesButton = createMenuButton(
         config = config,
         buttonText = "Colares",
         tooltipText = null,
-        textMetrics = textMetrics,
-        focusManager = focusManager,
-        GO_NECKLACES,
-        menuEventBus = menuEventBus,
+        GO_NECKLACES
     )
     private val scapularsButton = createMenuButton(
         config = config,
         buttonText = "Escapulários",
         tooltipText = null,
-        textMetrics = textMetrics,
-        focusManager = focusManager,
-        GO_SCAPULARS,
-        menuEventBus = menuEventBus,
+        GO_SCAPULARS
     )
     private val braceletsButton = createMenuButton(
         config = config,
         buttonText = "Pulseiras",
         tooltipText = null,
-        textMetrics = textMetrics,
-        focusManager = focusManager,
-        GO_BRACELETS,
-        menuEventBus = menuEventBus,
+        GO_BRACELETS
     )
     private val aboutButton = createMenuButton(
         config = config,
         buttonText = "Sobre",
         tooltipText = null,
-        textMetrics = textMetrics,
-        focusManager = focusManager,
-        GO_ABOUT,
-        menuEventBus = menuEventBus,
+        GO_ABOUT
     )
 
     private val buttonOffset = 0 // No space between bottoms & tops of buttons
@@ -199,10 +158,10 @@ class MenuPopupButtons(
         config: DongxiConfig,
         buttonText: String,
         tooltipText: String?,
-        textMetrics: TextMetrics,
-        focusManager: FocusManager,
+        //textMetrics: TextMetrics,
+        //focusManager: FocusManager,
         menuEvent: MenuEvent,
-        menuEventBus: MenuEventBus
+        //menuEventBus: MenuEventBus
     ): PushButton {
 
         return PushButton(buttonText).apply {

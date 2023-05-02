@@ -1,69 +1,33 @@
 package io.dongxi.page.panel.menu
 
 import io.dongxi.application.DongxiConfig
-import io.dongxi.page.MenuEventBus
-import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.LazyPhoto
 import io.nacular.doodle.controls.PopupManager
-import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.core.View
 import io.nacular.doodle.drawing.*
 import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.event.PointerListener.Companion.clicked
-import io.nacular.doodle.focus.FocusManager
-import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
-import io.nacular.doodle.theme.ThemeManager
-import io.nacular.doodle.theme.adhoc.DynamicTheme
-import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.*
+import org.kodein.di.DI
+import org.kodein.di.instance
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class Menu(
-    val config: DongxiConfig,
-    val uiDispatcher: CoroutineDispatcher,
-    val animator: Animator,
-    val pathMetrics: PathMetrics,
-    val fonts: FontLoader,
-    val theme: DynamicTheme,
-    val themes: ThemeManager,
-    val images: ImageLoader,
-    val textMetrics: TextMetrics,
-    val textFieldStyler: NativeTextFieldStyler,
-    val linkStyler: NativeHyperLinkStyler,
-    val focusManager: FocusManager,
-    val popups: PopupManager,
-    val modals: ModalManager,
-    val menuEventBus: MenuEventBus
-) : View() {
+class Menu(val config: DongxiConfig, commonDI: DI) : View() {
 
-    private val mainScope = MainScope() // the scope of Menu class, uses Dispatchers.Main.
+    private val images: ImageLoader by commonDI.instance<ImageLoader>()
+    private val popups: PopupManager by commonDI.instance<PopupManager>()
+    private val mainScope = MainScope()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val menuIcon = LazyPhoto(mainScope.async { images.load("drawer-menu.svg")!! })
 
-    private val menuPopupLinks = MenuPopupButtons(
-        config,
-        uiDispatcher,
-        animator,
-        pathMetrics,
-        fonts,
-        theme,
-        themes,
-        images,
-        textMetrics,
-        textFieldStyler,
-        linkStyler,
-        focusManager,
-        popups,
-        modals,
-        menuEventBus
-    ).apply {
+    private val menuPopup = MenuPopup(config, commonDI).apply {
         pointerChanged += clicked { popups.hide(this) }
     }
+
 
     init {
         size = Size(55, 55)
@@ -76,7 +40,7 @@ class Menu(
         }
 
         pointerChanged += clicked {
-            popups.show(menuPopupLinks, relativeTo = this) { menuPopupBounds, _ ->
+            popups.show(menuPopup, relativeTo = this) { menuPopupBounds, _ ->
                 menuPopupBounds.top eq 5
                 menuPopupBounds.left eq parent.width / 2  // Buttons extend left to cover 1/2 of screen.
                 menuPopupBounds.right eq parent.right - 5

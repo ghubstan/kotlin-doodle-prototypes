@@ -1,8 +1,9 @@
 @file:Suppress("DuplicatedCode")
 
-package io.dongxi.dynamiclists
+package io.dongxi.natty
 
 
+import io.dongxi.application.DongxiModule
 import io.dongxi.application.NattyApp
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.animation.AnimatorImpl
@@ -23,7 +24,6 @@ import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.drawing.paint
 import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.impl.PathMetricsImpl
-import io.nacular.doodle.theme.basic.BasicTheme.*
 import io.nacular.doodle.theme.basic.BasicTheme.Companion.basicCheckBoxBehavior
 import io.nacular.doodle.theme.basic.BasicTheme.Companion.basicLabelBehavior
 import io.nacular.doodle.theme.basic.BasicTheme.Companion.basicListBehavior
@@ -73,21 +73,23 @@ fun main() {
             bindSingleton<PathMetrics> { PathMetricsImpl(svgFactory = instance()) }
         }
     )) {
-        NattyApp(
-            display = instance(),
-            uiDispatcher = Dispatchers.UI,
+        val commonDI = DongxiModule(
             animator = instance(),
-            pathMetrics = instance(),
-            fonts = instance(),
-            theme = instance(),
-            themes = instance(),
-            images = instance(),
-            textMetrics = instance(),
-            textFieldStyler = instance(),
-            linkStyler = instance(),
+            display = instance(),
             focusManager = instance(),
+            uiDispatcher = Dispatchers.UI,
+            fonts = instance(),
+            images = instance(),
+            linkStyler = instance(),
+            modals = instance(),
+            pathMetrics = instance(),
             popups = instance(),
-            modals = instance()
-        )
+            textFieldStyler = instance(),
+            textMetrics = instance(),
+            theme = instance(),
+            themes = instance()
+        ).commonModuleDI()
+
+        NattyApp(commonDI)
     }
 }
