@@ -52,6 +52,7 @@ class BaseView(
 
     private val mainScope = MainScope() // the scope of MainView class, uses Dispatchers.Main.
 
+    // TODO These will be found in DI commonDI param.
     private val menuEventBus = MenuEventBus()
     private val baseProductSelectEventBus = BaseProductSelectEventBus()
     private val accessorySelectEventBus = AccessorySelectEventBus()

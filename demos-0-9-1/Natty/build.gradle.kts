@@ -11,6 +11,7 @@ kotlin {
 
     val coroutinesVersion: String by project
     val doodleVersion: String by project
+    val kodeinVersion: String by project
     val ktorVersion: String by project
     val kotlinxHtmlJvmVersion: String by project
     val logbackVersion: String by project
@@ -41,10 +42,13 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
+
                 implementation("io.nacular.doodle:core:$doodleVersion")
                 implementation("io.nacular.doodle:controls:$doodleVersion")
                 implementation("io.nacular.doodle:animation:$doodleVersion")
                 implementation("io.nacular.doodle:themes:$doodleVersion")
+
+                implementation("org.kodein.di:kodein-di:$kodeinVersion")
             }
         }
 
