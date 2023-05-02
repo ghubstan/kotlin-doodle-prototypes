@@ -8,7 +8,7 @@ include(
     "Forms"
 )
 
-project(":KodeinDI").name = "kodein"
+project(":KodeinDI").name = "kodeindi"
 project(":Modal").name = "modal"
 project(":DrawerNav").name = "drawernav"
 project(":Natty").name = "natty"
