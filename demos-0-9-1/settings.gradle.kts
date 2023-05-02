@@ -1,7 +1,7 @@
 rootProject.name = "demos-0-9-1"
 
 include(
-    "Forms"
+    "Forms",
     // "KodeinDI",
     // "Modal",
     // "DrawerNav",
