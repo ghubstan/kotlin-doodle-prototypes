@@ -13,9 +13,7 @@ abstract class AbstractPage(
     val commonDI: DI
 ) : IPage, View() {
 
-
     // Every page has it own from control factory, instead of one singleton for use in all pages.
-    // TODO Use org.kodein.di.DI Provider instead of passing this down to all containers.
     val formControlFactory: FormControlFactory = FormControlFactory(pageType, config, commonDI)
 
     val mainScope = MainScope() // The scope of AbstractPage class (and subclasses), uses Dispatchers.Main.
