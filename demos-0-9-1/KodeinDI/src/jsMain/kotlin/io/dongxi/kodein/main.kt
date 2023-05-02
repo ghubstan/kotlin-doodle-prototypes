@@ -4,6 +4,7 @@ package io.dongxi.kodein
 
 
 import io.dongxi.application.KodeinApp
+import io.dongxi.di.DongxiModule
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.animation.AnimatorImpl
 import io.nacular.doodle.application.Modules.Companion.FontModule
@@ -37,15 +38,15 @@ import org.kodein.di.instance
 
 fun main() {
     application(modules = listOf(
-        FontModule,
-        PointerModule,
-        KeyboardModule,
-        ImageModule,
-        PopupModule,
-        ModalModule,
-        basicLabelBehavior(),
-        nativeTextFieldBehavior(),
-        basicCheckBoxBehavior(
+        FontModule,         // A DI.Module, uses bindSingleton
+        PointerModule,      // A DI.Module, uses bindSingleton
+        KeyboardModule,     // A DI.Module, uses bindSingleton
+        ImageModule,        // A DI.Module, uses bindSingleton
+        PopupModule,        // A DI.Module, uses bindSingleton
+        ModalModule,        // A DI.Module, uses bindSingleton
+        basicLabelBehavior(),       // Also a DI.Module, calls bindBehavior
+        nativeTextFieldBehavior(),  // Also a DI.Module, uses bindSingleton, calls bindBehavior
+        basicCheckBoxBehavior(                          // Not sure where Module is declared in hierarchy.
             foregroundColor = Color.Black,
             backgroundColor = Lightgray,
             darkBackgroundColor = Color.Darkgray
@@ -61,29 +62,32 @@ fun main() {
             rangeFill = Lightgray.paint
             // TODO How showTicks ?
         ),
-        basicSwitchBehavior(),
-        nativeHyperLinkBehavior(),
-        nativeScrollPanelBehavior(smoothScrolling = true),
+        basicSwitchBehavior(),                      // Not sure where Module is declared in hierarchy.
+        nativeHyperLinkBehavior(),                  // Also a DI.Module, calls bindBehavior
+        nativeScrollPanelBehavior(smoothScrolling = true),  // Also a DI.Module, uses bindSingleton, calls bindBehavior
+        // Below -> basicListBehavior:  Also a DI.Module, uses bindSingleton, calls bindBehavior
         basicListBehavior(itemHeight = 60.00, evenItemColor = Color(0xe0bdbcu), oddItemColor = Color(0xe0bdbcu)),
         Module(name = "AppModule") {
             bindSingleton<Animator> { AnimatorImpl(timer = instance(), animationScheduler = instance()) }
             bindSingleton<PathMetrics> { PathMetricsImpl(svgFactory = instance()) }
         }
     )) {
-        KodeinApp(
-            display = instance(),
-            uiDispatcher = Dispatchers.UI,
+        val commonDI = DongxiModule(
             animator = instance(),
-            pathMetrics = instance(),
-            fonts = instance(),
-            theme = instance(),
-            themes = instance(),
-            images = instance(),
-            textMetrics = instance(),
-            linkStyler = instance(),
+            display = instance(),
             focusManager = instance(),
+            uiDispatcher = Dispatchers.UI,
+            fonts = instance(),
+            images = instance(),
+            linkStyler = instance(),
+            modals = instance(),
+            pathMetrics = instance(),
             popups = instance(),
-            modals = instance()
-        )
+            textMetrics = instance(),
+            theme = instance(),
+            themes = instance()
+        ).commonModuleDI()
+
+        KodeinApp(commonDI)
     }
 }

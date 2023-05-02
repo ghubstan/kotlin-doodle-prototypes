@@ -21,22 +21,26 @@ import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
+import org.kodein.di.DI
+import org.kodein.di.instance
 
-class RingsPage(
-    override val config: DongxiConfig,
-    override val uiDispatcher: CoroutineDispatcher,
-    override val animator: Animator,
-    override val pathMetrics: PathMetrics,
-    override val fonts: FontLoader,
-    override val theme: DynamicTheme,
-    override val themes: ThemeManager,
-    override val images: ImageLoader,
-    override val textMetrics: TextMetrics,
-    override val linkStyler: NativeHyperLinkStyler,
-    override val focusManager: FocusManager,
-    override val popups: PopupManager,
-    override val modals: ModalManager
-) : IPage, View() {
+@Suppress("unused")
+class RingsPage(private val config: DongxiConfig, commonDI: DI) : IPage, View() {
+
+
+    private val animator: Animator by commonDI.instance<Animator>()
+    private val focusManager: FocusManager by commonDI.instance<FocusManager>()
+    private val fonts: FontLoader by commonDI.instance<FontLoader>()
+    private val images: ImageLoader by commonDI.instance<ImageLoader>()
+    private val linkStyler: NativeHyperLinkStyler by commonDI.instance<NativeHyperLinkStyler>()
+    private val modals: ModalManager by commonDI.instance<ModalManager>()
+    private val pathMetrics: PathMetrics by commonDI.instance<PathMetrics>()
+    private val popups: PopupManager by commonDI.instance<PopupManager>()
+    private val textMetrics: TextMetrics by commonDI.instance<TextMetrics>()
+    private val theme: DynamicTheme by commonDI.instance<DynamicTheme>()
+    private val themes: ThemeManager by commonDI.instance<ThemeManager>()
+    private val uiDispatcher: CoroutineDispatcher by commonDI.instance<CoroutineDispatcher>()
+
 
     private val mainScope = MainScope() // the scope of HomePage class, uses Dispatchers.Main.
 

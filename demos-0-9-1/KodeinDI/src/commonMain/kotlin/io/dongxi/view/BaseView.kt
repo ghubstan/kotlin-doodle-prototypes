@@ -22,68 +22,40 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+import org.kodein.di.DI
+import org.kodein.di.instance
 
 
-class BaseView(
-    private val config: DongxiConfig,
-    private val uiDispatcher: CoroutineDispatcher,
-    private val animator: Animator,
-    private val pathMetrics: PathMetrics,
-    private val fonts: FontLoader,
-    private val theme: DynamicTheme,
-    private val themes: ThemeManager,
-    private val images: ImageLoader,
-    private val textMetrics: TextMetrics,
-    private val linkStyler: NativeHyperLinkStyler,
-    private val focusManager: FocusManager,
-    private val popups: PopupManager,
-    private val modals: ModalManager
-) : View() {
+@Suppress("unused")
+class BaseView(config: DongxiConfig, commonDI: DI) : View() {
+
+    private val animator: Animator by commonDI.instance<Animator>()
+    private val focusManager: FocusManager by commonDI.instance<FocusManager>()
+    private val fonts: FontLoader by commonDI.instance<FontLoader>()
+    private val images: ImageLoader by commonDI.instance<ImageLoader>()
+    private val linkStyler: NativeHyperLinkStyler by commonDI.instance<NativeHyperLinkStyler>()
+    private val modals: ModalManager by commonDI.instance<ModalManager>()
+    private val pathMetrics: PathMetrics by commonDI.instance<PathMetrics>()
+    private val popups: PopupManager by commonDI.instance<PopupManager>()
+    private val textMetrics: TextMetrics by commonDI.instance<TextMetrics>()
+    private val theme: DynamicTheme by commonDI.instance<DynamicTheme>()
+    private val themes: ThemeManager by commonDI.instance<ThemeManager>()
+    private val uiDispatcher: CoroutineDispatcher by commonDI.instance<CoroutineDispatcher>()
+
+    private val menuEventBus: MenuEventBus by commonDI.instance<MenuEventBus>()
 
     private val mainScope = MainScope() // the scope of MainView class, uses Dispatchers.Main.
 
-    private val eventBus = MenuEventBus()
+    private val menu = Menu(config, commonDI).apply {}
 
-    private val menu = Menu(
-        config,
-        uiDispatcher,
-        animator,
-        pathMetrics,
-        fonts,
-        theme,
-        themes,
-        images,
-        textMetrics,
-        linkStyler,
-        focusManager,
-        popups,
-        modals,
-        eventBus
-    ).apply {
-    }
-
-    private val pageFactory = PageFactory(
-        config,
-        uiDispatcher,
-        animator,
-        pathMetrics,
-        fonts,
-        theme,
-        themes,
-        images,
-        textMetrics,
-        linkStyler,
-        focusManager,
-        popups,
-        modals
-    )
+    private val pageFactory = PageFactory(config, commonDI)
 
     private var currentPage = pageFactory.buildPage(HOME) as View
 
     init {
 
         mainScope.launch {
-            eventBus.events.filter { event ->
+            menuEventBus.events.filter { event ->
                 event != null
             }.collectLatest {
                 if (it == SHOW_HOME) {

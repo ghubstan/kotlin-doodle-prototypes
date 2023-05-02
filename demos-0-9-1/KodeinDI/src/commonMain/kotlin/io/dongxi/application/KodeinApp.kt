@@ -19,22 +19,25 @@ import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Resizer
 import kotlinx.coroutines.*
+import org.kodein.di.DI
+import org.kodein.di.instance
 
-class KodeinApp(
-    display: Display,
-    uiDispatcher: CoroutineDispatcher,
-    animator: Animator,
-    pathMetrics: PathMetrics,
-    fonts: FontLoader,
-    theme: DynamicTheme,
-    themes: ThemeManager,
-    images: ImageLoader,
-    textMetrics: TextMetrics,
-    linkStyler: NativeHyperLinkStyler,
-    focusManager: FocusManager,
-    popups: PopupManager,
-    modals: ModalManager
-) : Application {
+@Suppress("unused")
+class KodeinApp(commonDI: DI) : Application {
+
+    private val animator: Animator by commonDI.instance<Animator>()
+    private val display: Display by commonDI.instance<Display>()
+    private val focusManager: FocusManager by commonDI.instance<FocusManager>()
+    private val fonts: FontLoader by commonDI.instance<FontLoader>()
+    private val images: ImageLoader by commonDI.instance<ImageLoader>()
+    private val linkStyler: NativeHyperLinkStyler by commonDI.instance<NativeHyperLinkStyler>()
+    private val modals: ModalManager by commonDI.instance<ModalManager>()
+    private val pathMetrics: PathMetrics by commonDI.instance<PathMetrics>()
+    private val popups: PopupManager by commonDI.instance<PopupManager>()
+    private val textMetrics: TextMetrics by commonDI.instance<TextMetrics>()
+    private val theme: DynamicTheme by commonDI.instance<DynamicTheme>()
+    private val themes: ThemeManager by commonDI.instance<ThemeManager>()
+    private val uiDispatcher: CoroutineDispatcher by commonDI.instance<CoroutineDispatcher>()
 
     init {
         val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -60,21 +63,7 @@ class KodeinApp(
 
             themes.selected = theme
 
-            val baseView = BaseView(
-                config,
-                uiDispatcher,
-                animator,
-                pathMetrics,
-                fonts,
-                theme,
-                themes,
-                images,
-                textMetrics,
-                linkStyler,
-                focusManager,
-                popups,
-                modals
-            ).apply {
+            val baseView = BaseView(config, commonDI).apply {
                 Resizer(this).apply { }
             }
 

@@ -20,7 +20,8 @@ import org.kodein.di.instance
 // the same module is used in multiple Kodein instances.
 
 
-val groupModule = DI.Module {
+// Note:  Module's must have a name, or there will be run-time error.
+val groupModule = DI.Module(name = "GroupModule") {
     bindSingleton<IHelloService> { HelloService() }
     bindSingleton<IGoodbyeService> { GoodbyeService() }
 }

@@ -3,51 +3,34 @@ package io.dongxi.view
 import io.dongxi.application.DongxiConfig
 import io.dongxi.view.MenuEvent.SHOW_ANEIS
 import io.dongxi.view.MenuEvent.SHOW_HOME
-import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.buttons.HyperLink
-import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.controls.text.Label
 import io.nacular.doodle.core.View
-import io.nacular.doodle.drawing.*
+import io.nacular.doodle.drawing.Canvas
+import io.nacular.doodle.drawing.Color
 import io.nacular.doodle.drawing.Color.Companion.Black
 import io.nacular.doodle.drawing.Color.Companion.Lightgray
+import io.nacular.doodle.drawing.paint
+import io.nacular.doodle.drawing.rect
 import io.nacular.doodle.event.PointerListener.Companion.clicked
-import io.nacular.doodle.focus.FocusManager
-import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Size
-import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.text.StyledText
-import io.nacular.doodle.theme.ThemeManager
-import io.nacular.doodle.theme.adhoc.DynamicTheme
-import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import io.nacular.doodle.utils.Dimension
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import org.kodein.di.DI
+import org.kodein.di.instance
 
-class MenuPopup(
-    private val config: DongxiConfig,
-    private val uiDispatcher: CoroutineDispatcher,
-    private val animator: Animator,
-    private val pathMetrics: PathMetrics,
-    private val fonts: FontLoader,
-    private val theme: DynamicTheme,
-    private val themes: ThemeManager,
-    private val images: ImageLoader,
-    private val textMetrics: TextMetrics,
-    private val linkStyler: NativeHyperLinkStyler,
-    private val focusManager: FocusManager,
-    private val popups: PopupManager,
-    private val modals: ModalManager,
-    private val eventBus: MenuEventBus
-) : View() {
+class MenuPopup(private val config: DongxiConfig, commonDI: DI) : View() {
 
-    private val mainScope = MainScope() // the scope of Menu class, uses Dispatchers.Main.
+    private val popups: PopupManager by commonDI.instance<PopupManager>()
+    private val menuEventBus: MenuEventBus by commonDI.instance<MenuEventBus>()
+    private val mainScope = MainScope()
 
     private val menuLabel = Label("Navigate", Middle, Center).apply {
         height = 24.0
@@ -62,7 +45,7 @@ class MenuPopup(
     ).apply {
         fired += {
             mainScope.launch {
-                eventBus.produceEvent(SHOW_HOME)
+                menuEventBus.produceEvent(SHOW_HOME)
             }
         }
     }
@@ -73,7 +56,7 @@ class MenuPopup(
     ).apply {
         fired += {
             mainScope.launch {
-                eventBus.produceEvent(SHOW_ANEIS)
+                menuEventBus.produceEvent(SHOW_ANEIS)
             }
         }
     }
