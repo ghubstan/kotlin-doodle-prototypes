@@ -10,6 +10,7 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.dongxi.storage.NecklaceStoreMetadata
 import io.dongxi.storage.PendantStoreMetadata.getPendants
 import io.dongxi.storage.RingStoneStoreMetadata.getStones
@@ -38,7 +39,8 @@ import org.kodein.di.instance
 abstract class AbstractPanel(
     override val pageType: PageType,
     val config: DongxiConfig,
-    val commonDI: DI
+    val commonDI: DI,
+    val formControlFactory: FormControlFactory
 ) : IPanel, Container() {
 
     val animator: Animator by commonDI.instance<Animator>()
@@ -87,7 +89,11 @@ abstract class AbstractPanel(
                     GO_RINGS -> RING
                     GO_SCAPULARS -> SCAPULAR
                     GO_ABOUT -> NONE
+                    GO_BASKET -> NONE
+                    GO_LOGIN -> NONE
                     GO_LOGOUT -> NONE
+                    GO_PAYMENT -> NONE
+                    GO_REGISTER -> NONE
                 }
 
                 // println("${panelInstanceName()} current ProductCategory: $currentProductCategory")

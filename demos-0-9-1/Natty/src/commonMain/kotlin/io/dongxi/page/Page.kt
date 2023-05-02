@@ -12,7 +12,7 @@ import org.kodein.di.DI
 class Page(override val pageType: PageType, config: DongxiConfig, commonDI: DI) : IPage,
     AbstractPage(pageType, config, commonDI) {
 
-    private val baseContainer = BaseContainer(pageType, config, commonDI)
+    private val baseContainer = BaseContainer(pageType, config, commonDI, formControlFactory)
 
     init {
         children += listOf(baseContainer)

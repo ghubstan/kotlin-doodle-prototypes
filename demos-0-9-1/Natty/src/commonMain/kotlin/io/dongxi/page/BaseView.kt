@@ -64,38 +64,21 @@ class BaseView(config: DongxiConfig, commonDI: DI) : View() {
 
                 println("${ClassUtils.simpleClassName(this)} Received ${it.name} event")
 
+                // TODO Create a mapping of event -> page-type to reduce this to a one-liner?
+                
                 when (it) {
-                    GO_HOME -> {
-                        currentPage = pageFactory.buildPage((HOME)) as View
-                    }
-
-                    GO_BRACELETS -> {
-                        currentPage = pageFactory.buildPage((BRACELETS)) as View
-                    }
-
-                    GO_EARRINGS -> {
-                        currentPage = pageFactory.buildPage((EAR_RINGS)) as View
-                    }
-
-                    GO_NECKLACES -> {
-                        currentPage = pageFactory.buildPage((NECKLACES)) as View
-                    }
-
-                    GO_RINGS -> {
-                        currentPage = pageFactory.buildPage((RINGS)) as View
-                    }
-
-                    GO_SCAPULARS -> {
-                        currentPage = pageFactory.buildPage((SCAPULARS)) as View
-                    }
-
-                    GO_ABOUT -> {
-                        currentPage = pageFactory.buildPage((ABOUT)) as View
-                    }
-
-                    GO_LOGOUT -> {
-                        println("Received LOGOUT event.  TODO: logout")
-                    }
+                    GO_HOME -> currentPage = pageFactory.buildPage((HOME)) as View
+                    GO_BRACELETS -> currentPage = pageFactory.buildPage((BRACELETS)) as View
+                    GO_EARRINGS -> currentPage = pageFactory.buildPage((EAR_RINGS)) as View
+                    GO_NECKLACES -> currentPage = pageFactory.buildPage((NECKLACES)) as View
+                    GO_RINGS -> currentPage = pageFactory.buildPage((RINGS)) as View
+                    GO_SCAPULARS -> currentPage = pageFactory.buildPage((SCAPULARS)) as View
+                    GO_ABOUT -> currentPage = pageFactory.buildPage((ABOUT)) as View
+                    GO_LOGIN -> currentPage = pageFactory.buildPage((LOGIN)) as View
+                    GO_LOGOUT -> currentPage = pageFactory.buildPage((LOGOUT)) as View
+                    GO_BASKET -> currentPage = pageFactory.buildPage((BASKET)) as View
+                    GO_PAYMENT -> currentPage = pageFactory.buildPage((PAYMENT)) as View
+                    GO_REGISTER -> currentPage = pageFactory.buildPage((REGISTER)) as View
                 }
                 // Now update the view.
                 updateView(currentPage)

@@ -5,14 +5,22 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 enum class MenuEvent {
+
+    // Non-Product Pages
     GO_HOME,
+    GO_ABOUT,
+    GO_LOGIN,
+    GO_LOGOUT,
+    GO_REGISTER,
+    GO_BASKET,
+    GO_PAYMENT,
+
+    // Product Pages
     GO_RINGS,
     GO_NECKLACES,
     GO_SCAPULARS,
     GO_BRACELETS,
-    GO_EARRINGS,
-    GO_ABOUT,
-    GO_LOGOUT
+    GO_EARRINGS
 }
 
 /**

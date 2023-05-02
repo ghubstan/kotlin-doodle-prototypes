@@ -4,6 +4,7 @@ import io.dongxi.application.DongxiConfig
 import io.dongxi.model.ProductCategory.NECKLACE
 import io.dongxi.model.ProductCategory.RING
 import io.dongxi.page.PageType
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.nacular.doodle.drawing.Canvas
 import io.nacular.doodle.drawing.rect
 import io.nacular.doodle.geometry.Size
@@ -14,8 +15,14 @@ import org.kodein.di.DI
 class LeftPanel(
     pageType: PageType,
     config: DongxiConfig,
-    commonDI: DI
-) : AbstractPanel(pageType, config, commonDI) {
+    commonDI: DI,
+    formControlFactory: FormControlFactory
+) : AbstractPanel(
+    pageType,
+    config,
+    commonDI,
+    formControlFactory
+) {
 
     private val baseProductListContainer = when (pageType.productCategory) {
         NECKLACE -> {

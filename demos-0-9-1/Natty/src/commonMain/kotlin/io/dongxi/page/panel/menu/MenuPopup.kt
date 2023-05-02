@@ -32,48 +32,18 @@ class MenuPopup(config: DongxiConfig, val commonDI: DI) : View() {
 
     private val mainScope = MainScope()
 
-    private val homeButton = createMenuButton(
-        config = config,
-        buttonText = "Home",
-        tooltipText = null,
-        GO_HOME
-    )
-    private val ringsButton = createMenuButton(
-        config = config,
-        buttonText = "Aneis",
-        tooltipText = null,
-        GO_RINGS
-    )
-    private val earringsButton = createMenuButton(
-        config = config,
-        buttonText = "Brincos",
-        tooltipText = null,
-        GO_EARRINGS
-    )
-    private val necklacesButton = createMenuButton(
-        config = config,
-        buttonText = "Colares",
-        tooltipText = null,
-        GO_NECKLACES
-    )
-    private val scapularsButton = createMenuButton(
-        config = config,
-        buttonText = "Escapulários",
-        tooltipText = null,
-        GO_SCAPULARS
-    )
-    private val braceletsButton = createMenuButton(
-        config = config,
-        buttonText = "Pulseiras",
-        tooltipText = null,
-        GO_BRACELETS
-    )
-    private val aboutButton = createMenuButton(
-        config = config,
-        buttonText = "Sobre",
-        tooltipText = null,
-        GO_ABOUT
-    )
+    private val homeButton = createMenuButton(config = config, buttonText = "Home", tooltipText = null, GO_HOME)
+    private val ringsButton = createMenuButton(config = config, buttonText = "Aneis", tooltipText = null, GO_RINGS)
+    private val earringsButton = createMenuButton(config = config, buttonText = "Brincos", tooltipText = null, GO_EARRINGS)
+    private val necklacesButton = createMenuButton(config = config, buttonText = "Colares", tooltipText = null, GO_NECKLACES)
+    private val scapularsButton = createMenuButton(config = config, buttonText = "Escapulários", tooltipText = null, GO_SCAPULARS)
+    private val braceletsButton = createMenuButton(config = config, buttonText = "Pulseiras", tooltipText = null, GO_BRACELETS)
+    private val aboutButton = createMenuButton(config = config, buttonText = "Sobre", tooltipText = null, GO_ABOUT)
+    private val registerButton = createMenuButton(config = config, buttonText = "Crie a Sua Conta", tooltipText = null, GO_REGISTER)
+    private val loginButton = createMenuButton(config = config, buttonText = "Entre", tooltipText = null, GO_LOGIN)
+    private val basketButton = createMenuButton(config = config, buttonText = "Carrihno de Compras", tooltipText = null, GO_BASKET)
+    private val paymentButton = createMenuButton(config = config, buttonText = "Pagamento", tooltipText = null, GO_PAYMENT)
+    private val logoutButton = createMenuButton(config = config, buttonText = "Sair", tooltipText = null, GO_LOGOUT)
 
     private val buttonOffset = 0 // No space between bottoms & tops of buttons
     private val buttonHeight = 26
@@ -87,7 +57,8 @@ class MenuPopup(config: DongxiConfig, val commonDI: DI) : View() {
             necklacesButton,
             scapularsButton,
             braceletsButton,
-            aboutButton
+            aboutButton,
+            registerButton
         )
         layout = constrain(
             homeButton,
@@ -96,14 +67,16 @@ class MenuPopup(config: DongxiConfig, val commonDI: DI) : View() {
             necklacesButton,
             scapularsButton,
             braceletsButton,
-            aboutButton
+            aboutButton,
+            registerButton
         ) { (homeButtonBounds,
                 ringsButtonBounds,
                 earringsButtonBounds,
                 necklacesButtonBounds,
                 scapularsButtonBounds,
                 braceletsButtonBounds,
-                aboutButtonBounds) ->
+                aboutButtonBounds,
+                registerButtonBounds) ->
 
             homeButtonBounds.top eq 2
             homeButtonBounds.left eq buttonOffset
@@ -140,6 +113,10 @@ class MenuPopup(config: DongxiConfig, val commonDI: DI) : View() {
             aboutButtonBounds.right eq parent.right
             aboutButtonBounds.height eq buttonHeight
 
+            registerButtonBounds.top eq aboutButtonBounds.bottom + buttonOffset
+            registerButtonBounds.left eq buttonOffset
+            registerButtonBounds.right eq parent.right
+            registerButtonBounds.height eq buttonHeight
         }
         pointerChanged += clicked { popups.hide(this) }
     }

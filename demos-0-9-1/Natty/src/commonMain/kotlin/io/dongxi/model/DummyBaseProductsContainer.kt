@@ -1,9 +1,8 @@
 package io.dongxi.model
 
 import io.dongxi.application.DongxiConfig
-import io.nacular.doodle.controls.text.Label.Companion
 import io.nacular.doodle.core.Container
-import io.nacular.doodle.drawing.Color
+import io.nacular.doodle.drawing.Color.Companion.Transparent
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.utils.Dimension
@@ -28,7 +27,7 @@ class DummyBaseProductsContainer(
     ).apply {
         height = 24.0
         fitText = setOf(Dimension.Width)
-        foregroundColor = Color.Transparent
+        foregroundColor = Transparent
     }
 
 

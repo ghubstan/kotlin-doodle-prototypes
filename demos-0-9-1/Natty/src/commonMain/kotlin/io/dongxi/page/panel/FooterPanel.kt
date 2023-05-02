@@ -3,6 +3,7 @@ package io.dongxi.page.panel
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.LazyImage
 import io.dongxi.page.PageType
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.nacular.doodle.drawing.Canvas
 import io.nacular.doodle.drawing.rect
 import io.nacular.doodle.geometry.Rectangle
@@ -11,7 +12,17 @@ import io.nacular.doodle.layout.constraints.constrain
 import kotlinx.coroutines.async
 import org.kodein.di.DI
 
-class FooterPanel(pageType: PageType, config: DongxiConfig, commonDI: DI) : AbstractPanel(pageType, config, commonDI) {
+class FooterPanel(
+    pageType: PageType,
+    config: DongxiConfig,
+    commonDI: DI,
+    formControlFactory: FormControlFactory
+) : AbstractPanel(
+    pageType,
+    config,
+    commonDI,
+    formControlFactory
+) {
 
     private val logo = LazyImage(mainScope.async { images.load("natty-logo-100x100.png")!! }, LOGO_RECT)
 

@@ -3,20 +3,30 @@ package io.dongxi.page.panel
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.ProductCategory.NONE
 import io.dongxi.page.PageType
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.nacular.doodle.core.View
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.layout.constraints.constrain
 import io.nacular.doodle.utils.ObservableList
 import org.kodein.di.DI
 
-class BaseContainer(pageType: PageType, config: DongxiConfig, commonDI: DI) :
-    AbstractPanel(pageType, config, commonDI) {
+class BaseContainer(
+    pageType: PageType,
+    config: DongxiConfig,
+    commonDI: DI,
+    formControlFactory: FormControlFactory
+) : AbstractPanel(
+    pageType,
+    config,
+    commonDI,
+    formControlFactory
+) {
 
-    private val topPanel = TopPanel(pageType, config, commonDI)
-    private val leftPanel = LeftPanel(pageType, config, commonDI)
-    private val centerPanel = CenterPanel(pageType, config, commonDI)
-    private val rightPanel = RightPanel(pageType, config, commonDI)
-    private val footerPanel = FooterPanel(pageType, config, commonDI)
+    private val topPanel = TopPanel(pageType, config, commonDI, formControlFactory)
+    private val leftPanel = LeftPanel(pageType, config, commonDI, formControlFactory)
+    private val centerPanel = CenterPanel(pageType, config, commonDI, formControlFactory)
+    private val rightPanel = RightPanel(pageType, config, commonDI, formControlFactory)
+    private val footerPanel = FooterPanel(pageType, config, commonDI, formControlFactory)
 
     init {
         size = Size(100, 100)

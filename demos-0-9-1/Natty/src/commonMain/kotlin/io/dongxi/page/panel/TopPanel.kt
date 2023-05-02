@@ -4,6 +4,7 @@ import io.dongxi.application.DongxiConfig
 import io.dongxi.model.LazyImage
 import io.dongxi.page.PageType
 import io.dongxi.page.PageType.*
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.dongxi.page.panel.menu.Menu
 import io.nacular.doodle.drawing.Canvas
 import io.nacular.doodle.drawing.rect
@@ -16,8 +17,14 @@ import org.kodein.di.DI
 class TopPanel(
     pageType: PageType,
     config: DongxiConfig,
-    commonDI: DI
-) : AbstractPanel(pageType, config, commonDI) {
+    commonDI: DI,
+    formControlFactory: FormControlFactory
+) : AbstractPanel(
+    pageType,
+    config,
+    commonDI,
+    formControlFactory
+) {
 
     private val pageTitleImage = getPageTitlePhotoView()
 
@@ -76,39 +83,38 @@ class TopPanel(
                 return LazyImage(mainScope.async { images.load("page-title-home.svg")!! }, RECT_TITLE)
             }
 
-            RINGS -> {
-                return LazyImage(mainScope.async { images.load("page-title-rings.svg")!! }, RECT_TITLE)
-            }
-
-            NECKLACES -> {
-                return LazyImage(mainScope.async { images.load("page-title-necklaces.svg")!! }, RECT_TITLE)
-            }
-
-            SCAPULARS -> {
-                return LazyImage(mainScope.async { images.load("page-title-scapulars.svg")!! }, RECT_TITLE)
-            }
-
-            BRACELETS -> {
-                return LazyImage(mainScope.async { images.load("page-title-bracelets.svg")!! }, RECT_TITLE)
-            }
-
-            EAR_RINGS -> {
-                return LazyImage(mainScope.async { images.load("page-title-earrings.svg")!! }, RECT_TITLE)
-            }
-
-            ABOUT -> {
-                return LazyImage(mainScope.async { images.load("page-title-about.svg")!! }, RECT_TITLE)
-            }
-
-            BASKET -> TODO()
-            LOGIN -> TODO()
-            LOGOUT -> TODO()
-            PAYMENT -> TODO()
-            REGISTER -> TODO()
+            // TODO Refactor into a one-liner (map pageType to a svg file).
+            RINGS -> return LazyImage(mainScope.async { images.load("page-title-rings.svg")!! }, RECT_TITLE)
+            NECKLACES -> return LazyImage(mainScope.async { images.load("page-title-necklaces.svg")!! }, RECT_TITLE)
+            SCAPULARS -> return LazyImage(mainScope.async { images.load("page-title-scapulars.svg")!! }, RECT_TITLE)
+            BRACELETS -> return LazyImage(mainScope.async { images.load("page-title-bracelets.svg")!! }, RECT_TITLE)
+            EAR_RINGS -> return LazyImage(mainScope.async { images.load("page-title-earrings.svg")!! }, RECT_TITLE)
+            ABOUT -> return LazyImage(mainScope.async { images.load("page-title-about.svg")!! }, RECT_TITLE)
+            BASKET -> return LazyImage(mainScope.async { images.load("page-title-basket.svg")!! }, RECT_TITLE)
+            LOGIN -> return LazyImage(mainScope.async { images.load("page-title-login.svg")!! }, RECT_TITLE)
+            LOGOUT -> return LazyImage(mainScope.async { images.load("page-title-logout.svg")!! }, RECT_TITLE)
+            PAYMENT -> return LazyImage(mainScope.async { images.load("page-title-payment.svg")!! }, RECT_TITLE)
+            REGISTER -> return LazyImage(mainScope.async { images.load("page-title-register.svg")!! }, RECT_TITLE)
         }
     }
 
-    // TODO Refactor out duplicate constants.
+    private fun pageTitleFile(): String {
+        return when (pageType) {
+            RINGS -> "page-title-rings.svg"
+            NECKLACES -> "page-title-necklaces.svg"
+            SCAPULARS -> "page-title-scapulars.svg"
+            BRACELETS -> "page-title-bracelets.svg"
+            EAR_RINGS -> "page-title-earrings.svg"
+            ABOUT -> "page-title-about.svg"
+            BASKET -> "page-title-basket.svg"
+            HOME -> "page-title-home.svg"
+            LOGIN -> "page-title-login.svg"
+            LOGOUT -> "page-title-logout.svg"
+            PAYMENT -> "page-title-payment.svg"
+            REGISTER -> "page-title-register.svg"
+        }
+    }
+
     private companion object {
         private val RECT_TITLE: Rectangle = Rectangle(0, 0, 200, 30)
     }

@@ -2,9 +2,11 @@ package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.*
-import io.dongxi.model.ProductCategory.NECKLACE
-import io.dongxi.model.ProductCategory.RING
+import io.dongxi.model.ProductCategory.*
 import io.dongxi.page.PageType
+import io.dongxi.page.PageType.REGISTER
+import io.dongxi.page.panel.form.RegistrationForm
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.dongxi.storage.NecklaceStoreMetadata
 import io.dongxi.storage.RingStoreMetadata.getLargeRingMetadata
 import io.nacular.doodle.drawing.Canvas
@@ -15,7 +17,17 @@ import io.nacular.doodle.layout.constraints.fill
 import kotlinx.coroutines.async
 import org.kodein.di.DI
 
-class CenterPanel(pageType: PageType, config: DongxiConfig, commonDI: DI) : AbstractPanel(pageType, config, commonDI) {
+class CenterPanel(
+    pageType: PageType,
+    config: DongxiConfig,
+    commonDI: DI,
+    formControlFactory: FormControlFactory
+) : AbstractPanel(
+    pageType,
+    config,
+    commonDI,
+    formControlFactory
+) {
 
     private val completeProductContainer = when (pageType.productCategory) {
         // TODO Find out why I cannot reduce the # of ICompleteProductContainer
@@ -31,8 +43,19 @@ class CenterPanel(pageType: PageType, config: DongxiConfig, commonDI: DI) : Abst
         clipCanvasToBounds = false
         size = Size(200, 200)
 
-        children += listOf(completeProductContainer)
-        layout = constrain(completeProductContainer, fill)
+        if (pageType.productCategory == NONE) {
+
+            if (pageType == REGISTER) {
+                children += RegistrationForm(pageType, config, commonDI, formControlFactory)
+                layout = constrain(children[0], fill)
+            } else {
+                TODO("Implement non-product page")
+            }
+
+        } else {
+            children += listOf(completeProductContainer)
+            layout = constrain(completeProductContainer, fill)
+        }
     }
 
     override fun render(canvas: Canvas) {
