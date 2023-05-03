@@ -7,7 +7,6 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDistributionDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import org.jetbrains.kotlin.gradle.targets.js.webpack.WebpackDevtool
-import java.io.File
 
 
 private fun KotlinJsTargetDsl.configure() {
@@ -70,11 +69,53 @@ fun KotlinMultiplatformExtension.jsTargets() {
     }
 }
 
+// TODO Find out why I cannot resolve anything 'nacular' with IR compiler:
+//  Unresolved reference: nacular
+fun KotlinMultiplatformExtension.jsIrTargets() {
+    js(IR) {
+        compilations.all {
+            kotlinOptions {
+                sourceMap = true
+                sourceMapEmbedSources = "always"
+                moduleKind = "umd"
+                freeCompilerArgs = listOf("-opt-in=kotlin.ExperimentalUnsignedTypes")
+                metaInfo = true
+                verbose = false
+            }
+        }
+        browser {
+            webpackTask {
+                cssSupport {
+                    enabled.set(true)
+                }
+            }
+            commonWebpackConfig {
+                /*
+                outputPath = File("${project.buildDir.path}/distributions")
+                 */
+                // DevServer:  see https://webpack.js.org/configuration/dev-server
+                // Tells dev-server to open the browser after server had been started.
+                // Set it to true to open your default browser.
+                devServer?.`open` = false
+                // Specify a port number to listen for requests on.
+                devServer?.`port` = 8080
+                mode = KotlinWebpackConfig.Mode.DEVELOPMENT
+                devtool = WebpackDevtool.EVAL_SOURCE_MAP
+                sourceMaps = true
+                showProgress = true
+            }
+            testTask {
+                enabled = false
+            }
+            binaries.executable()
+        }
+    }
+}
+
+
 @OptIn(ExperimentalDistributionDsl::class)
 fun KotlinMultiplatformExtension.jsTargetsWithWebpack() {
     js {
-        moduleName = "natty"
-
         compilations.all {
             kotlinOptions {
                 sourceMap = true

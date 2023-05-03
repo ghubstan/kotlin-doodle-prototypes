@@ -13,6 +13,9 @@ TODO I want to fully migrate to IR, but having a lot problems,
  */
 kotlin {
 
+    // TODO Find out why I cannot resolve anything 'nacular' when using IR compiler:
+    //  Unresolved reference: nacular
+    // jsIrTargets()
 
     jsTargetsWithWebpack()
     jvmTargets()
