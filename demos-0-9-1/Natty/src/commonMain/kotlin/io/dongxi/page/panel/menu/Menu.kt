@@ -4,13 +4,17 @@ import io.dongxi.application.DongxiConfig
 import io.nacular.doodle.controls.LazyPhoto
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.core.View
-import io.nacular.doodle.drawing.*
+import io.nacular.doodle.drawing.Canvas
 import io.nacular.doodle.drawing.Color.Companion.Transparent
+import io.nacular.doodle.drawing.rect
 import io.nacular.doodle.event.PointerListener.Companion.clicked
 import io.nacular.doodle.geometry.Size
 import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
-import kotlinx.coroutines.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
 import org.kodein.di.DI
 import org.kodein.di.instance
 
@@ -22,7 +26,7 @@ class Menu(val config: DongxiConfig, commonDI: DI) : View() {
     private val mainScope = MainScope()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val menuIcon = LazyPhoto(mainScope.async { images.load("drawer-menu.svg")!! })
+    private val menuIcon = LazyPhoto(mainScope.async { images.load("assets/images/drawer-menu.svg")!! })
 
     private val menuPopup = MenuPopup(config, commonDI).apply {
         pointerChanged += clicked { popups.hide(this) }

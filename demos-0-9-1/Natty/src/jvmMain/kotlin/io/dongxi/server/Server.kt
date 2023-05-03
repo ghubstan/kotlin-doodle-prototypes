@@ -11,23 +11,6 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.html.*
-
-
-fun HTML.index() {
-    head {
-        title("Hello from Ktor!")
-    }
-    body {
-        div {
-            +"Hello from Ktor"
-        }
-        div {
-            id = "root"
-        }
-        script(src = "/static/demos-0-9-1.js") {}
-    }
-}
 
 fun main() {
     val port = System.getenv("PORT")?.toInt() ?: 8080
@@ -54,8 +37,10 @@ fun Application.applicationModule() {
     routing {
 
         get("/") {
-            // call.respondHtml(HttpStatusCode.OK, HTML::index)
-            call.respondText(this::class.java.classLoader.getResource("index.html")!!.readText(), ContentType.Text.Html)
+            call.respondText(
+                this::class.java.classLoader.getResource("index.html")!!.readText(),
+                ContentType.Text.Html
+            )
         }
 
         static("/") {

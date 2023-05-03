@@ -24,7 +24,10 @@ class FooterPanel(
     formControlFactory
 ) {
 
-    private val logo = LazyImage(mainScope.async { images.load("natty-logo-100x100.png")!! }, LOGO_RECT)
+    private val logo = LazyImage(
+        pendingImage = mainScope.async { images.load("${config.imagesDir}/natty-logo-100x100.png")!! },
+        canvasDestination = LOGO_RECT
+    )
 
     init {
         size = Size(100, 600)

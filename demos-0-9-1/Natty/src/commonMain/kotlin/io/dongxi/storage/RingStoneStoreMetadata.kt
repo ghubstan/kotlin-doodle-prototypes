@@ -3,7 +3,7 @@ package io.dongxi.storage
 
 object RingStoneStoreMetadata {
 
-    private const val STONES_PATH = "stones/mock/"
+    private const val STONES_PATH = "assets/images/stones/mock/"
 
     // Unused, but do not delete.
     // TODO "List" all files in directory, and load the map instead of like this, by hand.

@@ -2,8 +2,8 @@ package io.dongxi.storage
 
 object NecklaceStoreMetadata {
 
-    private const val LARGE_NECKLACES_PATH = "necklaces/mock/large/"
-    private const val SMALL_NECKLACES_PATH = "necklaces/mock/small/"
+    private const val LARGE_NECKLACES_PATH = "assets/images/necklaces/mock/large/"
+    private const val SMALL_NECKLACES_PATH = "assets/images/necklaces/mock/small/"
 
     val allSmallNecklaces: List<Pair<String, String>> = listOf(
         "A" to pathToSmallNecklaces("a.svg"),

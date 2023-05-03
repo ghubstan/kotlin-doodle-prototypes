@@ -2,8 +2,8 @@ package io.dongxi.storage
 
 object RingStoreMetadata {
 
-    private const val SMALL_RINGS_PATH = "rings/mock/small/"
-    private const val LARGE_RINGS_PATH = "rings/mock/medium/"
+    private const val SMALL_RINGS_PATH = "assets/images/rings/mock/small/"
+    private const val LARGE_RINGS_PATH = "assets/images/rings/mock/medium/"
 
     val allSmallRings: List<Pair<String, String>> = listOf(
         "A" to pathToSmallRing("a.png"),
