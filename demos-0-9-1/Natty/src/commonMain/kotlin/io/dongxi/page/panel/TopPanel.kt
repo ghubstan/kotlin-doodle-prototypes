@@ -88,7 +88,6 @@ class TopPanel(
     }
 
     private fun pageTitleFile(): String {
-        val imagesDir = "assets/images"
         return when (pageType) {
             RINGS -> "${config.imagesDir}/page-title-rings.svg"
             NECKLACES -> "${config.imagesDir}/page-title-necklaces.svg"

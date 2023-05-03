@@ -49,7 +49,8 @@ class CenterPanel(
                 children += RegistrationForm(pageType, config, commonDI, formControlFactory)
                 layout = constrain(children[0], fill)
             } else {
-                TODO("Implement non-product page")
+                children += listOf(completeProductContainer)
+                layout = constrain(completeProductContainer, fill)
             }
 
         } else {
