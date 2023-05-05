@@ -1,8 +1,11 @@
-package io.dongxi.page
+package io.dongxi.page.panel.form.control
 
 import io.dongxi.application.DongxiConfig
+import io.dongxi.page.MenuEventBus
+import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.ControlType.*
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
 import io.nacular.doodle.controls.modal.ModalManager
@@ -19,13 +22,16 @@ import kotlinx.coroutines.CoroutineDispatcher
 import org.kodein.di.DI
 import org.kodein.di.instance
 
-
-interface IPageFactory {
-    val pageCache: MutableMap<PageType, IPage>
-    fun buildPage(pageType: PageType): IPage
+interface IFormControlFactory {
+    fun buildControl(controlType: ControlType): IControl
+    val controlCache: MutableMap<ControlType, IControl>
 }
 
-class PageFactory(private val config: DongxiConfig, private val commonDI: DI) : IPageFactory {
+class FormControlFactory(
+    private val pageType: PageType,
+    private val config: DongxiConfig,
+    val commonDI: DI
+) : IFormControlFactory {
 
     private val animator: Animator by commonDI.instance<Animator>()
     private val focusManager: FocusManager by commonDI.instance<FocusManager>()
@@ -35,25 +41,36 @@ class PageFactory(private val config: DongxiConfig, private val commonDI: DI) : 
     private val modals: ModalManager by commonDI.instance<ModalManager>()
     private val pathMetrics: PathMetrics by commonDI.instance<PathMetrics>()
     private val popups: PopupManager by commonDI.instance<PopupManager>()
+    private val textFieldStyler: NativeTextFieldStyler by commonDI.instance<NativeTextFieldStyler>()
     private val textMetrics: TextMetrics by commonDI.instance<TextMetrics>()
     private val theme: DynamicTheme by commonDI.instance<DynamicTheme>()
     private val themes: ThemeManager by commonDI.instance<ThemeManager>()
     private val uiDispatcher: CoroutineDispatcher by commonDI.instance<CoroutineDispatcher>()
 
-    private val menuEventBus: MenuEventBus by commonDI.instance<MenuEventBus>()
-    private val baseProductSelectEventBus: BaseProductSelectEventBus by commonDI.instance<BaseProductSelectEventBus>()
-    private val accessorySelectEventBus: AccessorySelectEventBus by commonDI.instance<AccessorySelectEventBus>()
+    val menuEventBus: MenuEventBus by commonDI.instance<MenuEventBus>()
+    val baseProductSelectEventBus: BaseProductSelectEventBus by commonDI.instance<BaseProductSelectEventBus>()
+    val accessorySelectEventBus: AccessorySelectEventBus by commonDI.instance<AccessorySelectEventBus>()
 
+    override val controlCache = mutableMapOf<ControlType, IControl>()
 
-    override val pageCache = mutableMapOf<PageType, IPage>()
-
-    override fun buildPage(pageType: PageType): IPage {
-        return if (pageCache.containsKey(pageType)) {
-            pageCache[pageType]!!
+    override fun buildControl(controlType: ControlType): IControl {
+        return if (controlCache.containsKey(controlType)) {
+            controlCache[controlType]!!
         } else {
-            val page = Page(pageType, config, commonDI)
-            pageCache[pageType] = page
-            page
+            val control = when (controlType) {
+                CPF -> cpfControl()
+                CHANGE_PASSWORD, SET_PASSWORD -> userPasswordControl()
+            }
+            controlCache[controlType] = control
+            control
         }
+    }
+
+    private fun cpfControl(): CpfControl {
+        return CpfControl(pageType, config, commonDI)
+    }
+
+    private fun userPasswordControl(): UserPasswordControl {
+        return UserPasswordControl(pageType, config, commonDI)
     }
 }

@@ -13,7 +13,10 @@ import io.nacular.doodle.image.Image
 data class DongxiConfig(
     val appBackgroundColor: Color = nattyAppBackgroundColor(),
 
+    val assetsDir: String = "assets",
+
     val boldFooterFont: Font,
+    val buttonFont: Font,
 
     val checkForeground: Image,
     val checkBackground: Image,
@@ -26,9 +29,12 @@ data class DongxiConfig(
     val filterFont: Font,
     val footerFont: Font,
     val formTextFieldFont: Font,
+    val formTextFieldDelimiterFont: Font,
     val footerForeground: Color = Color(0xBFBFBFu),
 
     val headerColor: Color = Color(0xAF2F2Fu) opacity 0.15f,
+
+    val imagesDir: String = "${assetsDir}/images",
 
     val labelForeground: Color = Color(0x4D4D4Du),
     val lineColor: Color = Color(0xEDEDEDu),
@@ -36,6 +42,7 @@ data class DongxiConfig(
     val listFontColor: Color = nattyListLabelFontColor(),
 
     val selectedMenuButtonColor: Color = nattyMenuSelectColor(),
+    val smallFont: Font,
 
     val outline: Color = Color(0xe5e7ebu),
 

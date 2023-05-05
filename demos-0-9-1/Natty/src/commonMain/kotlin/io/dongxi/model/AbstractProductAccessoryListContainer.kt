@@ -40,27 +40,32 @@ import io.nacular.doodle.utils.Dimension.Width
 import io.nacular.doodle.utils.HorizontalAlignment.Center
 import io.nacular.doodle.utils.VerticalAlignment.Middle
 import kotlinx.coroutines.*
+import org.kodein.di.DI
+import org.kodein.di.instance
 
-@Suppress("unused")
 abstract class AbstractProductAccessoryListContainer(
     final override val pageType: PageType,
     private val config: DongxiConfig,
-    private val uiDispatcher: CoroutineDispatcher,
-    private val animator: Animator,
-    private val pathMetrics: PathMetrics,
-    private val fonts: FontLoader,
-    private val theme: DynamicTheme,
-    private val themes: ThemeManager,
-    private val images: ImageLoader,
-    private val textMetrics: TextMetrics,
-    private val linkStyler: NativeHyperLinkStyler,
-    private val focusManager: FocusManager,
-    private val popups: PopupManager,
-    private val modals: ModalManager,
-    private val menuEventBus: MenuEventBus,
-    private val baseProductSelectEventBus: BaseProductSelectEventBus,
-    private val accessorySelectEventBus: AccessorySelectEventBus
+    val commonDI: DI
 ) : IProductAccessoryListContainer, Container() {
+
+    val animator: Animator by commonDI.instance<Animator>()
+    val focusManager: FocusManager by commonDI.instance<FocusManager>()
+    val fonts: FontLoader by commonDI.instance<FontLoader>()
+    val images: ImageLoader by commonDI.instance<ImageLoader>()
+    val linkStyler: NativeHyperLinkStyler by commonDI.instance<NativeHyperLinkStyler>()
+    val modals: ModalManager by commonDI.instance<ModalManager>()
+    val pathMetrics: PathMetrics by commonDI.instance<PathMetrics>()
+    val popups: PopupManager by commonDI.instance<PopupManager>()
+    val textMetrics: TextMetrics by commonDI.instance<TextMetrics>()
+    val theme: DynamicTheme by commonDI.instance<DynamicTheme>()
+    val themes: ThemeManager by commonDI.instance<ThemeManager>()
+    val uiDispatcher: CoroutineDispatcher by commonDI.instance<CoroutineDispatcher>()
+
+
+    val menuEventBus: MenuEventBus by commonDI.instance<MenuEventBus>()
+    val baseProductSelectEventBus: BaseProductSelectEventBus by commonDI.instance<BaseProductSelectEventBus>()
+    val accessorySelectEventBus: AccessorySelectEventBus by commonDI.instance<AccessorySelectEventBus>()
 
     override val mainScope = MainScope()
 

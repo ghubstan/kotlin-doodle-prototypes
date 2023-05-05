@@ -3,8 +3,6 @@ package io.dongxi.page
 import io.dongxi.application.DongxiConfig
 import io.dongxi.page.MenuEvent.*
 import io.dongxi.page.PageType.*
-import io.dongxi.page.panel.event.AccessorySelectEventBus
-import io.dongxi.page.panel.event.BaseProductSelectEventBus
 import io.dongxi.util.ClassUtils
 import io.nacular.doodle.animation.Animator
 import io.nacular.doodle.controls.PopupManager
@@ -24,57 +22,36 @@ import io.nacular.doodle.layout.constraints.fill
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
+import org.kodein.di.DI
+import org.kodein.di.instance
 
 
-class BaseView(
-    private val config: DongxiConfig,
-    private val uiDispatcher: CoroutineDispatcher,
-    private val animator: Animator,
-    private val pathMetrics: PathMetrics,
-    private val fonts: FontLoader,
-    private val theme: DynamicTheme,
-    private val themes: ThemeManager,
-    private val images: ImageLoader,
-    private val textMetrics: TextMetrics,
-    private val textFieldStyler: NativeTextFieldStyler,
-    private val linkStyler: NativeHyperLinkStyler,
-    private val focusManager: FocusManager,
-    private val popups: PopupManager,
-    private val modals: ModalManager
-) : View() {
+class BaseView(config: DongxiConfig, commonDI: DI) : View() {
 
-    private val mainScope = MainScope() // the scope of MainView class, uses Dispatchers.Main.
+    private val animator: Animator by commonDI.instance<Animator>()
+    private val focusManager: FocusManager by commonDI.instance<FocusManager>()
+    private val fonts: FontLoader by commonDI.instance<FontLoader>()
+    private val images: ImageLoader by commonDI.instance<ImageLoader>()
+    private val linkStyler: NativeHyperLinkStyler by commonDI.instance<NativeHyperLinkStyler>()
+    private val modals: ModalManager by commonDI.instance<ModalManager>()
+    private val pathMetrics: PathMetrics by commonDI.instance<PathMetrics>()
+    private val popups: PopupManager by commonDI.instance<PopupManager>()
+    private val textMetrics: TextMetrics by commonDI.instance<TextMetrics>()
+    private val theme: DynamicTheme by commonDI.instance<DynamicTheme>()
+    private val themes: ThemeManager by commonDI.instance<ThemeManager>()
+    private val uiDispatcher: CoroutineDispatcher by commonDI.instance<CoroutineDispatcher>()
 
-    private val menuEventBus = MenuEventBus()
-    private val baseProductSelectEventBus = BaseProductSelectEventBus()
-    private val accessorySelectEventBus = AccessorySelectEventBus()
+    private val menuEventBus: MenuEventBus by commonDI.instance<MenuEventBus>()
 
-    private val pageFactory = PageFactory(
-        config,
-        uiDispatcher,
-        animator,
-        pathMetrics,
-        fonts,
-        theme,
-        themes,
-        images,
-        textMetrics,
-        textFieldStyler,
-        linkStyler,
-        focusManager,
-        popups,
-        modals,
-        menuEventBus,
-        baseProductSelectEventBus,
-        accessorySelectEventBus
-    )
+    private val pageFactory = PageFactory(config, commonDI)
+
+    private val mainScope = MainScope()
 
     // private var currentPage = pageFactory.buildPage(HOME) as View
     private var currentPage = pageFactory.buildPage(RINGS) as View
@@ -87,38 +64,21 @@ class BaseView(
 
                 println("${ClassUtils.simpleClassName(this)} Received ${it.name} event")
 
+                // TODO Create a mapping of event -> page-type to reduce this to a one-liner?
+                
                 when (it) {
-                    GO_HOME -> {
-                        currentPage = pageFactory.buildPage((HOME)) as View
-                    }
-
-                    GO_BRACELETS -> {
-                        currentPage = pageFactory.buildPage((BRACELETS)) as View
-                    }
-
-                    GO_EARRINGS -> {
-                        currentPage = pageFactory.buildPage((EAR_RINGS)) as View
-                    }
-
-                    GO_NECKLACES -> {
-                        currentPage = pageFactory.buildPage((NECKLACES)) as View
-                    }
-
-                    GO_RINGS -> {
-                        currentPage = pageFactory.buildPage((RINGS)) as View
-                    }
-
-                    GO_SCAPULARS -> {
-                        currentPage = pageFactory.buildPage((SCAPULARS)) as View
-                    }
-
-                    GO_ABOUT -> {
-                        currentPage = pageFactory.buildPage((ABOUT)) as View
-                    }
-
-                    GO_LOGOUT -> {
-                        println("Received LOGOUT event.  TODO: logout")
-                    }
+                    GO_HOME -> currentPage = pageFactory.buildPage((HOME)) as View
+                    GO_BRACELETS -> currentPage = pageFactory.buildPage((BRACELETS)) as View
+                    GO_EARRINGS -> currentPage = pageFactory.buildPage((EAR_RINGS)) as View
+                    GO_NECKLACES -> currentPage = pageFactory.buildPage((NECKLACES)) as View
+                    GO_RINGS -> currentPage = pageFactory.buildPage((RINGS)) as View
+                    GO_SCAPULARS -> currentPage = pageFactory.buildPage((SCAPULARS)) as View
+                    GO_ABOUT -> currentPage = pageFactory.buildPage((ABOUT)) as View
+                    GO_LOGIN -> currentPage = pageFactory.buildPage((LOGIN)) as View
+                    GO_LOGOUT -> currentPage = pageFactory.buildPage((LOGOUT)) as View
+                    GO_BASKET -> currentPage = pageFactory.buildPage((BASKET)) as View
+                    GO_PAYMENT -> currentPage = pageFactory.buildPage((PAYMENT)) as View
+                    GO_REGISTER -> currentPage = pageFactory.buildPage((REGISTER)) as View
                 }
                 // Now update the view.
                 updateView(currentPage)

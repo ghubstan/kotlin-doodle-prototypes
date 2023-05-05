@@ -18,41 +18,16 @@ import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
 import kotlinx.coroutines.CoroutineDispatcher
+import org.kodein.di.DI
 
 class BaseProductListContainer(
     pageType: PageType,
     config: DongxiConfig,
-    uiDispatcher: CoroutineDispatcher,
-    animator: Animator,
-    pathMetrics: PathMetrics,
-    fonts: FontLoader,
-    theme: DynamicTheme,
-    themes: ThemeManager,
-    images: ImageLoader,
-    textMetrics: TextMetrics,
-    linkStyler: NativeHyperLinkStyler,
-    focusManager: FocusManager,
-    popups: PopupManager,
-    modals: ModalManager,
-    menuEventBus: MenuEventBus,
-    baseProductSelectEventBus: BaseProductSelectEventBus
+    commonDI: DI
 ) : IBaseProductListContainer, AbstractBaseProductListContainer(
     pageType,
     config,
-    uiDispatcher,
-    animator,
-    pathMetrics,
-    fonts,
-    theme,
-    themes,
-    images,
-    textMetrics,
-    linkStyler,
-    focusManager,
-    popups,
-    modals,
-    menuEventBus,
-    baseProductSelectEventBus
+    commonDI
 ) {
     init {
         clipCanvasToBounds = false

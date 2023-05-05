@@ -1,20 +1,36 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
     application
 }
 
+
+/*
+TODO Want to fully migrate to IR, but there are many problems,
+    the biggest one being unable to reference anything 'nacular'.
+    See https://slack-chats.kotlinlang.org/t/461144/i-started-a-new-project-in-intellij-multiplatform-full-stack
+ */
 kotlin {
 
+    // TODO Find out why I cannot resolve anything 'nacular' when using IR compiler:
+    //  Unresolved reference: nacular
     jsTargetsWithWebpack()
     jvmTargets()
 
     val coroutinesVersion: String by project
     val doodleVersion: String by project
+    val junitVersion: String by project
+    val kodeinVersion: String by project
     val ktorVersion: String by project
     val kotlinxHtmlJvmVersion: String by project
     val logbackVersion: String by project
+    val mockkVersion: String by project
     val serializationVersion: String by project
+    val slf4jVersion: String by project
 
     sourceSets {
 
@@ -41,10 +57,13 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
+
                 implementation("io.nacular.doodle:core:$doodleVersion")
                 implementation("io.nacular.doodle:controls:$doodleVersion")
                 implementation("io.nacular.doodle:animation:$doodleVersion")
                 implementation("io.nacular.doodle:themes:$doodleVersion")
+
+                implementation("org.kodein.di:kodein-di:$kodeinVersion")
             }
         }
 
@@ -72,6 +91,29 @@ kotlin {
         }
 
         val jvmTest by getting
+
+        js().compilations["main"].defaultSourceSet {
+            dependencies {
+                api("org.kodein.di:kodein-di:$kodeinVersion")
+            }
+        }
+
+        js().compilations["test"].defaultSourceSet {
+            dependencies {
+                implementation(kotlin("test-js"))
+            }
+        }
+
+        jvm().compilations["test"].defaultSourceSet {
+            dependencies {
+                implementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+                implementation(kotlin("test-junit"))
+
+                implementation("org.slf4j:slf4j-api:$slf4jVersion")
+                implementation("ch.qos.logback:logback-classic:$logbackVersion")
+                implementation("io.mockk:mockk:$mockkVersion")
+            }
+        }
     }
 
 }
@@ -80,13 +122,28 @@ application {
     mainClass.set("io.dongxi.Server.kt")
 }
 
+// Leave as is, unused.  Maybe a custom MoveFile plugin is needed,
+// if it can be configured to run in proper lifecycle phase.
+val moveJsDistTask = tasks.register("moveJsDist") {
+    doLast {
+        // Just use Java NIO to move the file instead of messing around with ant.groovy.
+        val jsFile = Paths.get("${project.buildDir.path}/distributions/natty.js")
+        val destDir = Paths.get("${project.buildDir.path}/distributions/assets/js/natty.js")
+        Files.move(jsFile, destDir, StandardCopyOption.REPLACE_EXISTING)
+    }
+}
+
+/*
+This is required.
+ */
 tasks.named<Copy>("jvmProcessResources") {
     val jsBrowserDistribution = tasks.named("jsBrowserDistribution")
-    from(jsBrowserDistribution)
+    into("") {
+        from(jsBrowserDistribution)
+    }
 }
 
 tasks.named<JavaExec>("run") {
     dependsOn(tasks.named<Jar>("jvmJar"))
     classpath(tasks.named<Jar>("jvmJar"))
 }
-

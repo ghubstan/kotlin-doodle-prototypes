@@ -2,7 +2,7 @@ package io.dongxi.storage
 
 object PendantStoreMetadata {
 
-    private const val PENDANTS_PATH = "pendants/mock/"
+    private const val PENDANTS_PATH = "assets/images/pendants/mock/"
 
     fun getPendants(necklaceName: String): List<Pair<String, String>> {
         if (necklaceName.equals("A", ignoreCase = true)) {

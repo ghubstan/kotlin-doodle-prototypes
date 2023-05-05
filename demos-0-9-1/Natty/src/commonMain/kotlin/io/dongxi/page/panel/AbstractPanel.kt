@@ -10,6 +10,7 @@ import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.panel.event.AccessorySelectEventBus
 import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.dongxi.storage.NecklaceStoreMetadata
 import io.dongxi.storage.PendantStoreMetadata.getPendants
 import io.dongxi.storage.RingStoneStoreMetadata.getStones
@@ -29,31 +30,35 @@ import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.theme.ThemeManager
 import io.nacular.doodle.theme.adhoc.DynamicTheme
 import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.theme.native.NativeTextFieldStyler
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
+import org.kodein.di.DI
+import org.kodein.di.instance
 
 abstract class AbstractPanel(
     override val pageType: PageType,
     val config: DongxiConfig,
-    val uiDispatcher: CoroutineDispatcher,
-    val animator: Animator,
-    val pathMetrics: PathMetrics,
-    val fonts: FontLoader,
-    val theme: DynamicTheme,
-    val themes: ThemeManager,
-    val images: ImageLoader,
-    val textMetrics: TextMetrics,
-    val textFieldStyler: NativeTextFieldStyler,
-    val linkStyler: NativeHyperLinkStyler,
-    val focusManager: FocusManager,
-    val popups: PopupManager,
-    val modals: ModalManager,
-    val menuEventBus: MenuEventBus,
-    val baseProductSelectEventBus: BaseProductSelectEventBus,
-    val accessorySelectEventBus: AccessorySelectEventBus
+    val commonDI: DI,
+    val formControlFactory: FormControlFactory
 ) : IPanel, Container() {
+
+    val animator: Animator by commonDI.instance<Animator>()
+    val focusManager: FocusManager by commonDI.instance<FocusManager>()
+    val fonts: FontLoader by commonDI.instance<FontLoader>()
+    val images: ImageLoader by commonDI.instance<ImageLoader>()
+    val linkStyler: NativeHyperLinkStyler by commonDI.instance<NativeHyperLinkStyler>()
+    val modals: ModalManager by commonDI.instance<ModalManager>()
+    val pathMetrics: PathMetrics by commonDI.instance<PathMetrics>()
+    val popups: PopupManager by commonDI.instance<PopupManager>()
+    val textMetrics: TextMetrics by commonDI.instance<TextMetrics>()
+    val theme: DynamicTheme by commonDI.instance<DynamicTheme>()
+    val themes: ThemeManager by commonDI.instance<ThemeManager>()
+    val uiDispatcher: CoroutineDispatcher by commonDI.instance<CoroutineDispatcher>()
+
+    val menuEventBus: MenuEventBus by commonDI.instance<MenuEventBus>()
+    val baseProductSelectEventBus: BaseProductSelectEventBus by commonDI.instance<BaseProductSelectEventBus>()
+    val accessorySelectEventBus: AccessorySelectEventBus by commonDI.instance<AccessorySelectEventBus>()
 
     val mainScope = MainScope() // The scope of AbstractPanel class (and subclasses), uses Dispatchers.Main.
 
@@ -84,7 +89,11 @@ abstract class AbstractPanel(
                     GO_RINGS -> RING
                     GO_SCAPULARS -> SCAPULAR
                     GO_ABOUT -> NONE
+                    GO_BASKET -> NONE
+                    GO_LOGIN -> NONE
                     GO_LOGOUT -> NONE
+                    GO_PAYMENT -> NONE
+                    GO_REGISTER -> NONE
                 }
 
                 // println("${panelInstanceName()} current ProductCategory: $currentProductCategory")
@@ -136,110 +145,23 @@ abstract class AbstractPanel(
     abstract fun layoutForCompletedJewel()
 
     fun getDummyBaseProductsContainer(): Container {
-        return DummyBaseProductsContainer(
-            config,
-            uiDispatcher,
-            animator,
-            pathMetrics,
-            fonts,
-            theme,
-            themes,
-            images,
-            textMetrics,
-            linkStyler,
-            focusManager,
-            popups,
-            modals,
-            menuEventBus,
-            baseProductSelectEventBus
-        )
+        return DummyBaseProductsContainer(config, commonDI)
     }
 
     fun getBaseProductListContainer(): Container {
-        return BaseProductListContainer(
-            pageType,
-            config,
-            uiDispatcher,
-            animator,
-            pathMetrics,
-            fonts,
-            theme,
-            themes,
-            images,
-            textMetrics,
-            linkStyler,
-            focusManager,
-            popups,
-            modals,
-            menuEventBus,
-            baseProductSelectEventBus
-        )
+        return BaseProductListContainer(pageType, config, commonDI)
     }
 
     fun getProductAccessoryListContainer(): Container {
-        return ProductAccessoryListContainer(
-            pageType,
-            config,
-            uiDispatcher,
-            animator,
-            pathMetrics,
-            fonts,
-            theme,
-            themes,
-            images,
-            textMetrics,
-            linkStyler,
-            focusManager,
-            popups,
-            modals,
-            menuEventBus,
-            baseProductSelectEventBus,
-            accessorySelectEventBus
-        )
+        return ProductAccessoryListContainer(pageType, config, commonDI)
     }
 
     fun getCompleteNecklaceContainer(): Container {
-        return CompleteNecklaceContainer(
-            pageType,
-            config,
-            uiDispatcher,
-            animator,
-            pathMetrics,
-            fonts,
-            theme,
-            themes,
-            images,
-            textMetrics,
-            linkStyler,
-            focusManager,
-            popups,
-            modals,
-            menuEventBus,
-            baseProductSelectEventBus,
-            accessorySelectEventBus
-        )
+        return CompleteNecklaceContainer(pageType, config, commonDI)
     }
 
     fun getCompleteRingContainer(): Container {
-        return CompleteRingContainer(
-            pageType,
-            config,
-            uiDispatcher,
-            animator,
-            pathMetrics,
-            fonts,
-            theme,
-            themes,
-            images,
-            textMetrics,
-            linkStyler,
-            focusManager,
-            popups,
-            modals,
-            menuEventBus,
-            baseProductSelectEventBus,
-            accessorySelectEventBus
-        )
+        return CompleteRingContainer(pageType, config, commonDI)
     }
 
     override fun render(canvas: Canvas) {

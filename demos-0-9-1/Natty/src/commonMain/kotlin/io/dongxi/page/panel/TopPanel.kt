@@ -2,92 +2,33 @@ package io.dongxi.page.panel
 
 import io.dongxi.application.DongxiConfig
 import io.dongxi.model.LazyImage
-import io.dongxi.page.MenuEventBus
 import io.dongxi.page.PageType
 import io.dongxi.page.PageType.*
-import io.dongxi.page.panel.event.AccessorySelectEventBus
-import io.dongxi.page.panel.event.BaseProductSelectEventBus
+import io.dongxi.page.panel.form.control.FormControlFactory
 import io.dongxi.page.panel.menu.Menu
-import io.nacular.doodle.animation.Animator
-import io.nacular.doodle.controls.PopupManager
-import io.nacular.doodle.controls.modal.ModalManager
 import io.nacular.doodle.drawing.Canvas
-import io.nacular.doodle.drawing.FontLoader
-import io.nacular.doodle.drawing.TextMetrics
 import io.nacular.doodle.drawing.rect
-import io.nacular.doodle.focus.FocusManager
-import io.nacular.doodle.geometry.PathMetrics
 import io.nacular.doodle.geometry.Rectangle
 import io.nacular.doodle.geometry.Size
-import io.nacular.doodle.image.ImageLoader
 import io.nacular.doodle.layout.constraints.constrain
-import io.nacular.doodle.theme.ThemeManager
-import io.nacular.doodle.theme.adhoc.DynamicTheme
-import io.nacular.doodle.theme.native.NativeHyperLinkStyler
-import io.nacular.doodle.theme.native.NativeTextFieldStyler
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
+import org.kodein.di.DI
 
 class TopPanel(
     pageType: PageType,
     config: DongxiConfig,
-    uiDispatcher: CoroutineDispatcher,
-    animator: Animator,
-    pathMetrics: PathMetrics,
-    fonts: FontLoader,
-    theme: DynamicTheme,
-    themes: ThemeManager,
-    images: ImageLoader,
-    textMetrics: TextMetrics,
-    textFieldStyler: NativeTextFieldStyler,
-    linkStyler: NativeHyperLinkStyler,
-    focusManager: FocusManager,
-    popups: PopupManager,
-    modals: ModalManager,
-    menuEventBus: MenuEventBus,
-    baseProductSelectEventBus: BaseProductSelectEventBus,  // Probably should not pass this param.
-    accessorySelectEventBus: AccessorySelectEventBus
+    commonDI: DI,
+    formControlFactory: FormControlFactory
 ) : AbstractPanel(
     pageType,
     config,
-    uiDispatcher,
-    animator,
-    pathMetrics,
-    fonts,
-    theme,
-    themes,
-    images,
-    textMetrics,
-    textFieldStyler,
-    linkStyler,
-    focusManager,
-    popups,
-    modals,
-    menuEventBus,
-    baseProductSelectEventBus,
-    accessorySelectEventBus
+    commonDI,
+    formControlFactory
 ) {
+
     private val pageTitleImage = getPageTitlePhotoView()
 
-    private val menu = Menu(
-        config,
-        uiDispatcher,
-        animator,
-        pathMetrics,
-        fonts,
-        theme,
-        themes,
-        images,
-        textMetrics,
-        textFieldStyler,
-        linkStyler,
-        focusManager,
-        popups,
-        modals,
-        menuEventBus,
-    ).apply {
-    }
-
+    private val menu = Menu(config, commonDI).apply {}
 
     init {
         size = Size(300, 100)
@@ -142,39 +83,27 @@ class TopPanel(
                 return LazyImage(mainScope.async { images.load("page-title-home.svg")!! }, RECT_TITLE)
             }
 
-            RINGS -> {
-                return LazyImage(mainScope.async { images.load("page-title-rings.svg")!! }, RECT_TITLE)
-            }
-
-            NECKLACES -> {
-                return LazyImage(mainScope.async { images.load("page-title-necklaces.svg")!! }, RECT_TITLE)
-            }
-
-            SCAPULARS -> {
-                return LazyImage(mainScope.async { images.load("page-title-scapulars.svg")!! }, RECT_TITLE)
-            }
-
-            BRACELETS -> {
-                return LazyImage(mainScope.async { images.load("page-title-bracelets.svg")!! }, RECT_TITLE)
-            }
-
-            EAR_RINGS -> {
-                return LazyImage(mainScope.async { images.load("page-title-earrings.svg")!! }, RECT_TITLE)
-            }
-
-            ABOUT -> {
-                return LazyImage(mainScope.async { images.load("page-title-about.svg")!! }, RECT_TITLE)
-            }
-
-            BASKET -> TODO()
-            LOGIN -> TODO()
-            LOGOUT -> TODO()
-            PAYMENT -> TODO()
-            REGISTER -> TODO()
+            else -> return LazyImage(mainScope.async { images.load(pageTitleFile())!! }, RECT_TITLE)
         }
     }
 
-    // TODO Refactor out duplicate constants.
+    private fun pageTitleFile(): String {
+        return when (pageType) {
+            RINGS -> "${config.imagesDir}/page-title-rings.svg"
+            NECKLACES -> "${config.imagesDir}/page-title-necklaces.svg"
+            SCAPULARS -> "${config.imagesDir}/page-title-scapulars.svg"
+            BRACELETS -> "${config.imagesDir}/page-title-bracelets.svg"
+            EAR_RINGS -> "${config.imagesDir}/page-title-earrings.svg"
+            ABOUT -> "${config.imagesDir}/page-title-about.svg"
+            BASKET -> "${config.imagesDir}/page-title-basket.svg"
+            HOME -> "${config.imagesDir}/page-title-home.svg"
+            LOGIN -> "${config.imagesDir}/page-title-login.svg"
+            LOGOUT -> "${config.imagesDir}/page-title-logout.svg"
+            PAYMENT -> "${config.imagesDir}/page-title-payment.svg"
+            REGISTER -> "${config.imagesDir}/page-title-register.svg"
+        }
+    }
+
     private companion object {
         private val RECT_TITLE: Rectangle = Rectangle(0, 0, 200, 30)
     }
