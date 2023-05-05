@@ -1,3 +1,7 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -6,17 +10,14 @@ plugins {
 
 
 /*
-TODO I want to fully migrate to IR, but having a lot problems,
-        the biggest one being unable to reference anything 'nacular'.
-        But small bits are being adjusted.
-        See https://slack-chats.kotlinlang.org/t/461144/i-started-a-new-project-in-intellij-multiplatform-full-stack
+TODO Want to fully migrate to IR, but there are many problems,
+    the biggest one being unable to reference anything 'nacular'.
+    See https://slack-chats.kotlinlang.org/t/461144/i-started-a-new-project-in-intellij-multiplatform-full-stack
  */
 kotlin {
 
     // TODO Find out why I cannot resolve anything 'nacular' when using IR compiler:
     //  Unresolved reference: nacular
-    // jsIrTargets()
-
     jsTargetsWithWebpack()
     jvmTargets()
 
@@ -121,25 +122,26 @@ application {
     mainClass.set("io.dongxi.Server.kt")
 }
 
-tasks.named<Copy>("jvmProcessResources") {
-    val jsBrowserDistribution = tasks.named("jsBrowserDistribution")
-    into("") {
-        from(jsBrowserDistribution)
-    }
-}
-
-/*
-tasks.named<Distribution>("jsBrowserDistribution") {
-    println("TASK: jsBrowserDistribution")
-    doFirst {
+// Leave as is, unused.  Maybe a custom MoveFile plugin is needed,
+// if it can be configured to run in proper lifecycle phase.
+val moveJsDistTask = tasks.register("moveJsDist") {
+    doLast {
         // Just use Java NIO to move the file instead of messing around with ant.groovy.
         val jsFile = Paths.get("${project.buildDir.path}/distributions/natty.js")
         val destDir = Paths.get("${project.buildDir.path}/distributions/assets/js/natty.js")
         Files.move(jsFile, destDir, StandardCopyOption.REPLACE_EXISTING)
     }
 }
-*/
 
+/*
+This is required.
+ */
+tasks.named<Copy>("jvmProcessResources") {
+    val jsBrowserDistribution = tasks.named("jsBrowserDistribution")
+    into("") {
+        from(jsBrowserDistribution)
+    }
+}
 
 tasks.named<JavaExec>("run") {
     dependsOn(tasks.named<Jar>("jvmJar"))
