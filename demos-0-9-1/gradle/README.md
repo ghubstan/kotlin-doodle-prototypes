@@ -9,9 +9,9 @@ Visit the [Gradle website](https://gradle.org/releases) and decide the:
 Adjust the following command with tha arguments above and execute it twice:
 
 ```
-./gradlew wrapper --gradle-version 8.0.2 \
+./gradlew wrapper --gradle-version 8.1.1 \
     --distribution-type bin \
-    --gradle-distribution-sha256-sum ff7bf6a86f09b9b2c40bb8f48b25fc19cf2b2664fd1d220cd7ab833ec758d0d7
+    --gradle-distribution-sha256-sum e111cb9948407e26351227dabce49822fb88c37ee72f1d1582a69c68af2e702f
 ```
 
 ---
@@ -34,7 +34,7 @@ Verify the upgraded `gradle/wrapper/gradle-wrapper.jar` checksum:
 
 ```
 export WRAPPER_JAR="gradle/wrapper/gradle-wrapper.jar"
-export CHECKSUM="91941f522fbfd4431cf57e445fc3d5200c85f957bda2de5251353cf11174f4b5"
+export CHECKSUM="ed2c26eba7cfb93cc2b7785d05e534f07b5b48b5e7fc941921cd098628abca58"
 echo "$CHECKSUM $WRAPPER_JAR" | sha256sum -c
 ```
 
